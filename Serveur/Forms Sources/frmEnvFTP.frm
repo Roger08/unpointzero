@@ -171,7 +171,7 @@ For i = Val(debut.text) To Val(fin.text)
     If ExStop Then Call FermerFTP(Connex): GoTo fin:
     NewDoEvents
     If i = Val(debut.text) Then t = Timer
-    Call EnvoiFTP(Connex, frmOptFTP.hote.text, frmCoFTP.nom.text, frmCoFTP.mdp.text, "maps\map" & i & ".fcc", "map" & i & ".fcc", frmOptFTP.rep)
+    Call EnvoiFTP(Connex, frmOptFTP.hote.text, frmCoFTP.nom.text, frmCoFTP.mdp.text, "maps\Map" & i & ".fcc", "map" & i & ".fcc", frmOptFTP.rep)
     If i = Val(debut.text) Then t = Timer - t: temps.Caption = "Temps théorique : " & t * (Val(fin.text) - i) & "s" Else temps.Caption = "Temps théorique : " & t * (Val(fin.text) - i) & "s"
     If ExStop Then Call FermerFTP(Connex): GoTo fin:
 Next i
