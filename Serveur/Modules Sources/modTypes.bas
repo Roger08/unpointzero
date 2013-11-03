@@ -3,36 +3,36 @@ Option Explicit
 Global PlayerI As Byte
 
 ' Winsock globals
-Public GAME_PORT As Long
+Public GAME_PORT As Integer
 
 ' General constants
 Public GAME_NAME As String
-Public MAX_PLAYERS As Long
-Public MAX_SPELLS As Long
-Public MAX_MAPS As Long
-Public MAX_SHOPS As Long
-Public MAX_ITEMS As Long
-Public MAX_NPCS As Long
-Public MAX_MAP_ITEMS As Long
-Public MAX_GUILDS As Long
-Public MAX_GUILD_MEMBERS As Long
-Public MAX_EMOTICONS As Long
-Public MAX_LEVEL As Long
-Public MAX_QUETES As Long
-Public Scripting As Byte
-Public NOOB_LEVEL As Long
-Public PK_LEVEL As Long
-Public RATE_EXP As Long
-Public RATE_QUETE As Long
-Public RATE_MAX As Long
-Public MAX_PETS As Long
-Public MAX_METIER As Long
-Public MAX_RECETTE As Long
+Public MAX_PLAYERS As Byte
+Public MAX_SPELLS As Integer
+Public MAX_MAPS As Integer
+Public MAX_SHOPS As Integer
+Public MAX_ITEMS As Integer
+Public MAX_NPCS As Integer
+Public MAX_MAP_ITEMS As Integer
+Public MAX_GUILDS As Integer
+Public MAX_GUILD_MEMBERS As Integer
+Public MAX_EMOTICONS As Byte
+Public MAX_LEVEL As Integer
+Public MAX_QUETES As Integer
+Public Scripting As Boolean
+Public NOOB_LEVEL As Integer
+Public PK_LEVEL As Integer
+Public RATE_EXP As Byte
+Public RATE_QUETE As Byte
+Public RATE_MAX As Byte
+Public MAX_PETS As Integer
+Public MAX_METIER As Integer
+Public MAX_RECETTE As Integer
 
 Public Const MAX_PARTY_MEMBERS As Byte = 20
 Public Const MAX_PARTYS As Byte = 20
 Public Const MAX_HDV_TRADES As Byte = 5
-Public Const MAX_ARROWS = 100
+Public Const MAX_ARROWS As Byte = 100
 Public Const MAX_INV = 26
 Public Const MAX_MAP_NPCS = 15
 Public Const MAX_PLAYER_SPELLS = 20
@@ -61,8 +61,8 @@ Public Const SEX_FEMALE = 1
 ' Map constants
 'Public Const MAX_MAPX = 30
 'Public Const MAX_MAPY = 30
-Public MAX_MAPX As Long
-Public MAX_MAPY As Long
+Public MAX_MAPX As Byte
+Public MAX_MAPY As Byte
 Public Const MAP_MORAL_NONE = 0
 Public Const MAP_MORAL_SAFE = 1
 Public Const MAP_MORAL_NO_PENALTY = 2
@@ -211,30 +211,35 @@ Public Const TARGET_TYPE_NPC = 1
 Public Const TARGET_TYPE_CASE = 2
 
 Type IndRec
-    data1 As Long
-    data2 As Long
-    data3 As Long
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
     String1 As String
 End Type
 
 Type PlayerInvRec
-    Num As Long
-    value As Long
-    Dur As Long
+    Num As Integer
+    value As Integer
+    Dur As Integer
 End Type
 
 Type PlayerQueteRec
-    temps As Long
-    data1 As Long
-    data2 As Long
-    data3 As Long
+    temps As Integer
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
     String1 As String
     indexe(1 To 15) As IndRec
 End Type
 
 Type PetPosRec
+<<<<<<< HEAD
     X As Integer
     Y As Integer
+=======
+    X As Byte
+    Y As Byte
+>>>>>>> Optimisation modTypes
     Dir As Byte
 End Type
 
@@ -244,69 +249,75 @@ Type PlayerRec
     Guild As String
     Guildaccess As Byte
     Sex As Byte
-    Class As Long
-    sprite As Long
-    Level As Long
-    Exp As Long
+    Class As Integer
+    sprite As Integer
+    Level As Integer
+    Exp As Integer
     Access As Byte
     PK As Byte
 
     ' Vitals
-    HP As Long
-    MP As Long
-    SP As Long
+    HP As Integer
+    MP As Integer
+    SP As Integer
     
     ' Stats
-    STR As Long
-    def As Long
-    Speed As Long
-    magi As Long
-    POINTS As Long
+    STR As Integer
+    def As Integer
+    Speed As Integer
+    magi As Integer
+    POINTS As Integer
     
     ' Worn equipment
-    ArmorSlot As Long
-    WeaponSlot As Long
-    HelmetSlot As Long
-    ShieldSlot As Long
-    PetSlot As Long
+    ArmorSlot As Integer
+    WeaponSlot As Integer
+    HelmetSlot As Integer
+    ShieldSlot As Integer
+    PetSlot As Integer
     
     ' Inventory
     Inv(1 To MAX_INV) As PlayerInvRec
-    Spell(1 To MAX_PLAYER_SPELLS) As Long
+    Spell(1 To MAX_PLAYER_SPELLS) As Integer
     QueteStatut() As Integer
     pet As PetPosRec
     
     ' Position
+<<<<<<< HEAD
     Map As Long
     X As Integer
     Y As Integer
+=======
+    Map As Integer
+    X As Byte
+    Y As Byte
+>>>>>>> Optimisation modTypes
     Dir As Byte
     
     QueteEnCour As Integer
     Quetep As PlayerQueteRec
     
     'PAPERDOLL
-    Casque As Long
-    armure As Long
-    arme As Long
-    bouclier As Long
+    Casque As Integer
+    armure As Integer
+    arme As Integer
+    bouclier As Integer
     
     'FIN PAPERDOLL
     
-    vendeur As Long
+    vendeur As Integer
     
-    metier As Long
+    metier As Integer
     MetierLvl As Integer
-    MetierExp As Long
+    MetierExp As Integer
     
-    LastX As Integer
-    LastY As Integer
+    LastX As Byte
+    LastY As Byte
 End Type
 
 Type PlayerTradeRec
-    InvNum As Long
+    InvNum As Integer
     InvName As String
-    InvVal As Long
+    InvVal As Integer
 End Type
     
 Type AccountRec
@@ -322,29 +333,29 @@ Type AccountRec
     IncBuffer As String
     CharNum As Byte
     InGame As Boolean
-    AttackTimer As Long
-    DataTimer As Long
-    DataBytes As Long
-    DataPackets As Long
+    AttackTimer As Integer
+    DataTimer As Integer
+    DataBytes As Integer
+    DataPackets As Integer
     
     PartyPlayer As Integer
     InParty As Byte
     TargetType As Byte
-    Target As Long
+    Target As Integer
     CastedSpell As Byte
     
-    SpellTime As Long
-    SpellVar As Long
-    SpellDone As Long
-    SpellNum As Long
+    SpellTime As Integer
+    SpellVar As Integer
+    SpellDone As Integer
+    SpellNum As Integer
     
     GettingMap As Byte
     InvitedBy As Byte
     
-    Emoticon As Long
+    Emoticon As Integer
 
     InTrade As Byte
-    TradePlayer As Long
+    TradePlayer As Integer
     TradeOk As Byte
     TradeItemMax As Byte
     TradeItemMax2 As Byte
@@ -359,27 +370,27 @@ Type AccountRec
 End Type
 
 Type TileRec
-    Ground As Long
-    Mask As Long
-    Anim As Long
-    Mask2 As Long
-    M2Anim As Long
-    Mask3 As Long '<--
-    M3Anim As Long '<--
-    Fringe As Long
-    FAnim As Long
-    Fringe2 As Long
-    F2Anim As Long
-    Fringe3 As Long '<--
-    F3Anim As Long '<--
+    Ground As Integer
+    Mask As Integer
+    Anim As Integer
+    Mask2 As Integer
+    M2Anim As Integer
+    Mask3 As Integer '<--
+    M3Anim As Integer '<--
+    Fringe As Integer
+    FAnim As Integer
+    Fringe2 As Integer
+    F2Anim As Integer
+    Fringe3 As Integer '<--
+    F3Anim As Integer '<--
     type As Byte
-    data1 As Long
-    data2 As Long
-    data3 As Long
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
     String1 As String
     String2 As String
     String3 As String
-    Light As Long
+    Light As Integer
     GroundSet As Byte
     MaskSet As Byte
     AnimSet As Byte
@@ -421,20 +432,20 @@ End Type
 
 Type MapRec
     Name As String * 40
-    Revision As Long
+    Revision As Integer
     Moral As Byte
-    Up As Long
-    Down As Long
-    Left As Long
-    Right As Long
+    Up As Integer 'Num map téléportation bords de map
+    Down As Integer '   '
+    Left As Integer '      '
+    Right As Integer '    '
     Music As String
-    BootMap As Long
+    BootMap As Integer
     BootX As Byte
     BootY As Byte
     Shop As Long
     Indoors As Byte
     Tile() As TileRec
-    Npc(1 To MAX_MAP_NPCS) As Long
+    Npc(1 To MAX_MAP_NPCS) As Integer
     Npcs(1 To MAX_MAP_NPCS) As NpcMap
     PanoInf As String * 50
     TranInf As Byte
@@ -461,13 +472,13 @@ End Type
 
 Type QueteRec
     nom As String * 40
-    type As Long
+    type As Byte
     Description As String
     reponse As String
-    temps As Long
-    data1 As Long
-    data2 As Long
-    data3 As Long
+    temps As Integer
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
     String1 As String
     Recompence As RecompRec
     indexe(1 To 15) As IndRec
@@ -476,21 +487,23 @@ End Type
 
 Type ClassRec
     Name As String * NAME_LENGTH
+    LevelReq As Integer
+    type As Integer
+    Locked As Integer
     
-    AdvanceFrom As Long
-    LevelReq As Long
-    type As Long
-    Locked As Long
+    MaleSprite As Integer
+    FemaleSprite As Integer
     
-    MaleSprite As Long
-    FemaleSprite As Long
+    STR As Integer
+    def As Integer
+    Speed As Integer
+    magi As Integer
     
-    STR As Long
-    def As Long
-    Speed As Long
-    magi As Long
-    
+<<<<<<< HEAD
     Map As Long
+=======
+    Map As Integer
+>>>>>>> Optimisation modTypes
     X As Byte
     Y As Byte
 End Type
@@ -499,43 +512,43 @@ Type ItemRec
     Name As String * NAME_LENGTH
     desc As String * 150
     
-    Pic As Long
+    Pic As Integer
     type As Byte
-    data1 As Long
-    data2 As Long
-    data3 As Long
-    StrReq As Long
-    DefReq As Long
-    SpeedReq As Long
-    ClassReq As Long
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
+    StrReq As Integer
+    DefReq As Integer
+    SpeedReq As Integer
+    ClassReq As Integer
     AccessReq As Byte
     LevelReq As Integer
     
     paperdoll As Byte
-    paperdollPic As Long
+    paperdollPic As Integer
     
     Empilable As Byte
     
-    AddHP As Long
-    AddMP As Long
-    AddSP As Long
-    AddStr As Long
-    AddDef As Long
-    AddMagi As Long
-    AddSpeed As Long
-    AddEXP As Long
-    AttackSpeed As Long
+    AddHP As Integer
+    AddMP As Integer
+    AddSP As Integer
+    AddStr As Integer
+    AddDef As Integer
+    AddMagi As Integer
+    AddSpeed As Integer
+    AddEXP As Integer
+    AttackSpeed As Integer
     
-    NCoul As Long
+    NCoul As Integer
     
     Sex As Byte
-    tArme As Long
+    tArme As Integer
 End Type
 
 Type MapItemRec
-    Num As Long
-    value As Long
-    Dur As Long
+    Num As Integer
+    value As Integer
+    Dur As Integer
     
     X As Byte
     Y As Byte
@@ -551,59 +564,59 @@ Type NpcRec
     Name As String * NAME_LENGTH
     AttackSay As String
     
-    sprite As Long
-    SpawnSecs As Long
+    sprite As Integer
+    SpawnSecs As Integer
     Behavior As Byte
     Range As Byte
     
-    STR  As Long
-    def As Long
-    Speed As Long
-    magi As Long
-    MaxHp As Long
-    Exp As Long
-    SpawnTime As Long
+    STR  As Integer
+    def As Integer
+    Speed As Integer
+    magi As Integer
+    MaxHp As Integer
+    Exp As Integer
+    SpawnTime As Integer
     
     ItemNPC(1 To MAX_NPC_DROPS) As NPCEditorRec
-    QueteNum As Long
-    Inv As Long
-    Vol As Long
+    QueteNum As Integer
+    Inv As Integer
+    Vol As Integer
     Spell(1 To MAX_NPC_SPELLS) As Integer
 End Type
 
 Type AmelioRec
     Power As Integer
-    Timer As Long
+    Timer As Integer
 End Type
 
 Type MapNpcRec
-    Num As Long
+    Num As Integer
     
-    Target As Long
+    Target As Integer
     TargetType As Byte
     
-    HP As Long
-    MP As Long
-    SP As Long
+    HP As Integer
+    MP As Integer
+    SP As Integer
         
     X As Byte
     Y As Byte
     Dir As Integer
     
     Amelio As AmelioRec
-    Immune As Long
-    SpellTimer As Long
+    Immune As Integer
+    SpellTimer As Integer
     
     ' For server use only
-    SpawnWait As Long
-    AttackTimer As Long
+    SpawnWait As Integer
+    AttackTimer As Integer
 End Type
 
 Type TradeItemRec
-    GiveItem As Long
-    GiveValue As Long
-    GetItem As Long
-    GetValue As Long
+    GiveItem As Integer
+    GiveValue As Integer
+    GetItem As Integer
+    GetValue As Integer
 End Type
 
 Type TradeItemsRec
@@ -616,35 +629,35 @@ Type ShopRec
     LeaveSay As String * 100
     FixesItems As Byte
     TradeItem(1 To 6) As TradeItemsRec
-    FixObjet As Long
+    FixObjet As Integer
 End Type
     
 Type SpellRec
     Name As String * NAME_LENGTH
-    ClassReq As Long
-    LevelReq As Long
-    MPCost As Long
-    Sound As Long
-    type As Long
-    data1 As Long
-    data2 As Long
-    data3 As Long
+    ClassReq As Integer
+    LevelReq As Integer
+    MPCost As Integer
+    Sound As Integer
+    type As Integer
+    data1 As Integer
+    data2 As Integer
+    data3 As Integer
     Range As Byte
     
     Big As Byte
     
-    SpellAnim As Long
-    SpellTime As Long
-    SpellDone As Long
+    SpellAnim As Integer
+    SpellTime As Integer
+    SpellDone As Integer
     
-    SpellIco As Long
+    SpellIco As Integer
     
-    AE As Long
+    AE As Integer
 End Type
 
 Type TempTileRec
     DoorOpen()  As Byte
-    DoorTimer As Long
+    DoorTimer As Integer
 End Type
 
 Type GuildRec
@@ -654,7 +667,7 @@ Type GuildRec
 End Type
 
 Type EmoRec
-    Pic As Long
+    Pic As Integer
     Command As String
 End Type
 
@@ -665,7 +678,7 @@ End Type
 
 Type PetsRec
     nom As String
-    sprite As Long
+    sprite As Integer
     addForce As Byte
     addDefence As Byte
 End Type
@@ -694,7 +707,7 @@ Public quete() As QueteRec
 Public Party As clsParty
 Public Map() As MapRec
 Public TempTile() As TempTileRec
-Public PlayersOnMap() As Long
+Public PlayersOnMap() As Integer
 Public Player() As AccountRec
 Public Classe() As ClassRec
 Public Class2() As ClassRec
@@ -707,35 +720,35 @@ Public Shop() As ShopRec
 Public Spell() As SpellRec
 Public Guild() As GuildRec
 Public Emoticons() As EmoRec
-Public experience() As Long
+Public experience() As Integer
 Public CMessages(1 To 6) As CMRec
 Public PnjMove() As Boolean
 Public bouclier() As Boolean
-Public BouclierT() As Long
+Public BouclierT() As Integer
 Public Para() As Boolean
-Public ParaT() As Long
+Public ParaT() As Integer
 Public ParaN() As Boolean
-Public ParaNT() As Long
-Public Point() As Long
-Public PointT() As Long
+Public ParaNT() As Integer
+Public Point() As Integer
+Public PointT() As Integer
 Public Pets() As PetsRec
 Public metier() As MetierRec
 Public recette() As RecetteRec
 
 Type ArrowRec
     Name As String
-    Pic As Long
+    Pic As Integer
     Range As Byte
 End Type
 
 Public Arrows(1 To MAX_ARROWS) As ArrowRec
 
 Type StatRec
-    Level As Long
-    STR As Long
-    def As Long
-    magi As Long
-    Speed As Long
+    Level As Integer
+    STR As Integer
+    def As Integer
+    magi As Integer
+    Speed As Integer
 End Type
 Public AddHP As StatRec
 Public AddMP As StatRec
@@ -750,14 +763,18 @@ Public AdminMoMsg As Boolean
 Public CClasses As Boolean
 
 'utiliser pour les couleurs perso
-Public AccModo As Long
-Public AccMapeur As Long
-Public AccDevelopeur As Long
-Public AccAdmin As Long
+Public AccModo As Integer
+Public AccMapeur As Integer
+Public AccDevelopeur As Integer
+Public AccAdmin As Integer
 
 Public HotelDeVente As clsHdV
 Sub ClearTempTile()
+<<<<<<< HEAD
 Dim i As Long, Y As Long, X As Long
+=======
+Dim i As Integer, Y As Byte, X As Byte
+>>>>>>> Optimisation modTypes
 
     For i = 1 To MAX_MAPS
         TempTile(i).DoorTimer = 0
@@ -770,7 +787,7 @@ Dim i As Long, Y As Long, X As Long
     Next i
 End Sub
 
-Public Sub ContrOnOff(ByVal Index As Long)
+Public Sub ContrOnOff(ByVal Index As Byte)
 Dim Packet As String
 
 Packet = "CONOFF" & SEP_CHAR & END_CHAR
@@ -778,7 +795,7 @@ Packet = "CONOFF" & SEP_CHAR & END_CHAR
 Call SendDataTo(Index, Packet)
 End Sub
 
-Public Sub PNJOnOff(ByVal Index As Long, ByVal Carte As Long)
+Public Sub PNJOnOff(ByVal Index As Byte, ByVal Carte As Integer)
 If PnjMove(Index, Carte) = False Then PnjMove(Index, Carte) = True Else PnjMove(Index, Carte) = False
 End Sub
 
@@ -790,7 +807,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearPlayer(ByVal Index As Long)
+Sub ClearPlayer(ByVal Index As Byte)
 Dim i As Long
 Dim n As Long
 With Player(Index)
@@ -899,7 +916,7 @@ End With
     
 End Sub
 
-Sub ClearChar(ByVal Index As Long, ByVal CharNum As Long)
+Sub ClearChar(ByVal Index As Byte, ByVal CharNum As Byte)
 Dim n As Long
 With Player(Index)
     .Char(CharNum).Name = vbNullString
@@ -964,7 +981,7 @@ With Player(Index)
 End With
 End Sub
     
-Sub ClearItem(ByVal Index As Long)
+Sub ClearItem(ByVal Index As Byte)
 With item(Index)
     .Name = vbNullString
     .desc = vbNullString
@@ -1008,7 +1025,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearNpc(ByVal Index As Long)
+Sub ClearNpc(ByVal Index As Integer)
 Dim i As Long
 With Npc(Index)
     .Name = vbNullString
@@ -1046,7 +1063,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearPet(ByVal Index As Long)
+Sub ClearPet(ByVal Index As Integer)
 With Pets(Index)
     .nom = ""
     .sprite = 0
@@ -1063,7 +1080,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearMetier(ByVal Index As Long)
+Sub ClearMetier(ByVal Index As Integer)
 Dim i As Long
 With metier(Index)
     .nom = ""
@@ -1084,7 +1101,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearRecette(ByVal Index As Long)
+Sub ClearRecette(ByVal Index As Integer)
 Dim i As Long, z As Long
 With recette(Index)
     .nom = ""
@@ -1106,7 +1123,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearMapItem(ByVal Index As Long, ByVal MapNum As Long)
+Sub ClearMapItem(ByVal Index As Integer, ByVal MapNum As Integer)
     MapItem(MapNum, Index).Num = 0
     MapItem(MapNum, Index).value = 0
     MapItem(MapNum, Index).Dur = 0
@@ -1125,7 +1142,7 @@ Dim Y As Long
     Next Y
 End Sub
 
-Sub ClearMapNpc(ByVal Index As Long, ByVal MapNum As Long)
+Sub ClearMapNpc(ByVal Index As Integer, ByVal MapNum As Integer)
 With MapNpc(MapNum, Index)
     .Num = 0
     .Target = 0
@@ -1158,7 +1175,7 @@ Dim Y As Long
         Next X
     Next Y
 End Sub
-Sub ClearMap(ByVal MapNum As Long)
+Sub ClearMap(ByVal MapNum As Integer)
 Dim i As Long
 Dim X As Long
 Dim Y As Long
@@ -1242,7 +1259,7 @@ With Map(MapNum)
 End With
 
 End Sub
-Sub ClearQuete(ByVal Index As Long)
+Sub ClearQuete(ByVal Index As Integer)
 Dim i As Long
 With quete(Index)
     .nom = vbNullString
@@ -1273,7 +1290,7 @@ With quete(Index)
 End With
 End Sub
 
-Sub ClearPlayerQuete(ByVal Index As Long)
+Sub ClearPlayerQuete(ByVal Index As Integer)
 Dim i As Long
 With Player(Index).Char(Player(Index).CharNum)
     .QueteEnCour = 0
@@ -1307,7 +1324,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearShop(ByVal Index As Long)
+Sub ClearShop(ByVal Index As Integer)
 Dim i As Long
 Dim z As Long
 
@@ -1335,7 +1352,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub ClearSpell(ByVal Index As Long)
+Sub ClearSpell(ByVal Index As Integer)
 With Spell(Index)
     .Name = vbNullString
     .ClassReq = 0
@@ -1368,112 +1385,112 @@ Dim i As Long
     Next i
 End Sub
 
-' //////////////////////
-' // PLAYER FUNCTIONS //
-' //////////////////////
+'///////////////////////////
+'// PLAYER FUNCTIONS //
+'///////////////////////////
 
-Function GetPlayerLogin(ByVal Index As Long) As String
+Function GetPlayerLogin(ByVal Index As Byte) As String
     GetPlayerLogin = Trim$(Player(Index).Login)
 End Function
 
-Sub SetPlayerLogin(ByVal Index As Long, ByVal Login As String)
+Sub SetPlayerLogin(ByVal Index As Byte, ByVal Login As String)
     Player(Index).Login = Login
 End Sub
 
-Function GetPlayerPassword(ByVal Index As Long) As String
+Function GetPlayerPassword(ByVal Index As Byte) As String
     GetPlayerPassword = Trim$(Player(Index).Password)
 End Function
 
-Sub SetPlayerPassword(ByVal Index As Long, ByVal Password As String)
+Sub SetPlayerPassword(ByVal Index As Byte, ByVal Password As String)
     Player(Index).Password = Password
 End Sub
 
-Function GetPlayerName(ByVal Index As Long) As String
+Function GetPlayerName(ByVal Index As Byte) As String
     GetPlayerName = Trim$(Player(Index).Char(Player(Index).CharNum).Name)
 End Function
 
-Sub SetPlayerName(ByVal Index As Long, ByVal Name As String)
+Sub SetPlayerName(ByVal Index As Byte, ByVal Name As String)
     Player(Index).Char(Player(Index).CharNum).Name = Name
 End Sub
 
-Function GetPlayerGuild(ByVal Index As Long) As String
+Function GetPlayerGuild(ByVal Index As Byte) As String
     GetPlayerGuild = Trim$(Player(Index).Char(Player(Index).CharNum).Guild)
 End Function
 
-Sub SetPlayerGuild(ByVal Index As Long, ByVal Guild As String)
+Sub SetPlayerGuild(ByVal Index As Byte, ByVal Guild As String)
     Player(Index).Char(Player(Index).CharNum).Guild = Guild
 End Sub
 
-Function GetPlayerGuildAccess(ByVal Index As Long) As Long
+Function GetPlayerGuildAccess(ByVal Index As Byte) As Byte
     GetPlayerGuildAccess = Player(Index).Char(Player(Index).CharNum).Guildaccess
 End Function
 
-Sub SetPlayerGuildAccess(ByVal Index As Long, ByVal Guildaccess As Long)
+Sub SetPlayerGuildAccess(ByVal Index As Byte, ByVal Guildaccess As Long)
     Player(Index).Char(Player(Index).CharNum).Guildaccess = Guildaccess
 End Sub
 
-Function GetPlayerClass(ByVal Index As Long) As Long
+Function GetPlayerClass(ByVal Index As Byte) As Byte
     GetPlayerClass = Player(Index).Char(Player(Index).CharNum).Class
 End Function
 
-Sub SetPlayerClass(ByVal Index As Long, ByVal ClassNum As Long)
+Sub SetPlayerClass(ByVal Index As Byte, ByVal ClassNum As Byte)
     Player(Index).Char(Player(Index).CharNum).Class = ClassNum
 End Sub
 
-Function GetPlayerSprite(ByVal Index As Long) As Long
+Function GetPlayerSprite(ByVal Index As Byte) As Integer
     GetPlayerSprite = Player(Index).Char(Player(Index).CharNum).sprite
 End Function
 
-Sub SetPlayerSprite(ByVal Index As Long, ByVal sprite As Long)
+Sub SetPlayerSprite(ByVal Index As Byte, ByVal sprite As Integer)
     Player(Index).Char(Player(Index).CharNum).sprite = sprite
 End Sub
 
-Function GetPlayerLevel(ByVal Index As Long) As Long
+Function GetPlayerLevel(ByVal Index As Byte) As Integer
     GetPlayerLevel = Player(Index).Char(Player(Index).CharNum).Level
 End Function
 
-Sub SetPlayerLevel(ByVal Index As Long, ByVal Level As Long)
+Sub SetPlayerLevel(ByVal Index As Byte, ByVal Level As Integer)
     If GetPlayerLevel(Index) > MAX_LEVEL Then Exit Sub
     Player(Index).Char(Player(Index).CharNum).Level = Level
 End Sub
 
-Function GetPlayerNextLevel(ByVal Index As Long) As Long
+Function GetPlayerNextLevel(ByVal Index As Byte) As Integer
     If GetPlayerLevel(Index) > MAX_LEVEL Then Exit Function
     GetPlayerNextLevel = experience(Val(GetPlayerLevel(Index)))
 End Function
 
-Function GetPlayerExp(ByVal Index As Long) As Long
+Function GetPlayerExp(ByVal Index As Byte) As Integer
     GetPlayerExp = Player(Index).Char(Player(Index).CharNum).Exp
 End Function
 
-Sub SetPlayerExp(ByVal Index As Long, ByVal Exp As Long)
+Sub SetPlayerExp(ByVal Index As Byte, ByVal Exp As Integer)
 Dim Queten As Long
 Queten = Val(Player(Index).Char(Player(Index).CharNum).QueteEnCour)
     If Queten > 0 Then If quete(Queten).type = QUETE_TYPE_GAGNE_XP Then Call PlayerQueteTypeXp(Index, Queten, Exp)
     Player(Index).Char(Player(Index).CharNum).Exp = Exp
 End Sub
 
-Function GetPlayerAccess(ByVal Index As Long) As Long
+Function GetPlayerAccess(ByVal Index As Byte) As Byte
     GetPlayerAccess = Player(Index).Char(Player(Index).CharNum).Access
 End Function
 
-Sub SetPlayerAccess(ByVal Index As Long, ByVal Access As Long)
+Sub SetPlayerAccess(ByVal Index As Byte, ByVal Access As Byte)
     Player(Index).Char(Player(Index).CharNum).Access = Access
 End Sub
 
-Function GetPlayerPK(ByVal Index As Long) As Long
+Function GetPlayerPK(ByVal Index As Byte) As Integer
     GetPlayerPK = Player(Index).Char(Player(Index).CharNum).PK
 End Function
 
-Sub SetPlayerPK(ByVal Index As Long, ByVal PK As Long)
+Sub SetPlayerPK(ByVal Index As Byte, ByVal PK As Integer)
     Player(Index).Char(Player(Index).CharNum).PK = PK
 End Sub
 
-Function GetPlayerHP(ByVal Index As Long) As Long
+Function GetPlayerHP(ByVal Index As Byte) As Integer
     GetPlayerHP = Player(Index).Char(Player(Index).CharNum).HP
 End Function
 
-Sub SetPlayerHP(ByVal Index As Long, ByVal HP As Long)
+Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Integer)
     Player(Index).Char(Player(Index).CharNum).HP = HP
     
     If GetPlayerHP(Index) > GetPlayerMaxHP(Index) Then Player(Index).Char(Player(Index).CharNum).HP = GetPlayerMaxHP(Index)
@@ -1481,29 +1498,29 @@ Sub SetPlayerHP(ByVal Index As Long, ByVal HP As Long)
     Call SendStats(Index)
 End Sub
 
-Function GetPlayerMP(ByVal Index As Long) As Long
+Function GetPlayerMP(ByVal Index As Byte) As Integer
     GetPlayerMP = Player(Index).Char(Player(Index).CharNum).MP
 End Function
 
-Sub SetPlayerMP(ByVal Index As Long, ByVal MP As Long)
+Sub SetPlayerMP(ByVal Index As Byte, ByVal MP As Integer)
     Player(Index).Char(Player(Index).CharNum).MP = MP
 
     If GetPlayerMP(Index) > GetPlayerMaxMP(Index) Then Player(Index).Char(Player(Index).CharNum).MP = GetPlayerMaxMP(Index)
     If GetPlayerMP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).MP = 0
 End Sub
 
-Function GetPlayerSP(ByVal Index As Long) As Long
+Function GetPlayerSP(ByVal Index As Byte) As Integer
     GetPlayerSP = Player(Index).Char(Player(Index).CharNum).SP
 End Function
 
-Sub SetPlayerSP(ByVal Index As Long, ByVal SP As Long)
+Sub SetPlayerSP(ByVal Index As Byte, ByVal SP As Integer)
     Player(Index).Char(Player(Index).CharNum).SP = SP
 
     If GetPlayerSP(Index) > GetPlayerMaxSP(Index) Then Player(Index).Char(Player(Index).CharNum).SP = GetPlayerMaxSP(Index)
     If GetPlayerSP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).SP = 0
 End Sub
 
-Function GetPlayerMaxHP(ByVal Index As Long) As Long
+Function GetPlayerMaxHP(ByVal Index As Byte) As Integer
 Dim CharNum As Long
 Dim i As Long
 Dim add As Long
@@ -1518,7 +1535,7 @@ add = 0
     GetPlayerMaxHP = (GetPlayerLevel(Index) * AddHP.Level) + (GetPlayerStr(Index) * AddHP.STR) + (GetPlayerDEF(Index) * AddHP.def) + (GetPlayerMAGI(Index) * AddHP.magi) + (GetPlayerSPEED(Index) * AddHP.Speed) + add
 End Function
 
-Function GetPlayerMaxMP(ByVal Index As Long) As Long
+Function GetPlayerMaxMP(ByVal Index As Byte) As Integer
 Dim CharNum As Long
 Dim add As Long
 add = 0
@@ -1532,7 +1549,7 @@ add = 0
     GetPlayerMaxMP = (GetPlayerLevel(Index) * AddMP.Level) + (GetPlayerStr(Index) * AddMP.STR) + (GetPlayerDEF(Index) * AddMP.def) + (GetPlayerMAGI(Index) * AddMP.magi) + (GetPlayerSPEED(Index) * AddMP.Speed) + add
 End Function
 
-Function GetPlayerMaxSP(ByVal Index As Long) As Long
+Function GetPlayerMaxSP(ByVal Index As Byte) As Integer
 Dim CharNum As Long
 Dim add As Long
 add = 0
@@ -1546,39 +1563,39 @@ add = 0
     GetPlayerMaxSP = (GetPlayerLevel(Index) * AddSP.Level) + (GetPlayerStr(Index) * AddSP.STR) + (GetPlayerDEF(Index) * AddSP.def) + (GetPlayerMAGI(Index) * AddSP.magi) + (GetPlayerSPEED(Index) * AddSP.Speed) + add
 End Function
 
-Function GetClassName(ByVal ClassNum As Long) As String
+Function GetClassName(ByVal ClassNum As Byte) As String
     GetClassName = Trim$(Classe(ClassNum).Name)
 End Function
 
-Function GetClassMaxHP(ByVal ClassNum As Long) As Long
+Function GetClassMaxHP(ByVal ClassNum As Byte) As Integer
     GetClassMaxHP = (1 + Int(Classe(ClassNum).STR / 2) + Classe(ClassNum).STR) * 2
 End Function
 
-Function GetClassMaxMP(ByVal ClassNum As Long) As Long
+Function GetClassMaxMP(ByVal ClassNum As Byte) As Integer
     GetClassMaxMP = (1 + Int(Classe(ClassNum).magi / 2) + Classe(ClassNum).magi) * 2
 End Function
 
-Function GetClassMaxSP(ByVal ClassNum As Long) As Long
+Function GetClassMaxSP(ByVal ClassNum As Byte) As Integer
     GetClassMaxSP = (1 + Int(Classe(ClassNum).Speed / 2) + Classe(ClassNum).Speed) * 2
 End Function
 
-Function GetClassStr(ByVal ClassNum As Long) As Long
+Function GetClassStr(ByVal ClassNum As Byte) As Integer
     GetClassStr = Classe(ClassNum).STR
 End Function
 
-Function GetClassDEF(ByVal ClassNum As Long) As Long
+Function GetClassDEF(ByVal ClassNum As Byte) As Integer
     GetClassDEF = Classe(ClassNum).def
 End Function
 
-Function GetClassSPEED(ByVal ClassNum As Long) As Long
+Function GetClassSPEED(ByVal ClassNum As Byte) As Integer
     GetClassSPEED = Classe(ClassNum).Speed
 End Function
 
-Function GetClassMAGI(ByVal ClassNum As Long) As Long
+Function GetClassMAGI(ByVal ClassNum As Byte) As Integer
     GetClassMAGI = Classe(ClassNum).magi
 End Function
 
-Function GetPlayerStr(ByVal Index As Long) As Long
+Function GetPlayerStr(ByVal Index As Byte) As Integer
 Dim add As Long
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddStr
@@ -1589,11 +1606,11 @@ add = 0
     GetPlayerStr = Player(Index).Char(Player(Index).CharNum).STR + add
 End Function
 
-Sub SetPlayerStr(ByVal Index As Long, ByVal STR As Long)
+Sub SetPlayerStr(ByVal Index As Byte, ByVal STR As Integer)
     Player(Index).Char(Player(Index).CharNum).STR = STR
 End Sub
 
-Function GetPlayerDEF(ByVal Index As Long) As Long
+Function GetPlayerDEF(ByVal Index As Byte) As Integer
 Dim add As Long
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddDef
@@ -1604,11 +1621,11 @@ add = 0
     GetPlayerDEF = Player(Index).Char(Player(Index).CharNum).def + add
 End Function
 
-Sub SetPlayerDEF(ByVal Index As Long, ByVal def As Long)
+Sub SetPlayerDEF(ByVal Index As Byte, ByVal def As Integer)
     Player(Index).Char(Player(Index).CharNum).def = def
 End Sub
 
-Function GetPlayerSPEED(ByVal Index As Long) As Long
+Function GetPlayerSPEED(ByVal Index As Byte) As Long
 Dim add As Long
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddSpeed
@@ -1619,11 +1636,11 @@ add = 0
     GetPlayerSPEED = Player(Index).Char(Player(Index).CharNum).Speed + add
 End Function
 
-Sub SetPlayerSPEED(ByVal Index As Long, ByVal Speed As Long)
+Sub SetPlayerSPEED(ByVal Index As Byte, ByVal Speed As Integer)
     Player(Index).Char(Player(Index).CharNum).Speed = Speed
 End Sub
 
-Function GetPlayerMAGI(ByVal Index As Long) As Long
+Function GetPlayerMAGI(ByVal Index As Byte) As Integer
 Dim add As Long
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddMagi
@@ -1634,26 +1651,27 @@ add = 0
     GetPlayerMAGI = Player(Index).Char(Player(Index).CharNum).magi + add
 End Function
 
-Sub SetPlayerMAGI(ByVal Index As Long, ByVal magi As Long)
+Sub SetPlayerMAGI(ByVal Index As Byte, ByVal magi As Integer)
     Player(Index).Char(Player(Index).CharNum).magi = magi
 End Sub
 
-Function GetPlayerPOINTS(ByVal Index As Long) As Long
+Function GetPlayerPOINTS(ByVal Index As Byte) As Integer
     GetPlayerPOINTS = Player(Index).Char(Player(Index).CharNum).POINTS
 End Function
 
-Sub SetPlayerPOINTS(ByVal Index As Long, ByVal POINTS As Long)
+Sub SetPlayerPOINTS(ByVal Index As Byte, ByVal POINTS As Integer)
     Player(Index).Char(Player(Index).CharNum).POINTS = POINTS
 End Sub
 
-Function GetPlayerMap(ByVal Index As Long) As Long
+Function GetPlayerMap(ByVal Index As Byte) As Integer
     GetPlayerMap = Player(Index).Char(Player(Index).CharNum).Map
 End Function
 
-Sub SetPlayerMap(ByVal Index As Long, ByVal MapNum As Long)
+Sub SetPlayerMap(ByVal Index As Byte, ByVal MapNum As Integer)
     If MapNum > 0 And MapNum <= MAX_MAPS Then Player(Index).Char(Player(Index).CharNum).Map = MapNum
 End Sub
 
+<<<<<<< HEAD
 Function GetPlayerX(ByVal Index As Long) As Long
     GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
 End Function
@@ -1667,102 +1685,117 @@ Function GetPlayerY(ByVal Index As Long) As Long
 End Function
 
 Sub SetPlayerY(ByVal Index As Long, ByVal Y As Long)
+=======
+Function GetPlayerX(ByVal Index As Byte) As Byte
+    GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
+End Function
+
+Sub SetPlayerX(ByVal Index As Byte, ByVal X As Byte)
+    Player(Index).Char(Player(Index).CharNum).X = X
+End Sub
+
+Function GetPlayerY(ByVal Index As Byte) As Byte
+    GetPlayerY = Player(Index).Char(Player(Index).CharNum).Y
+End Function
+
+Sub SetPlayerY(ByVal Index As Byte, ByVal Y As Byte)
+>>>>>>> Optimisation modTypes
     Player(Index).Char(Player(Index).CharNum).Y = Y
 End Sub
 
-Function GetPlayerSex(ByVal Index As Long) As Byte
+Function GetPlayerSex(ByVal Index As Byte) As Byte
     GetPlayerSex = Player(Index).Char(Player(Index).CharNum).Sex
 End Function
 
-Sub SetPlayerSex(ByVal Index As Long, ByVal Sex As Byte)
+Sub SetPlayerSex(ByVal Index As Byte, ByVal Sex As Byte)
     Player(Index).Char(Player(Index).CharNum).Sex = Sex
 End Sub
 
-Function GetPlayerDir(ByVal Index As Long) As Long
+Function GetPlayerDir(ByVal Index As Byte) As Byte
     GetPlayerDir = Player(Index).Char(Player(Index).CharNum).Dir
 End Function
 
-Sub SetPlayerDir(ByVal Index As Long, ByVal Dir As Long)
+Sub SetPlayerDir(ByVal Index As Byte, ByVal Dir As Byte)
     Player(Index).Char(Player(Index).CharNum).Dir = Dir
 End Sub
 
-Function GetPlayerIP(ByVal Index As Long) As String
+Function GetPlayerIP(ByVal Index As Byte) As String
     GetPlayerIP = frmServer.Socket(Index).RemoteHostIP
 End Function
 
-Function GetPlayerInvItemNum(ByVal Index As Long, ByVal InvSlot As Long) As Long
+Function GetPlayerInvItemNum(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
     GetPlayerInvItemNum = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Num
 End Function
 
-Sub SetPlayerInvItemNum(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemNum As Long)
+Sub SetPlayerInvItemNum(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemNum As Integer)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Num = ItemNum
 End Sub
 
-Function GetPlayerInvItemValue(ByVal Index As Long, ByVal InvSlot As Long) As Long
+Function GetPlayerInvItemValue(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
     GetPlayerInvItemValue = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).value
 End Function
 
-Sub SetPlayerInvItemValue(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemValue As Long)
+Sub SetPlayerInvItemValue(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemValue As Integer)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).value = ItemValue
 End Sub
 
-Function GetPlayerInvItemDur(ByVal Index As Long, ByVal InvSlot As Long) As Long
+Function GetPlayerInvItemDur(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
     GetPlayerInvItemDur = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Dur
 End Function
 
-Sub SetPlayerInvItemDur(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemDur As Long)
+Sub SetPlayerInvItemDur(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemDur As Integer)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Dur = ItemDur
 End Sub
 
-Function GetPlayerSpell(ByVal Index As Long, ByVal SpellSlot As Long) As Long
+Function GetPlayerSpell(ByVal Index As Byte, ByVal SpellSlot As Byte) As Integer
     GetPlayerSpell = Player(Index).Char(Player(Index).CharNum).Spell(SpellSlot)
 End Function
 
-Sub SetPlayerSpell(ByVal Index As Long, ByVal SpellSlot As Long, ByVal SpellNum As Long)
+Sub SetPlayerSpell(ByVal Index As Byte, ByVal SpellSlot As Byte, ByVal SpellNum As Integer)
     Player(Index).Char(Player(Index).CharNum).Spell(SpellSlot) = SpellNum
 End Sub
 
-Function GetPlayerArmorSlot(ByVal Index As Long) As Long
+Function GetPlayerArmorSlot(ByVal Index As Byte) As Integer
     GetPlayerArmorSlot = Player(Index).Char(Player(Index).CharNum).ArmorSlot
 End Function
 
-Sub SetPlayerArmorSlot(ByVal Index As Long, InvNum As Long)
+Sub SetPlayerArmorSlot(ByVal Index As Byte, InvNum As Integer)
     Player(Index).Char(Player(Index).CharNum).ArmorSlot = InvNum
 End Sub
 
-Function GetPlayerWeaponSlot(ByVal Index As Long) As Long
+Function GetPlayerWeaponSlot(ByVal Index As Byte) As Integer
     GetPlayerWeaponSlot = Player(Index).Char(Player(Index).CharNum).WeaponSlot
 End Function
 
-Sub SetPlayerWeaponSlot(ByVal Index As Long, InvNum As Long)
+Sub SetPlayerWeaponSlot(ByVal Index As Byte, InvNum As Integer)
     Player(Index).Char(Player(Index).CharNum).WeaponSlot = InvNum
 End Sub
 
-Function GetPlayerHelmetSlot(ByVal Index As Long) As Long
+Function GetPlayerHelmetSlot(ByVal Index As Byte) As Integer
     GetPlayerHelmetSlot = Player(Index).Char(Player(Index).CharNum).HelmetSlot
 End Function
 
-Sub SetPlayerHelmetSlot(ByVal Index As Long, InvNum As Long)
+Sub SetPlayerHelmetSlot(ByVal Index As Byte, InvNum As Integer)
     Player(Index).Char(Player(Index).CharNum).HelmetSlot = InvNum
 End Sub
 
-Function GetPlayerShieldSlot(ByVal Index As Long) As Long
+Function GetPlayerShieldSlot(ByVal Index As Byte) As Integer
     GetPlayerShieldSlot = Player(Index).Char(Player(Index).CharNum).ShieldSlot
 End Function
 
-Sub SetPlayerShieldSlot(ByVal Index As Long, InvNum As Long)
+Sub SetPlayerShieldSlot(ByVal Index As Byte, InvNum As Integer)
     Player(Index).Char(Player(Index).CharNum).ShieldSlot = InvNum
 End Sub
 
-Function GetPlayerPetSlot(ByVal Index As Long) As Long
+Function GetPlayerPetSlot(ByVal Index As Byte) As Integer
     GetPlayerPetSlot = Player(Index).Char(Player(Index).CharNum).PetSlot
 End Function
 
-Sub SetPlayerPetSlot(ByVal Index As Long, InvNum As Long)
+Sub SetPlayerPetSlot(ByVal Index As Byte, InvNum As Integer)
     Player(Index).Char(Player(Index).CharNum).PetSlot = InvNum
 End Sub
 
-Sub BattleMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long, ByVal Side As Byte)
+Sub BattleMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Byte, ByVal Side As Byte)
     Call SendDataTo(Index, "damagedisplay" & SEP_CHAR & Side & SEP_CHAR & Msg & SEP_CHAR & Color & SEP_CHAR & END_CHAR)
 End Sub
 
