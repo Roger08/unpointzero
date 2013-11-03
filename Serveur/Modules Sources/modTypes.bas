@@ -233,13 +233,8 @@ Type PlayerQueteRec
 End Type
 
 Type PetPosRec
-<<<<<<< HEAD
-    X As Integer
-    Y As Integer
-=======
     X As Byte
     Y As Byte
->>>>>>> Optimisation modTypes
     Dir As Byte
 End Type
 
@@ -282,15 +277,9 @@ Type PlayerRec
     pet As PetPosRec
     
     ' Position
-<<<<<<< HEAD
-    Map As Long
-    X As Integer
-    Y As Integer
-=======
     Map As Integer
     X As Byte
     Y As Byte
->>>>>>> Optimisation modTypes
     Dir As Byte
     
     QueteEnCour As Integer
@@ -499,11 +488,7 @@ Type ClassRec
     Speed As Integer
     magi As Integer
     
-<<<<<<< HEAD
-    Map As Long
-=======
     Map As Integer
->>>>>>> Optimisation modTypes
     X As Byte
     Y As Byte
 End Type
@@ -770,11 +755,7 @@ Public AccAdmin As Integer
 
 Public HotelDeVente As clsHdV
 Sub ClearTempTile()
-<<<<<<< HEAD
-Dim i As Long, Y As Long, X As Long
-=======
 Dim i As Integer, Y As Byte, X As Byte
->>>>>>> Optimisation modTypes
 
     For i = 1 To MAX_MAPS
         TempTile(i).DoorTimer = 0
@@ -1671,21 +1652,6 @@ Sub SetPlayerMap(ByVal Index As Byte, ByVal MapNum As Integer)
     If MapNum > 0 And MapNum <= MAX_MAPS Then Player(Index).Char(Player(Index).CharNum).Map = MapNum
 End Sub
 
-<<<<<<< HEAD
-Function GetPlayerX(ByVal Index As Long) As Long
-    GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
-End Function
-
-Sub SetPlayerX(ByVal Index As Long, ByVal X As Long)
-    Player(Index).Char(Player(Index).CharNum).X = X
-End Sub
-
-Function GetPlayerY(ByVal Index As Long) As Long
-    GetPlayerY = Player(Index).Char(Player(Index).CharNum).Y
-End Function
-
-Sub SetPlayerY(ByVal Index As Long, ByVal Y As Long)
-=======
 Function GetPlayerX(ByVal Index As Byte) As Byte
     GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
 End Function
@@ -1699,7 +1665,6 @@ Function GetPlayerY(ByVal Index As Byte) As Byte
 End Function
 
 Sub SetPlayerY(ByVal Index As Byte, ByVal Y As Byte)
->>>>>>> Optimisation modTypes
     Player(Index).Char(Player(Index).CharNum).Y = Y
 End Sub
 
