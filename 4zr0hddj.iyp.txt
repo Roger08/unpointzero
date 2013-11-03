@@ -1,0 +1,1615 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#
+#	new file:   .gitattributes
+#	new file:   .gitignore
+#	new file:   Client/Client.exe
+#	new file:   Client/Client.exe.manifest
+#	new file:   Client/Client.vbp
+#	new file:   Client/Client.vbw
+#	new file:   Client/Config/Account.ini
+#	new file:   Client/Config/Client.ini
+#	new file:   Client/Config/Ecriture.ini
+#	new file:   Client/Config/Option.ini
+#	new file:   Client/Config/Serveur.ini
+#	new file:   Client/Config/Temps/.ini
+#	new file:   Client/Config/Temps/Administrateur.ini
+#	new file:   Client/Config/Updater.ini
+#	new file:   Client/Config/info.ini
+#	new file:   Client/Forms Sources/frmCarte.frm
+#	new file:   Client/Forms Sources/frmCarte.frx
+#	new file:   Client/Forms Sources/frmFixItem.frm
+#	new file:   Client/Forms Sources/frmFixItem.frx
+#	new file:   Client/Forms Sources/frmFlash.frm
+#	new file:   Client/Forms Sources/frmFlash.frx
+#	new file:   Client/Forms Sources/frmGestionMariage.frm
+#	new file:   Client/Forms Sources/frmGuild.frm
+#	new file:   Client/Forms Sources/frmGuild.frx
+#	new file:   Client/Forms Sources/frmMainMenu.frm
+#	new file:   Client/Forms Sources/frmMainMenu.frx
+#	new file:   Client/Forms Sources/frmMapReport.frm
+#	new file:   Client/Forms Sources/frmMapReport.frx
+#	new file:   Client/Forms Sources/frmMariage.frm
+#	new file:   Client/Forms Sources/frmMirage.frm
+#	new file:   Client/Forms Sources/frmMirage.frx
+#	new file:   Client/Forms Sources/frmNewChar.frm
+#	new file:   Client/Forms Sources/frmNewChar.frx
+#	new file:   Client/Forms Sources/frmPlayerChat.frm
+#	new file:   Client/Forms Sources/frmPlayerChat.frx
+#	new file:   Client/Forms Sources/frmPlayerHelp.frm
+#	new file:   Client/Forms Sources/frmPlayerHelp.frx
+#	new file:   Client/Forms Sources/frmPlayerTrade.frm
+#	new file:   Client/Forms Sources/frmPlayerTrade.frx
+#	new file:   Client/Forms Sources/frmServerChooser.frm
+#	new file:   Client/Forms Sources/frmServerChooser.frx
+#	new file:   Client/Forms Sources/frmSplash.frx
+#	new file:   Client/Forms Sources/frmSplashScreen.frm
+#	new file:   Client/Forms Sources/frmSplashScreen.frx
+#	new file:   Client/Forms Sources/frmTrade.frm
+#	new file:   Client/Forms Sources/frmTrade.frx
+#	new file:   Client/Forms Sources/frmadmin.frm
+#	new file:   Client/Forms Sources/frmadmin.frx
+#	new file:   Client/Forms Sources/frmbank.frm
+#	new file:   Client/Forms Sources/frmbank.frx
+#	new file:   Client/Forms Sources/frmcraft.frm
+#	new file:   Client/Forms Sources/frmcraft.frx
+#	new file:   Client/Forms Sources/frmsplash.frm
+#	new file:   Client/GFX/BigSpells/BigSpells0.png
+#	new file:   Client/GFX/BigSpells/BigSpells1.png
+#	new file:   Client/GFX/Outils.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls0.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls1.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls10.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls11.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls12.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls2.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls3.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls4.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls5.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls6.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls7.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls8.png
+#	new file:   Client/GFX/Paperdolls/Paperdolls9.png
+#	new file:   Client/GFX/Pets/Pet0.png
+#	new file:   Client/GFX/Pets/Pet1.png
+#	new file:   Client/GFX/Pets/Pet2.png
+#	new file:   Client/GFX/Pets/Pet3.png
+#	new file:   Client/GFX/Spells/Spells0.png
+#	new file:   Client/GFX/Spells/Spells1.png
+#	new file:   Client/GFX/Spells/Spells2.png
+#	new file:   Client/GFX/Sprites/Sprites0.png
+#	new file:   Client/GFX/Sprites/Sprites1.png
+#	new file:   Client/GFX/Sprites/Sprites10.png
+#	new file:   Client/GFX/Sprites/Sprites100.png
+#	new file:   Client/GFX/Sprites/Sprites101.png
+#	new file:   Client/GFX/Sprites/Sprites102.png
+#	new file:   Client/GFX/Sprites/Sprites103.png
+#	new file:   Client/GFX/Sprites/Sprites104.png
+#	new file:   Client/GFX/Sprites/Sprites105.png
+#	new file:   Client/GFX/Sprites/Sprites106.png
+#	new file:   Client/GFX/Sprites/Sprites107.png
+#	new file:   Client/GFX/Sprites/Sprites108.png
+#	new file:   Client/GFX/Sprites/Sprites109.png
+#	new file:   Client/GFX/Sprites/Sprites11.png
+#	new file:   Client/GFX/Sprites/Sprites110.png
+#	new file:   Client/GFX/Sprites/Sprites111.png
+#	new file:   Client/GFX/Sprites/Sprites112.png
+#	new file:   Client/GFX/Sprites/Sprites113.png
+#	new file:   Client/GFX/Sprites/Sprites114.png
+#	new file:   Client/GFX/Sprites/Sprites115.png
+#	new file:   Client/GFX/Sprites/Sprites116.png
+#	new file:   Client/GFX/Sprites/Sprites117.png
+#	new file:   Client/GFX/Sprites/Sprites118.png
+#	new file:   Client/GFX/Sprites/Sprites119.png
+#	new file:   Client/GFX/Sprites/Sprites12.png
+#	new file:   Client/GFX/Sprites/Sprites120.png
+#	new file:   Client/GFX/Sprites/Sprites121.png
+#	new file:   Client/GFX/Sprites/Sprites122.png
+#	new file:   Client/GFX/Sprites/Sprites123.png
+#	new file:   Client/GFX/Sprites/Sprites124.png
+#	new file:   Client/GFX/Sprites/Sprites125.png
+#	new file:   Client/GFX/Sprites/Sprites126.png
+#	new file:   Client/GFX/Sprites/Sprites127.png
+#	new file:   Client/GFX/Sprites/Sprites128.png
+#	new file:   Client/GFX/Sprites/Sprites129.png
+#	new file:   Client/GFX/Sprites/Sprites13.png
+#	new file:   Client/GFX/Sprites/Sprites130.png
+#	new file:   Client/GFX/Sprites/Sprites131.png
+#	new file:   Client/GFX/Sprites/Sprites132.png
+#	new file:   Client/GFX/Sprites/Sprites133.png
+#	new file:   Client/GFX/Sprites/Sprites134.png
+#	new file:   Client/GFX/Sprites/Sprites135.png
+#	new file:   Client/GFX/Sprites/Sprites136.png
+#	new file:   Client/GFX/Sprites/Sprites137.png
+#	new file:   Client/GFX/Sprites/Sprites138.png
+#	new file:   Client/GFX/Sprites/Sprites139.png
+#	new file:   Client/GFX/Sprites/Sprites14.png
+#	new file:   Client/GFX/Sprites/Sprites140.png
+#	new file:   Client/GFX/Sprites/Sprites141.png
+#	new file:   Client/GFX/Sprites/Sprites142.png
+#	new file:   Client/GFX/Sprites/Sprites143.png
+#	new file:   Client/GFX/Sprites/Sprites144.png
+#	new file:   Client/GFX/Sprites/Sprites145.png
+#	new file:   Client/GFX/Sprites/Sprites146.png
+#	new file:   Client/GFX/Sprites/Sprites147.png
+#	new file:   Client/GFX/Sprites/Sprites148.png
+#	new file:   Client/GFX/Sprites/Sprites149.png
+#	new file:   Client/GFX/Sprites/Sprites15.png
+#	new file:   Client/GFX/Sprites/Sprites150.png
+#	new file:   Client/GFX/Sprites/Sprites151.png
+#	new file:   Client/GFX/Sprites/Sprites152.png
+#	new file:   Client/GFX/Sprites/Sprites153.png
+#	new file:   Client/GFX/Sprites/Sprites154.png
+#	new file:   Client/GFX/Sprites/Sprites155.png
+#	new file:   Client/GFX/Sprites/Sprites156.png
+#	new file:   Client/GFX/Sprites/Sprites157.png
+#	new file:   Client/GFX/Sprites/Sprites158.png
+#	new file:   Client/GFX/Sprites/Sprites159.png
+#	new file:   Client/GFX/Sprites/Sprites16.png
+#	new file:   Client/GFX/Sprites/Sprites160.png
+#	new file:   Client/GFX/Sprites/Sprites161.png
+#	new file:   Client/GFX/Sprites/Sprites162.png
+#	new file:   Client/GFX/Sprites/Sprites163.png
+#	new file:   Client/GFX/Sprites/Sprites164.png
+#	new file:   Client/GFX/Sprites/Sprites165.png
+#	new file:   Client/GFX/Sprites/Sprites166.png
+#	new file:   Client/GFX/Sprites/Sprites167.png
+#	new file:   Client/GFX/Sprites/Sprites168.png
+#	new file:   Client/GFX/Sprites/Sprites169.png
+#	new file:   Client/GFX/Sprites/Sprites17.png
+#	new file:   Client/GFX/Sprites/Sprites170.png
+#	new file:   Client/GFX/Sprites/Sprites171.png
+#	new file:   Client/GFX/Sprites/Sprites172.png
+#	new file:   Client/GFX/Sprites/Sprites173.png
+#	new file:   Client/GFX/Sprites/Sprites174.png
+#	new file:   Client/GFX/Sprites/Sprites175.png
+#	new file:   Client/GFX/Sprites/Sprites176.png
+#	new file:   Client/GFX/Sprites/Sprites177.png
+#	new file:   Client/GFX/Sprites/Sprites178.png
+#	new file:   Client/GFX/Sprites/Sprites179.png
+#	new file:   Client/GFX/Sprites/Sprites18.png
+#	new file:   Client/GFX/Sprites/Sprites180.png
+#	new file:   Client/GFX/Sprites/Sprites181.png
+#	new file:   Client/GFX/Sprites/Sprites182.png
+#	new file:   Client/GFX/Sprites/Sprites183.png
+#	new file:   Client/GFX/Sprites/Sprites184.png
+#	new file:   Client/GFX/Sprites/Sprites185.png
+#	new file:   Client/GFX/Sprites/Sprites186.png
+#	new file:   Client/GFX/Sprites/Sprites187.png
+#	new file:   Client/GFX/Sprites/Sprites188.png
+#	new file:   Client/GFX/Sprites/Sprites189.png
+#	new file:   Client/GFX/Sprites/Sprites19.png
+#	new file:   Client/GFX/Sprites/Sprites190.png
+#	new file:   Client/GFX/Sprites/Sprites191.png
+#	new file:   Client/GFX/Sprites/Sprites192.png
+#	new file:   Client/GFX/Sprites/Sprites193.png
+#	new file:   Client/GFX/Sprites/Sprites194.png
+#	new file:   Client/GFX/Sprites/Sprites195.png
+#	new file:   Client/GFX/Sprites/Sprites196.png
+#	new file:   Client/GFX/Sprites/Sprites197.png
+#	new file:   Client/GFX/Sprites/Sprites198.png
+#	new file:   Client/GFX/Sprites/Sprites199.png
+#	new file:   Client/GFX/Sprites/Sprites2.png
+#	new file:   Client/GFX/Sprites/Sprites20.png
+#	new file:   Client/GFX/Sprites/Sprites200.png
+#	new file:   Client/GFX/Sprites/Sprites201.png
+#	new file:   Client/GFX/Sprites/Sprites202.png
+#	new file:   Client/GFX/Sprites/Sprites203.png
+#	new file:   Client/GFX/Sprites/Sprites204.png
+#	new file:   Client/GFX/Sprites/Sprites205.png
+#	new file:   Client/GFX/Sprites/Sprites206.png
+#	new file:   Client/GFX/Sprites/Sprites207.png
+#	new file:   Client/GFX/Sprites/Sprites208.png
+#	new file:   Client/GFX/Sprites/Sprites209.png
+#	new file:   Client/GFX/Sprites/Sprites21.png
+#	new file:   Client/GFX/Sprites/Sprites210.png
+#	new file:   Client/GFX/Sprites/Sprites211.png
+#	new file:   Client/GFX/Sprites/Sprites212.png
+#	new file:   Client/GFX/Sprites/Sprites213.png
+#	new file:   Client/GFX/Sprites/Sprites214.png
+#	new file:   Client/GFX/Sprites/Sprites215.png
+#	new file:   Client/GFX/Sprites/Sprites216.png
+#	new file:   Client/GFX/Sprites/Sprites217.png
+#	new file:   Client/GFX/Sprites/Sprites218.png
+#	new file:   Client/GFX/Sprites/Sprites219.png
+#	new file:   Client/GFX/Sprites/Sprites22.png
+#	new file:   Client/GFX/Sprites/Sprites220.png
+#	new file:   Client/GFX/Sprites/Sprites221.png
+#	new file:   Client/GFX/Sprites/Sprites222.png
+#	new file:   Client/GFX/Sprites/Sprites223.png
+#	new file:   Client/GFX/Sprites/Sprites224.png
+#	new file:   Client/GFX/Sprites/Sprites225.png
+#	new file:   Client/GFX/Sprites/Sprites226.png
+#	new file:   Client/GFX/Sprites/Sprites227.png
+#	new file:   Client/GFX/Sprites/Sprites228.png
+#	new file:   Client/GFX/Sprites/Sprites229.png
+#	new file:   Client/GFX/Sprites/Sprites23.png
+#	new file:   Client/GFX/Sprites/Sprites230.png
+#	new file:   Client/GFX/Sprites/Sprites231.png
+#	new file:   Client/GFX/Sprites/Sprites232.png
+#	new file:   Client/GFX/Sprites/Sprites233.png
+#	new file:   Client/GFX/Sprites/Sprites234.png
+#	new file:   Client/GFX/Sprites/Sprites235.png
+#	new file:   Client/GFX/Sprites/Sprites236.png
+#	new file:   Client/GFX/Sprites/Sprites237.png
+#	new file:   Client/GFX/Sprites/Sprites238.png
+#	new file:   Client/GFX/Sprites/Sprites239.png
+#	new file:   Client/GFX/Sprites/Sprites24.png
+#	new file:   Client/GFX/Sprites/Sprites240.png
+#	new file:   Client/GFX/Sprites/Sprites241.png
+#	new file:   Client/GFX/Sprites/Sprites242.png
+#	new file:   Client/GFX/Sprites/Sprites243.png
+#	new file:   Client/GFX/Sprites/Sprites244.png
+#	new file:   Client/GFX/Sprites/Sprites245.png
+#	new file:   Client/GFX/Sprites/Sprites246.png
+#	new file:   Client/GFX/Sprites/Sprites247.png
+#	new file:   Client/GFX/Sprites/Sprites248.png
+#	new file:   Client/GFX/Sprites/Sprites249.png
+#	new file:   Client/GFX/Sprites/Sprites25.png
+#	new file:   Client/GFX/Sprites/Sprites250.png
+#	new file:   Client/GFX/Sprites/Sprites251.png
+#	new file:   Client/GFX/Sprites/Sprites252.png
+#	new file:   Client/GFX/Sprites/Sprites253.png
+#	new file:   Client/GFX/Sprites/Sprites254.png
+#	new file:   Client/GFX/Sprites/Sprites255.png
+#	new file:   Client/GFX/Sprites/Sprites256.png
+#	new file:   Client/GFX/Sprites/Sprites257.png
+#	new file:   Client/GFX/Sprites/Sprites258.png
+#	new file:   Client/GFX/Sprites/Sprites259.png
+#	new file:   Client/GFX/Sprites/Sprites26.png
+#	new file:   Client/GFX/Sprites/Sprites260.png
+#	new file:   Client/GFX/Sprites/Sprites261.png
+#	new file:   Client/GFX/Sprites/Sprites262.png
+#	new file:   Client/GFX/Sprites/Sprites263.png
+#	new file:   Client/GFX/Sprites/Sprites264.png
+#	new file:   Client/GFX/Sprites/Sprites265.png
+#	new file:   Client/GFX/Sprites/Sprites266.png
+#	new file:   Client/GFX/Sprites/Sprites267.png
+#	new file:   Client/GFX/Sprites/Sprites268.png
+#	new file:   Client/GFX/Sprites/Sprites269.png
+#	new file:   Client/GFX/Sprites/Sprites27.png
+#	new file:   Client/GFX/Sprites/Sprites270.png
+#	new file:   Client/GFX/Sprites/Sprites271.png
+#	new file:   Client/GFX/Sprites/Sprites272.png
+#	new file:   Client/GFX/Sprites/Sprites273.png
+#	new file:   Client/GFX/Sprites/Sprites274.png
+#	new file:   Client/GFX/Sprites/Sprites275.png
+#	new file:   Client/GFX/Sprites/Sprites276.png
+#	new file:   Client/GFX/Sprites/Sprites277.png
+#	new file:   Client/GFX/Sprites/Sprites278.png
+#	new file:   Client/GFX/Sprites/Sprites279.png
+#	new file:   Client/GFX/Sprites/Sprites28.png
+#	new file:   Client/GFX/Sprites/Sprites280.png
+#	new file:   Client/GFX/Sprites/Sprites281.png
+#	new file:   Client/GFX/Sprites/Sprites282.png
+#	new file:   Client/GFX/Sprites/Sprites283.png
+#	new file:   Client/GFX/Sprites/Sprites284.png
+#	new file:   Client/GFX/Sprites/Sprites285.png
+#	new file:   Client/GFX/Sprites/Sprites286.png
+#	new file:   Client/GFX/Sprites/Sprites287.png
+#	new file:   Client/GFX/Sprites/Sprites288.png
+#	new file:   Client/GFX/Sprites/Sprites289.png
+#	new file:   Client/GFX/Sprites/Sprites29.png
+#	new file:   Client/GFX/Sprites/Sprites290.png
+#	new file:   Client/GFX/Sprites/Sprites291.png
+#	new file:   Client/GFX/Sprites/Sprites292.png
+#	new file:   Client/GFX/Sprites/Sprites293.png
+#	new file:   Client/GFX/Sprites/Sprites294.png
+#	new file:   Client/GFX/Sprites/Sprites295.png
+#	new file:   Client/GFX/Sprites/Sprites296.png
+#	new file:   Client/GFX/Sprites/Sprites297.png
+#	new file:   Client/GFX/Sprites/Sprites298.png
+#	new file:   Client/GFX/Sprites/Sprites299.png
+#	new file:   Client/GFX/Sprites/Sprites3.png
+#	new file:   Client/GFX/Sprites/Sprites30.png
+#	new file:   Client/GFX/Sprites/Sprites300.png
+#	new file:   Client/GFX/Sprites/Sprites301.png
+#	new file:   Client/GFX/Sprites/Sprites302.png
+#	new file:   Client/GFX/Sprites/Sprites303.png
+#	new file:   Client/GFX/Sprites/Sprites304.png
+#	new file:   Client/GFX/Sprites/Sprites305.png
+#	new file:   Client/GFX/Sprites/Sprites306.png
+#	new file:   Client/GFX/Sprites/Sprites307.png
+#	new file:   Client/GFX/Sprites/Sprites308.png
+#	new file:   Client/GFX/Sprites/Sprites309.png
+#	new file:   Client/GFX/Sprites/Sprites31.png
+#	new file:   Client/GFX/Sprites/Sprites310.png
+#	new file:   Client/GFX/Sprites/Sprites311.png
+#	new file:   Client/GFX/Sprites/Sprites312.png
+#	new file:   Client/GFX/Sprites/Sprites313.png
+#	new file:   Client/GFX/Sprites/Sprites314.png
+#	new file:   Client/GFX/Sprites/Sprites315.png
+#	new file:   Client/GFX/Sprites/Sprites316.png
+#	new file:   Client/GFX/Sprites/Sprites317.png
+#	new file:   Client/GFX/Sprites/Sprites318.png
+#	new file:   Client/GFX/Sprites/Sprites319.png
+#	new file:   Client/GFX/Sprites/Sprites32.png
+#	new file:   Client/GFX/Sprites/Sprites320.png
+#	new file:   Client/GFX/Sprites/Sprites321.png
+#	new file:   Client/GFX/Sprites/Sprites322.png
+#	new file:   Client/GFX/Sprites/Sprites323.png
+#	new file:   Client/GFX/Sprites/Sprites324.png
+#	new file:   Client/GFX/Sprites/Sprites325.png
+#	new file:   Client/GFX/Sprites/Sprites326.png
+#	new file:   Client/GFX/Sprites/Sprites327.png
+#	new file:   Client/GFX/Sprites/Sprites328.png
+#	new file:   Client/GFX/Sprites/Sprites329.png
+#	new file:   Client/GFX/Sprites/Sprites33.png
+#	new file:   Client/GFX/Sprites/Sprites330.png
+#	new file:   Client/GFX/Sprites/Sprites331.png
+#	new file:   Client/GFX/Sprites/Sprites332.png
+#	new file:   Client/GFX/Sprites/Sprites333.png
+#	new file:   Client/GFX/Sprites/Sprites334.png
+#	new file:   Client/GFX/Sprites/Sprites335.png
+#	new file:   Client/GFX/Sprites/Sprites34.png
+#	new file:   Client/GFX/Sprites/Sprites35.png
+#	new file:   Client/GFX/Sprites/Sprites36.png
+#	new file:   Client/GFX/Sprites/Sprites37.png
+#	new file:   Client/GFX/Sprites/Sprites38.png
+#	new file:   Client/GFX/Sprites/Sprites39.png
+#	new file:   Client/GFX/Sprites/Sprites4.png
+#	new file:   Client/GFX/Sprites/Sprites40.png
+#	new file:   Client/GFX/Sprites/Sprites41.png
+#	new file:   Client/GFX/Sprites/Sprites42.png
+#	new file:   Client/GFX/Sprites/Sprites43.png
+#	new file:   Client/GFX/Sprites/Sprites44.png
+#	new file:   Client/GFX/Sprites/Sprites45.png
+#	new file:   Client/GFX/Sprites/Sprites46.png
+#	new file:   Client/GFX/Sprites/Sprites47.png
+#	new file:   Client/GFX/Sprites/Sprites48.png
+#	new file:   Client/GFX/Sprites/Sprites49.png
+#	new file:   Client/GFX/Sprites/Sprites5.png
+#	new file:   Client/GFX/Sprites/Sprites50.png
+#	new file:   Client/GFX/Sprites/Sprites51.png
+#	new file:   Client/GFX/Sprites/Sprites52.png
+#	new file:   Client/GFX/Sprites/Sprites53.png
+#	new file:   Client/GFX/Sprites/Sprites54.png
+#	new file:   Client/GFX/Sprites/Sprites55.png
+#	new file:   Client/GFX/Sprites/Sprites56.png
+#	new file:   Client/GFX/Sprites/Sprites57.png
+#	new file:   Client/GFX/Sprites/Sprites58.png
+#	new file:   Client/GFX/Sprites/Sprites59.png
+#	new file:   Client/GFX/Sprites/Sprites6.png
+#	new file:   Client/GFX/Sprites/Sprites60.png
+#	new file:   Client/GFX/Sprites/Sprites61.png
+#	new file:   Client/GFX/Sprites/Sprites62.png
+#	new file:   Client/GFX/Sprites/Sprites63.png
+#	new file:   Client/GFX/Sprites/Sprites64.png
+#	new file:   Client/GFX/Sprites/Sprites65.png
+#	new file:   Client/GFX/Sprites/Sprites66.png
+#	new file:   Client/GFX/Sprites/Sprites67.png
+#	new file:   Client/GFX/Sprites/Sprites68.png
+#	new file:   Client/GFX/Sprites/Sprites69.png
+#	new file:   Client/GFX/Sprites/Sprites7.png
+#	new file:   Client/GFX/Sprites/Sprites70.png
+#	new file:   Client/GFX/Sprites/Sprites71.png
+#	new file:   Client/GFX/Sprites/Sprites72.png
+#	new file:   Client/GFX/Sprites/Sprites73.png
+#	new file:   Client/GFX/Sprites/Sprites74.png
+#	new file:   Client/GFX/Sprites/Sprites75.png
+#	new file:   Client/GFX/Sprites/Sprites76.png
+#	new file:   Client/GFX/Sprites/Sprites77.png
+#	new file:   Client/GFX/Sprites/Sprites78.png
+#	new file:   Client/GFX/Sprites/Sprites79.png
+#	new file:   Client/GFX/Sprites/Sprites8.png
+#	new file:   Client/GFX/Sprites/Sprites80.png
+#	new file:   Client/GFX/Sprites/Sprites81.png
+#	new file:   Client/GFX/Sprites/Sprites82.png
+#	new file:   Client/GFX/Sprites/Sprites83.png
+#	new file:   Client/GFX/Sprites/Sprites84.png
+#	new file:   Client/GFX/Sprites/Sprites85.png
+#	new file:   Client/GFX/Sprites/Sprites86.png
+#	new file:   Client/GFX/Sprites/Sprites87.png
+#	new file:   Client/GFX/Sprites/Sprites88.png
+#	new file:   Client/GFX/Sprites/Sprites89.png
+#	new file:   Client/GFX/Sprites/Sprites9.png
+#	new file:   Client/GFX/Sprites/Sprites90.png
+#	new file:   Client/GFX/Sprites/Sprites91.png
+#	new file:   Client/GFX/Sprites/Sprites92.png
+#	new file:   Client/GFX/Sprites/Sprites93.png
+#	new file:   Client/GFX/Sprites/Sprites94.png
+#	new file:   Client/GFX/Sprites/Sprites95.png
+#	new file:   Client/GFX/Sprites/Sprites96.png
+#	new file:   Client/GFX/Sprites/Sprites97.png
+#	new file:   Client/GFX/Sprites/Sprites98.png
+#	new file:   Client/GFX/Sprites/Sprites99.png
+#	new file:   Client/GFX/Tiles0.png
+#	new file:   Client/GFX/Tiles1.png
+#	new file:   Client/GFX/Tiles2.png
+#	new file:   Client/GFX/Tiles3.png
+#	new file:   Client/GFX/Tiles4.png
+#	new file:   Client/GFX/Tiles5.png
+#	new file:   Client/GFX/arrows.png
+#	new file:   Client/GFX/blood.png
+#	new file:   Client/GFX/emoticons.png
+#	new file:   Client/GFX/items.png
+#	new file:   Client/Maps/map1.fcc
+#	new file:   Client/Maps/map2.fcc
+#	new file:   Client/Modules Sources/ModINI.bas
+#	new file:   Client/Modules Sources/ModPNG.bas
+#	new file:   Client/Modules Sources/fullscreen.bas
+#	new file:   Client/Modules Sources/modClientTCP.bas
+#	new file:   Client/Modules Sources/modDatabase.bas
+#	new file:   Client/Modules Sources/modDirectDraw7.bas
+#	new file:   Client/Modules Sources/modDirectX.bas
+#	new file:   Client/Modules Sources/modGameLogic.bas
+#	new file:   Client/Modules Sources/modSCapture.bas
+#	new file:   Client/Modules Sources/modSound.bas
+#	new file:   Client/Modules Sources/modText.bas
+#	new file:   Client/Modules Sources/modTypes.bas
+#	new file:   Client/Modules Sources/modXp.bas
+#	new file:   Client/Modules Sources/transparence.bas
+#	new file:   Client/Music/Music1.mid
+#	new file:   Client/Music/mainmenus.mid
+#	new file:   Client/SFX/Main.mid
+#	new file:   Client/SFX/critical.WAV
+#	new file:   Client/SFX/key.wav
+#	new file:   Client/SFX/magic1.WAV
+#	new file:   Client/SFX/magic10.wav
+#	new file:   Client/SFX/magic11.wav
+#	new file:   Client/SFX/magic12.wav
+#	new file:   Client/SFX/magic13.wav
+#	new file:   Client/SFX/magic14.wav
+#	new file:   Client/SFX/magic15.wav
+#	new file:   Client/SFX/magic16.wav
+#	new file:   Client/SFX/magic17.wav
+#	new file:   Client/SFX/magic18.wav
+#	new file:   Client/SFX/magic19.wav
+#	new file:   Client/SFX/magic2.WAV
+#	new file:   Client/SFX/magic20.wav
+#	new file:   Client/SFX/magic3.wav
+#	new file:   Client/SFX/magic4.wav
+#	new file:   Client/SFX/magic5.wav
+#	new file:   Client/SFX/magic6.wav
+#	new file:   Client/SFX/magic7.wav
+#	new file:   Client/SFX/magic8.wav
+#	new file:   Client/SFX/magic9.wav
+#	new file:   Client/SFX/miss.wav
+#	new file:   Client/SFX/pain.wav
+#	new file:   Client/SFX/sword.wav
+#	new file:   Client/SFX/thunder.wav
+#	new file:   Client/SFX/walk1.mid
+#	new file:   Client/SFX/warp.wav
+#	new file:   Client/Screenshot0.bmp
+#	new file:   Client/Screenshot1.bmp
+#	new file:   Client/Temp.ini
+#	new file:   Client/Themes.ini
+#	new file:   Client/Themes/FRoG Creator 0.6/Couleur.ini
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/MiniInterface.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/bank.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/chat.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/creeguilde.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/echange.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/flash.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/info.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/interface.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/inventaire.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/magasin.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/quete.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/quitter.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/reparer.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Jeu/text.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/apropos.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/choix_serveur.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/connexion.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/effacer.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/fond.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/nouveau.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/nouveau_personnage.png
+#	new file:   Client/Themes/FRoG Creator 0.6/Login/personnage.png
+#	new file:   Client/images/Carte.jpg
+#	new file:   Client/images/Updater.jpg
+#	new file:   Editeur/Arrows.ini
+#	new file:   Editeur/Classes/Class0.ini
+#	new file:   Editeur/Classes/info.ini
+#	new file:   Editeur/Client.exe.manifest
+#	new file:   Editeur/Config.ini
+#	new file:   Editeur/Config/Account.ini
+#	new file:   Editeur/Config/Client.ini
+#	new file:   Editeur/Config/Ecriture.ini
+#	new file:   Editeur/Config/Serveur.ini
+#	new file:   Editeur/Config/Updater.ini
+#	new file:   Editeur/Config/info.ini
+#	new file:   Editeur/Editeur.exe
+#	new file:   Editeur/Editeur.exe.manifest
+#	new file:   Editeur/Editeur.ini
+#	new file:   Editeur/Editeur.vbp
+#	new file:   Editeur/Editeur.vbw
+#	new file:   Editeur/Forms Sources/ctlProgressBar.ctl
+#	new file:   Editeur/Forms Sources/ctlProgressBar.ctx
+#	new file:   Editeur/Forms Sources/ctlProgressBar_tbbm.bmp
+#	new file:   Editeur/Forms Sources/frmArena.frm
+#	new file:   Editeur/Forms Sources/frmArena.frx
+#	new file:   Editeur/Forms Sources/frmAttributes.frm
+#	new file:   Editeur/Forms Sources/frmBClass.frm
+#	new file:   Editeur/Forms Sources/frmBClass.frx
+#	new file:   Editeur/Forms Sources/frmBDir.frm
+#	new file:   Editeur/Forms Sources/frmBDir.frx
+#	new file:   Editeur/Forms Sources/frmBMont.frm
+#	new file:   Editeur/Forms Sources/frmBMont.frx
+#	new file:   Editeur/Forms Sources/frmBguilde.frm
+#	new file:   Editeur/Forms Sources/frmBguilde.frx
+#	new file:   Editeur/Forms Sources/frmBniv.frm
+#	new file:   Editeur/Forms Sources/frmBniv.frx
+#	new file:   Editeur/Forms Sources/frmCarte.frm
+#	new file:   Editeur/Forms Sources/frmChars.frm
+#	new file:   Editeur/Forms Sources/frmChars.frx
+#	new file:   Editeur/Forms Sources/frmClassChange.frm
+#	new file:   Editeur/Forms Sources/frmClassChange.frx
+#	new file:   Editeur/Forms Sources/frmCoFTP.frm
+#	new file:   Editeur/Forms Sources/frmCpnjmouv.frm
+#	new file:   Editeur/Forms Sources/frmCredits.frm
+#	new file:   Editeur/Forms Sources/frmCredits.frx
+#	new file:   Editeur/Forms Sources/frmDebug.frm
+#	new file:   Editeur/Forms Sources/frmDeleteAccount.frm
+#	new file:   Editeur/Forms Sources/frmDeleteAccount.frx
+#	new file:   Editeur/Forms Sources/frmEditArrows.frm
+#	new file:   Editeur/Forms Sources/frmEditArrows.frx
+#	new file:   Editeur/Forms Sources/frmEditeurQuetes.frm
+#	new file:   Editeur/Forms Sources/frmEditeurQuetes.frx
+#	new file:   Editeur/Forms Sources/frmEmoticonEditor.frm
+#	new file:   Editeur/Forms Sources/frmEmoticonEditor.frx
+#	new file:   Editeur/Forms Sources/frmFixItem.frm
+#	new file:   Editeur/Forms Sources/frmFixItem.frx
+#	new file:   Editeur/Forms Sources/frmGetData.frm
+#	new file:   Editeur/Forms Sources/frmGetData.frx
+#	new file:   Editeur/Forms Sources/frmGuild.frm
+#	new file:   Editeur/Forms Sources/frmGuild.frx
+#	new file:   Editeur/Forms Sources/frmIndex.frm
+#	new file:   Editeur/Forms Sources/frmIndex.frx
+#	new file:   Editeur/Forms Sources/frmInventory.frm
+#	new file:   Editeur/Forms Sources/frmInventory.frx
+#	new file:   Editeur/Forms Sources/frmIpconfig.frm
+#	new file:   Editeur/Forms Sources/frmIpconfig.frx
+#	new file:   Editeur/Forms Sources/frmItemEditor.frm
+#	new file:   Editeur/Forms Sources/frmItemEditor.frx
+#	new file:   Editeur/Forms Sources/frmKeepNotes.frm
+#	new file:   Editeur/Forms Sources/frmKeepNotes.frx
+#	new file:   Editeur/Forms Sources/frmKeyOpen.frm
+#	new file:   Editeur/Forms Sources/frmKeyOpen.frx
+#	new file:   Editeur/Forms Sources/frmLogin.frm
+#	new file:   Editeur/Forms Sources/frmLogin.frx
+#	new file:   Editeur/Forms Sources/frmMainMenu.frm
+#	new file:   Editeur/Forms Sources/frmMainMenu.frx
+#	new file:   Editeur/Forms Sources/frmMapEditor.frm
+#	new file:   Editeur/Forms Sources/frmMapErr.frm
+#	new file:   Editeur/Forms Sources/frmMapErr.frx
+#	new file:   Editeur/Forms Sources/frmMapItem.frm
+#	new file:   Editeur/Forms Sources/frmMapItem.frx
+#	new file:   Editeur/Forms Sources/frmMapKey.frm
+#	new file:   Editeur/Forms Sources/frmMapKey.frx
+#	new file:   Editeur/Forms Sources/frmMapObject.frx
+#	new file:   Editeur/Forms Sources/frmMapProperties.frm
+#	new file:   Editeur/Forms Sources/frmMapProperties.frx
+#	new file:   Editeur/Forms Sources/frmMapWarp.frm
+#	new file:   Editeur/Forms Sources/frmMapWarp.frx
+#	new file:   Editeur/Forms Sources/frmMetier.frm
+#	new file:   Editeur/Forms Sources/frmMetier.frx
+#	new file:   Editeur/Forms Sources/frmMirage.frm
+#	new file:   Editeur/Forms Sources/frmMirage.frx
+#	new file:   Editeur/Forms Sources/frmNPCSpawn.frm
+#	new file:   Editeur/Forms Sources/frmNPCSpawn.frx
+#	new file:   Editeur/Forms Sources/frmNewAccount.frm
+#	new file:   Editeur/Forms Sources/frmNewAccount.frx
+#	new file:   Editeur/Forms Sources/frmNewChar.frm
+#	new file:   Editeur/Forms Sources/frmNewChar.frx
+#	new file:   Editeur/Forms Sources/frmNotice.frm
+#	new file:   Editeur/Forms Sources/frmNotice.frx
+#	new file:   Editeur/Forms Sources/frmNpcEditor.frm
+#	new file:   Editeur/Forms Sources/frmNpcEditor.frx
+#	new file:   Editeur/Forms Sources/frmPanorama.frm
+#	new file:   Editeur/Forms Sources/frmPanorama.frx
+#	new file:   Editeur/Forms Sources/frmPatch.frm
+#	new file:   Editeur/Forms Sources/frmPerso.frm
+#	new file:   Editeur/Forms Sources/frmPet.frm
+#	new file:   Editeur/Forms Sources/frmPlayerChat.frm
+#	new file:   Editeur/Forms Sources/frmPlayerChat.frx
+#	new file:   Editeur/Forms Sources/frmPlayerHelp.frm
+#	new file:   Editeur/Forms Sources/frmPlayerHelp.frx
+#	new file:   Editeur/Forms Sources/frmPlayerTrade.frm
+#	new file:   Editeur/Forms Sources/frmPlayerTrade.frx
+#	new file:   Editeur/Forms Sources/frmRecette.frm
+#	new file:   Editeur/Forms Sources/frmScript.frm
+#	new file:   Editeur/Forms Sources/frmScript.frx
+#	new file:   Editeur/Forms Sources/frmSendGetData.frm
+#	new file:   Editeur/Forms Sources/frmSendGetData.frx
+#	new file:   Editeur/Forms Sources/frmShop.frm
+#	new file:   Editeur/Forms Sources/frmShop.frx
+#	new file:   Editeur/Forms Sources/frmShopEditor.frm
+#	new file:   Editeur/Forms Sources/frmShopEditor.frx
+#	new file:   Editeur/Forms Sources/frmSign.frm
+#	new file:   Editeur/Forms Sources/frmSign.frx
+#	new file:   Editeur/Forms Sources/frmSound.frm
+#	new file:   Editeur/Forms Sources/frmSound.frx
+#	new file:   Editeur/Forms Sources/frmSpellEditor.frm
+#	new file:   Editeur/Forms Sources/frmSpellEditor.frx
+#	new file:   Editeur/Forms Sources/frmSpriteChange.frm
+#	new file:   Editeur/Forms Sources/frmSpriteChange.frx
+#	new file:   Editeur/Forms Sources/frmTile.frm
+#	new file:   Editeur/Forms Sources/frmTrade.frm
+#	new file:   Editeur/Forms Sources/frmTrade.frx
+#	new file:   Editeur/Forms Sources/frmaMOTD.frm
+#	new file:   Editeur/Forms Sources/frmaMOTD.frx
+#	new file:   Editeur/Forms Sources/frmadmin.frm
+#	new file:   Editeur/Forms Sources/frmadmin.frx
+#	new file:   Editeur/Forms Sources/frmbank.frm
+#	new file:   Editeur/Forms Sources/frmbank.frx
+#	new file:   Editeur/Forms Sources/frmclasseseditor.frm
+#	new file:   Editeur/Forms Sources/frmcoffre.frm
+#	new file:   Editeur/Forms Sources/frmcoffre.frx
+#	new file:   Editeur/Forms Sources/frmcraft.frm
+#	new file:   Editeur/Forms Sources/frmcraft.frx
+#	new file:   Editeur/Forms Sources/frmenvoier.frm
+#	new file:   Editeur/Forms Sources/frmmsg.frm
+#	new file:   Editeur/Forms Sources/frmoptions.frm
+#	new file:   Editeur/Forms Sources/frmoptions.frx
+#	new file:   Editeur/Forms Sources/frmpets.frm
+#	new file:   Editeur/Forms Sources/frmpets.frx
+#	new file:   Editeur/Forms Sources/frmportecode.frm
+#	new file:   Editeur/Forms Sources/frmportecode.frx
+#	new file:   Editeur/Forms Sources/frmsplash.frm
+#	new file:   Editeur/Forms Sources/frmsplash.frx
+#	new file:   Editeur/Forms Sources/progressbar.ico
+#	new file:   Editeur/Forms Sources/splash.frm
+#	new file:   Editeur/Forms Sources/splash.frx
+#	new file:   Editeur/GFX/BigSpells/BigSpells0.png
+#	new file:   Editeur/GFX/BigSpells/BigSpells1.png
+#	new file:   Editeur/GFX/Outils.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls0.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls1.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls10.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls11.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls12.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls2.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls3.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls4.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls5.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls6.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls7.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls8.png
+#	new file:   Editeur/GFX/Paperdolls/Paperdolls9.png
+#	new file:   Editeur/GFX/Pets/Pet0.png
+#	new file:   Editeur/GFX/Pets/Pet1.png
+#	new file:   Editeur/GFX/Pets/Pet2.png
+#	new file:   Editeur/GFX/Pets/Pet3.png
+#	new file:   Editeur/GFX/Spells/Spells0.png
+#	new file:   Editeur/GFX/Spells/Spells1.png
+#	new file:   Editeur/GFX/Spells/Spells2.png
+#	new file:   Editeur/GFX/Sprites/Sprites0.png
+#	new file:   Editeur/GFX/Sprites/Sprites1.png
+#	new file:   Editeur/GFX/Sprites/Sprites10.png
+#	new file:   Editeur/GFX/Sprites/Sprites100.png
+#	new file:   Editeur/GFX/Sprites/Sprites101.png
+#	new file:   Editeur/GFX/Sprites/Sprites102.png
+#	new file:   Editeur/GFX/Sprites/Sprites103.png
+#	new file:   Editeur/GFX/Sprites/Sprites104.png
+#	new file:   Editeur/GFX/Sprites/Sprites105.png
+#	new file:   Editeur/GFX/Sprites/Sprites106.png
+#	new file:   Editeur/GFX/Sprites/Sprites107.png
+#	new file:   Editeur/GFX/Sprites/Sprites108.png
+#	new file:   Editeur/GFX/Sprites/Sprites109.png
+#	new file:   Editeur/GFX/Sprites/Sprites11.png
+#	new file:   Editeur/GFX/Sprites/Sprites110.png
+#	new file:   Editeur/GFX/Sprites/Sprites111.png
+#	new file:   Editeur/GFX/Sprites/Sprites112.png
+#	new file:   Editeur/GFX/Sprites/Sprites113.png
+#	new file:   Editeur/GFX/Sprites/Sprites114.png
+#	new file:   Editeur/GFX/Sprites/Sprites115.png
+#	new file:   Editeur/GFX/Sprites/Sprites116.png
+#	new file:   Editeur/GFX/Sprites/Sprites117.png
+#	new file:   Editeur/GFX/Sprites/Sprites118.png
+#	new file:   Editeur/GFX/Sprites/Sprites119.png
+#	new file:   Editeur/GFX/Sprites/Sprites12.png
+#	new file:   Editeur/GFX/Sprites/Sprites120.png
+#	new file:   Editeur/GFX/Sprites/Sprites121.png
+#	new file:   Editeur/GFX/Sprites/Sprites122.png
+#	new file:   Editeur/GFX/Sprites/Sprites123.png
+#	new file:   Editeur/GFX/Sprites/Sprites124.png
+#	new file:   Editeur/GFX/Sprites/Sprites125.png
+#	new file:   Editeur/GFX/Sprites/Sprites126.png
+#	new file:   Editeur/GFX/Sprites/Sprites127.png
+#	new file:   Editeur/GFX/Sprites/Sprites128.png
+#	new file:   Editeur/GFX/Sprites/Sprites129.png
+#	new file:   Editeur/GFX/Sprites/Sprites13.png
+#	new file:   Editeur/GFX/Sprites/Sprites130.png
+#	new file:   Editeur/GFX/Sprites/Sprites131.png
+#	new file:   Editeur/GFX/Sprites/Sprites132.png
+#	new file:   Editeur/GFX/Sprites/Sprites133.png
+#	new file:   Editeur/GFX/Sprites/Sprites134.png
+#	new file:   Editeur/GFX/Sprites/Sprites135.png
+#	new file:   Editeur/GFX/Sprites/Sprites136.png
+#	new file:   Editeur/GFX/Sprites/Sprites137.png
+#	new file:   Editeur/GFX/Sprites/Sprites138.png
+#	new file:   Editeur/GFX/Sprites/Sprites139.png
+#	new file:   Editeur/GFX/Sprites/Sprites14.png
+#	new file:   Editeur/GFX/Sprites/Sprites140.png
+#	new file:   Editeur/GFX/Sprites/Sprites141.png
+#	new file:   Editeur/GFX/Sprites/Sprites142.png
+#	new file:   Editeur/GFX/Sprites/Sprites143.png
+#	new file:   Editeur/GFX/Sprites/Sprites144.png
+#	new file:   Editeur/GFX/Sprites/Sprites145.png
+#	new file:   Editeur/GFX/Sprites/Sprites146.png
+#	new file:   Editeur/GFX/Sprites/Sprites147.png
+#	new file:   Editeur/GFX/Sprites/Sprites148.png
+#	new file:   Editeur/GFX/Sprites/Sprites149.png
+#	new file:   Editeur/GFX/Sprites/Sprites15.png
+#	new file:   Editeur/GFX/Sprites/Sprites150.png
+#	new file:   Editeur/GFX/Sprites/Sprites151.png
+#	new file:   Editeur/GFX/Sprites/Sprites152.png
+#	new file:   Editeur/GFX/Sprites/Sprites153.png
+#	new file:   Editeur/GFX/Sprites/Sprites154.png
+#	new file:   Editeur/GFX/Sprites/Sprites155.png
+#	new file:   Editeur/GFX/Sprites/Sprites156.png
+#	new file:   Editeur/GFX/Sprites/Sprites157.png
+#	new file:   Editeur/GFX/Sprites/Sprites158.png
+#	new file:   Editeur/GFX/Sprites/Sprites159.png
+#	new file:   Editeur/GFX/Sprites/Sprites16.png
+#	new file:   Editeur/GFX/Sprites/Sprites160.png
+#	new file:   Editeur/GFX/Sprites/Sprites161.png
+#	new file:   Editeur/GFX/Sprites/Sprites162.png
+#	new file:   Editeur/GFX/Sprites/Sprites163.png
+#	new file:   Editeur/GFX/Sprites/Sprites164.png
+#	new file:   Editeur/GFX/Sprites/Sprites165.png
+#	new file:   Editeur/GFX/Sprites/Sprites166.png
+#	new file:   Editeur/GFX/Sprites/Sprites167.png
+#	new file:   Editeur/GFX/Sprites/Sprites168.png
+#	new file:   Editeur/GFX/Sprites/Sprites169.png
+#	new file:   Editeur/GFX/Sprites/Sprites17.png
+#	new file:   Editeur/GFX/Sprites/Sprites170.png
+#	new file:   Editeur/GFX/Sprites/Sprites171.png
+#	new file:   Editeur/GFX/Sprites/Sprites172.png
+#	new file:   Editeur/GFX/Sprites/Sprites173.png
+#	new file:   Editeur/GFX/Sprites/Sprites174.png
+#	new file:   Editeur/GFX/Sprites/Sprites175.png
+#	new file:   Editeur/GFX/Sprites/Sprites176.png
+#	new file:   Editeur/GFX/Sprites/Sprites177.png
+#	new file:   Editeur/GFX/Sprites/Sprites178.png
+#	new file:   Editeur/GFX/Sprites/Sprites179.png
+#	new file:   Editeur/GFX/Sprites/Sprites18.png
+#	new file:   Editeur/GFX/Sprites/Sprites180.png
+#	new file:   Editeur/GFX/Sprites/Sprites181.png
+#	new file:   Editeur/GFX/Sprites/Sprites182.png
+#	new file:   Editeur/GFX/Sprites/Sprites183.png
+#	new file:   Editeur/GFX/Sprites/Sprites184.png
+#	new file:   Editeur/GFX/Sprites/Sprites185.png
+#	new file:   Editeur/GFX/Sprites/Sprites186.png
+#	new file:   Editeur/GFX/Sprites/Sprites187.png
+#	new file:   Editeur/GFX/Sprites/Sprites188.png
+#	new file:   Editeur/GFX/Sprites/Sprites189.png
+#	new file:   Editeur/GFX/Sprites/Sprites19.png
+#	new file:   Editeur/GFX/Sprites/Sprites190.png
+#	new file:   Editeur/GFX/Sprites/Sprites191.png
+#	new file:   Editeur/GFX/Sprites/Sprites192.png
+#	new file:   Editeur/GFX/Sprites/Sprites193.png
+#	new file:   Editeur/GFX/Sprites/Sprites194.png
+#	new file:   Editeur/GFX/Sprites/Sprites195.png
+#	new file:   Editeur/GFX/Sprites/Sprites196.png
+#	new file:   Editeur/GFX/Sprites/Sprites197.png
+#	new file:   Editeur/GFX/Sprites/Sprites198.png
+#	new file:   Editeur/GFX/Sprites/Sprites199.png
+#	new file:   Editeur/GFX/Sprites/Sprites2.png
+#	new file:   Editeur/GFX/Sprites/Sprites20.png
+#	new file:   Editeur/GFX/Sprites/Sprites200.png
+#	new file:   Editeur/GFX/Sprites/Sprites201.png
+#	new file:   Editeur/GFX/Sprites/Sprites202.png
+#	new file:   Editeur/GFX/Sprites/Sprites203.png
+#	new file:   Editeur/GFX/Sprites/Sprites204.png
+#	new file:   Editeur/GFX/Sprites/Sprites205.png
+#	new file:   Editeur/GFX/Sprites/Sprites206.png
+#	new file:   Editeur/GFX/Sprites/Sprites207.png
+#	new file:   Editeur/GFX/Sprites/Sprites208.png
+#	new file:   Editeur/GFX/Sprites/Sprites209.png
+#	new file:   Editeur/GFX/Sprites/Sprites21.png
+#	new file:   Editeur/GFX/Sprites/Sprites210.png
+#	new file:   Editeur/GFX/Sprites/Sprites211.png
+#	new file:   Editeur/GFX/Sprites/Sprites212.png
+#	new file:   Editeur/GFX/Sprites/Sprites213.png
+#	new file:   Editeur/GFX/Sprites/Sprites214.png
+#	new file:   Editeur/GFX/Sprites/Sprites215.png
+#	new file:   Editeur/GFX/Sprites/Sprites216.png
+#	new file:   Editeur/GFX/Sprites/Sprites217.png
+#	new file:   Editeur/GFX/Sprites/Sprites218.png
+#	new file:   Editeur/GFX/Sprites/Sprites219.png
+#	new file:   Editeur/GFX/Sprites/Sprites22.png
+#	new file:   Editeur/GFX/Sprites/Sprites220.png
+#	new file:   Editeur/GFX/Sprites/Sprites221.png
+#	new file:   Editeur/GFX/Sprites/Sprites222.png
+#	new file:   Editeur/GFX/Sprites/Sprites223.png
+#	new file:   Editeur/GFX/Sprites/Sprites224.png
+#	new file:   Editeur/GFX/Sprites/Sprites225.png
+#	new file:   Editeur/GFX/Sprites/Sprites226.png
+#	new file:   Editeur/GFX/Sprites/Sprites227.png
+#	new file:   Editeur/GFX/Sprites/Sprites228.png
+#	new file:   Editeur/GFX/Sprites/Sprites229.png
+#	new file:   Editeur/GFX/Sprites/Sprites23.png
+#	new file:   Editeur/GFX/Sprites/Sprites230.png
+#	new file:   Editeur/GFX/Sprites/Sprites231.png
+#	new file:   Editeur/GFX/Sprites/Sprites232.png
+#	new file:   Editeur/GFX/Sprites/Sprites233.png
+#	new file:   Editeur/GFX/Sprites/Sprites234.png
+#	new file:   Editeur/GFX/Sprites/Sprites235.png
+#	new file:   Editeur/GFX/Sprites/Sprites236.png
+#	new file:   Editeur/GFX/Sprites/Sprites237.png
+#	new file:   Editeur/GFX/Sprites/Sprites238.png
+#	new file:   Editeur/GFX/Sprites/Sprites239.png
+#	new file:   Editeur/GFX/Sprites/Sprites24.png
+#	new file:   Editeur/GFX/Sprites/Sprites240.png
+#	new file:   Editeur/GFX/Sprites/Sprites241.png
+#	new file:   Editeur/GFX/Sprites/Sprites242.png
+#	new file:   Editeur/GFX/Sprites/Sprites243.png
+#	new file:   Editeur/GFX/Sprites/Sprites244.png
+#	new file:   Editeur/GFX/Sprites/Sprites245.png
+#	new file:   Editeur/GFX/Sprites/Sprites246.png
+#	new file:   Editeur/GFX/Sprites/Sprites247.png
+#	new file:   Editeur/GFX/Sprites/Sprites248.png
+#	new file:   Editeur/GFX/Sprites/Sprites249.png
+#	new file:   Editeur/GFX/Sprites/Sprites25.png
+#	new file:   Editeur/GFX/Sprites/Sprites250.png
+#	new file:   Editeur/GFX/Sprites/Sprites251.png
+#	new file:   Editeur/GFX/Sprites/Sprites252.png
+#	new file:   Editeur/GFX/Sprites/Sprites253.png
+#	new file:   Editeur/GFX/Sprites/Sprites254.png
+#	new file:   Editeur/GFX/Sprites/Sprites255.png
+#	new file:   Editeur/GFX/Sprites/Sprites256.png
+#	new file:   Editeur/GFX/Sprites/Sprites257.png
+#	new file:   Editeur/GFX/Sprites/Sprites258.png
+#	new file:   Editeur/GFX/Sprites/Sprites259.png
+#	new file:   Editeur/GFX/Sprites/Sprites26.png
+#	new file:   Editeur/GFX/Sprites/Sprites260.png
+#	new file:   Editeur/GFX/Sprites/Sprites261.png
+#	new file:   Editeur/GFX/Sprites/Sprites262.png
+#	new file:   Editeur/GFX/Sprites/Sprites263.png
+#	new file:   Editeur/GFX/Sprites/Sprites264.png
+#	new file:   Editeur/GFX/Sprites/Sprites265.png
+#	new file:   Editeur/GFX/Sprites/Sprites266.png
+#	new file:   Editeur/GFX/Sprites/Sprites267.png
+#	new file:   Editeur/GFX/Sprites/Sprites268.png
+#	new file:   Editeur/GFX/Sprites/Sprites269.png
+#	new file:   Editeur/GFX/Sprites/Sprites27.png
+#	new file:   Editeur/GFX/Sprites/Sprites270.png
+#	new file:   Editeur/GFX/Sprites/Sprites271.png
+#	new file:   Editeur/GFX/Sprites/Sprites272.png
+#	new file:   Editeur/GFX/Sprites/Sprites273.png
+#	new file:   Editeur/GFX/Sprites/Sprites274.png
+#	new file:   Editeur/GFX/Sprites/Sprites275.png
+#	new file:   Editeur/GFX/Sprites/Sprites276.png
+#	new file:   Editeur/GFX/Sprites/Sprites277.png
+#	new file:   Editeur/GFX/Sprites/Sprites278.png
+#	new file:   Editeur/GFX/Sprites/Sprites279.png
+#	new file:   Editeur/GFX/Sprites/Sprites28.png
+#	new file:   Editeur/GFX/Sprites/Sprites280.png
+#	new file:   Editeur/GFX/Sprites/Sprites281.png
+#	new file:   Editeur/GFX/Sprites/Sprites282.png
+#	new file:   Editeur/GFX/Sprites/Sprites283.png
+#	new file:   Editeur/GFX/Sprites/Sprites284.png
+#	new file:   Editeur/GFX/Sprites/Sprites285.png
+#	new file:   Editeur/GFX/Sprites/Sprites286.png
+#	new file:   Editeur/GFX/Sprites/Sprites287.png
+#	new file:   Editeur/GFX/Sprites/Sprites288.png
+#	new file:   Editeur/GFX/Sprites/Sprites289.png
+#	new file:   Editeur/GFX/Sprites/Sprites29.png
+#	new file:   Editeur/GFX/Sprites/Sprites290.png
+#	new file:   Editeur/GFX/Sprites/Sprites291.png
+#	new file:   Editeur/GFX/Sprites/Sprites292.png
+#	new file:   Editeur/GFX/Sprites/Sprites293.png
+#	new file:   Editeur/GFX/Sprites/Sprites294.png
+#	new file:   Editeur/GFX/Sprites/Sprites295.png
+#	new file:   Editeur/GFX/Sprites/Sprites296.png
+#	new file:   Editeur/GFX/Sprites/Sprites297.png
+#	new file:   Editeur/GFX/Sprites/Sprites298.png
+#	new file:   Editeur/GFX/Sprites/Sprites299.png
+#	new file:   Editeur/GFX/Sprites/Sprites3.png
+#	new file:   Editeur/GFX/Sprites/Sprites30.png
+#	new file:   Editeur/GFX/Sprites/Sprites300.png
+#	new file:   Editeur/GFX/Sprites/Sprites301.png
+#	new file:   Editeur/GFX/Sprites/Sprites302.png
+#	new file:   Editeur/GFX/Sprites/Sprites303.png
+#	new file:   Editeur/GFX/Sprites/Sprites304.png
+#	new file:   Editeur/GFX/Sprites/Sprites305.png
+#	new file:   Editeur/GFX/Sprites/Sprites306.png
+#	new file:   Editeur/GFX/Sprites/Sprites307.png
+#	new file:   Editeur/GFX/Sprites/Sprites308.png
+#	new file:   Editeur/GFX/Sprites/Sprites309.png
+#	new file:   Editeur/GFX/Sprites/Sprites31.png
+#	new file:   Editeur/GFX/Sprites/Sprites310.png
+#	new file:   Editeur/GFX/Sprites/Sprites311.png
+#	new file:   Editeur/GFX/Sprites/Sprites312.png
+#	new file:   Editeur/GFX/Sprites/Sprites313.png
+#	new file:   Editeur/GFX/Sprites/Sprites314.png
+#	new file:   Editeur/GFX/Sprites/Sprites315.png
+#	new file:   Editeur/GFX/Sprites/Sprites316.png
+#	new file:   Editeur/GFX/Sprites/Sprites317.png
+#	new file:   Editeur/GFX/Sprites/Sprites318.png
+#	new file:   Editeur/GFX/Sprites/Sprites319.png
+#	new file:   Editeur/GFX/Sprites/Sprites32.png
+#	new file:   Editeur/GFX/Sprites/Sprites320.png
+#	new file:   Editeur/GFX/Sprites/Sprites321.png
+#	new file:   Editeur/GFX/Sprites/Sprites322.png
+#	new file:   Editeur/GFX/Sprites/Sprites323.png
+#	new file:   Editeur/GFX/Sprites/Sprites324.png
+#	new file:   Editeur/GFX/Sprites/Sprites325.png
+#	new file:   Editeur/GFX/Sprites/Sprites326.png
+#	new file:   Editeur/GFX/Sprites/Sprites327.png
+#	new file:   Editeur/GFX/Sprites/Sprites328.png
+#	new file:   Editeur/GFX/Sprites/Sprites329.png
+#	new file:   Editeur/GFX/Sprites/Sprites33.png
+#	new file:   Editeur/GFX/Sprites/Sprites330.png
+#	new file:   Editeur/GFX/Sprites/Sprites331.png
+#	new file:   Editeur/GFX/Sprites/Sprites332.png
+#	new file:   Editeur/GFX/Sprites/Sprites333.png
+#	new file:   Editeur/GFX/Sprites/Sprites334.png
+#	new file:   Editeur/GFX/Sprites/Sprites335.png
+#	new file:   Editeur/GFX/Sprites/Sprites34.png
+#	new file:   Editeur/GFX/Sprites/Sprites35.png
+#	new file:   Editeur/GFX/Sprites/Sprites36.png
+#	new file:   Editeur/GFX/Sprites/Sprites37.png
+#	new file:   Editeur/GFX/Sprites/Sprites38.png
+#	new file:   Editeur/GFX/Sprites/Sprites39.png
+#	new file:   Editeur/GFX/Sprites/Sprites4.png
+#	new file:   Editeur/GFX/Sprites/Sprites40.png
+#	new file:   Editeur/GFX/Sprites/Sprites41.png
+#	new file:   Editeur/GFX/Sprites/Sprites42.png
+#	new file:   Editeur/GFX/Sprites/Sprites43.png
+#	new file:   Editeur/GFX/Sprites/Sprites44.png
+#	new file:   Editeur/GFX/Sprites/Sprites45.png
+#	new file:   Editeur/GFX/Sprites/Sprites46.png
+#	new file:   Editeur/GFX/Sprites/Sprites47.png
+#	new file:   Editeur/GFX/Sprites/Sprites48.png
+#	new file:   Editeur/GFX/Sprites/Sprites49.png
+#	new file:   Editeur/GFX/Sprites/Sprites5.png
+#	new file:   Editeur/GFX/Sprites/Sprites50.png
+#	new file:   Editeur/GFX/Sprites/Sprites51.png
+#	new file:   Editeur/GFX/Sprites/Sprites52.png
+#	new file:   Editeur/GFX/Sprites/Sprites53.png
+#	new file:   Editeur/GFX/Sprites/Sprites54.png
+#	new file:   Editeur/GFX/Sprites/Sprites55.png
+#	new file:   Editeur/GFX/Sprites/Sprites56.png
+#	new file:   Editeur/GFX/Sprites/Sprites57.png
+#	new file:   Editeur/GFX/Sprites/Sprites58.png
+#	new file:   Editeur/GFX/Sprites/Sprites59.png
+#	new file:   Editeur/GFX/Sprites/Sprites6.png
+#	new file:   Editeur/GFX/Sprites/Sprites60.png
+#	new file:   Editeur/GFX/Sprites/Sprites61.png
+#	new file:   Editeur/GFX/Sprites/Sprites62.png
+#	new file:   Editeur/GFX/Sprites/Sprites63.png
+#	new file:   Editeur/GFX/Sprites/Sprites64.png
+#	new file:   Editeur/GFX/Sprites/Sprites65.png
+#	new file:   Editeur/GFX/Sprites/Sprites66.png
+#	new file:   Editeur/GFX/Sprites/Sprites67.png
+#	new file:   Editeur/GFX/Sprites/Sprites68.png
+#	new file:   Editeur/GFX/Sprites/Sprites69.png
+#	new file:   Editeur/GFX/Sprites/Sprites7.png
+#	new file:   Editeur/GFX/Sprites/Sprites70.png
+#	new file:   Editeur/GFX/Sprites/Sprites71.png
+#	new file:   Editeur/GFX/Sprites/Sprites72.png
+#	new file:   Editeur/GFX/Sprites/Sprites73.png
+#	new file:   Editeur/GFX/Sprites/Sprites74.png
+#	new file:   Editeur/GFX/Sprites/Sprites75.png
+#	new file:   Editeur/GFX/Sprites/Sprites76.png
+#	new file:   Editeur/GFX/Sprites/Sprites77.png
+#	new file:   Editeur/GFX/Sprites/Sprites78.png
+#	new file:   Editeur/GFX/Sprites/Sprites79.png
+#	new file:   Editeur/GFX/Sprites/Sprites8.png
+#	new file:   Editeur/GFX/Sprites/Sprites80.png
+#	new file:   Editeur/GFX/Sprites/Sprites81.png
+#	new file:   Editeur/GFX/Sprites/Sprites82.png
+#	new file:   Editeur/GFX/Sprites/Sprites83.png
+#	new file:   Editeur/GFX/Sprites/Sprites84.png
+#	new file:   Editeur/GFX/Sprites/Sprites85.png
+#	new file:   Editeur/GFX/Sprites/Sprites86.png
+#	new file:   Editeur/GFX/Sprites/Sprites87.png
+#	new file:   Editeur/GFX/Sprites/Sprites88.png
+#	new file:   Editeur/GFX/Sprites/Sprites89.png
+#	new file:   Editeur/GFX/Sprites/Sprites9.png
+#	new file:   Editeur/GFX/Sprites/Sprites90.png
+#	new file:   Editeur/GFX/Sprites/Sprites91.png
+#	new file:   Editeur/GFX/Sprites/Sprites92.png
+#	new file:   Editeur/GFX/Sprites/Sprites93.png
+#	new file:   Editeur/GFX/Sprites/Sprites94.png
+#	new file:   Editeur/GFX/Sprites/Sprites95.png
+#	new file:   Editeur/GFX/Sprites/Sprites96.png
+#	new file:   Editeur/GFX/Sprites/Sprites97.png
+#	new file:   Editeur/GFX/Sprites/Sprites98.png
+#	new file:   Editeur/GFX/Sprites/Sprites99.png
+#	new file:   Editeur/GFX/Tiles0.png
+#	new file:   Editeur/GFX/Tiles1.png
+#	new file:   Editeur/GFX/Tiles2.png
+#	new file:   Editeur/GFX/Tiles3.png
+#	new file:   Editeur/GFX/Tiles4.png
+#	new file:   Editeur/GFX/Tiles5.png
+#	new file:   Editeur/GFX/arrows.png
+#	new file:   Editeur/GFX/blood.png
+#	new file:   Editeur/GFX/emoticons.png
+#	new file:   Editeur/GFX/icons/a.png
+#	new file:   Editeur/GFX/icons/c.png
+#	new file:   Editeur/GFX/icons/erase.png
+#	new file:   Editeur/GFX/icons/fill.png
+#	new file:   Editeur/GFX/icons/gomme.png
+#	new file:   Editeur/GFX/icons/l.png
+#	new file:   Editeur/GFX/icons/next.png
+#	new file:   Editeur/GFX/icons/options.png
+#	new file:   Editeur/GFX/icons/pipette.png
+#	new file:   Editeur/GFX/icons/play.png
+#	new file:   Editeur/GFX/icons/previous.png
+#	new file:   Editeur/GFX/items.png
+#	new file:   Editeur/Maps/map1.fcc
+#	new file:   Editeur/Maps/map1BACKUP.fcc
+#	new file:   Editeur/Maps/map2.fcc
+#	new file:   Editeur/Maps/map2BACKUP.fcc
+#	new file:   Editeur/Maps/map3.fcc
+#	new file:   Editeur/Modules Sources/fmod.bas
+#	new file:   Editeur/Modules Sources/modBitmap.bas
+#	new file:   Editeur/Modules Sources/modCatalyst.bas
+#	new file:   Editeur/Modules Sources/modClientTCP.bas
+#	new file:   Editeur/Modules Sources/modDatabase.bas
+#	new file:   Editeur/Modules Sources/modDirectX.bas
+#	new file:   Editeur/Modules Sources/modFTP.bas
+#	new file:   Editeur/Modules Sources/modGameLogic.bas
+#	new file:   Editeur/Modules Sources/modINI.bas
+#	new file:   Editeur/Modules Sources/modLoadPNG.bas
+#	new file:   Editeur/Modules Sources/modNPCSpawn.bas
+#	new file:   Editeur/Modules Sources/modSCapture.bas
+#	new file:   Editeur/Modules Sources/modSound.bas
+#	new file:   Editeur/Modules Sources/modTCP.bas
+#	new file:   Editeur/Modules Sources/modText.bas
+#	new file:   Editeur/Modules Sources/modTypes.bas
+#	new file:   Editeur/Modules Sources/modXp.bas
+#	new file:   Editeur/Music/Music1.mid
+#	new file:   Editeur/Music/mainmenus.mid
+#	new file:   Editeur/SFX/Main.mid
+#	new file:   Editeur/SFX/critical.WAV
+#	new file:   Editeur/SFX/key.wav
+#	new file:   Editeur/SFX/magic1.WAV
+#	new file:   Editeur/SFX/magic10.wav
+#	new file:   Editeur/SFX/magic11.wav
+#	new file:   Editeur/SFX/magic12.wav
+#	new file:   Editeur/SFX/magic13.wav
+#	new file:   Editeur/SFX/magic14.wav
+#	new file:   Editeur/SFX/magic15.wav
+#	new file:   Editeur/SFX/magic16.wav
+#	new file:   Editeur/SFX/magic17.wav
+#	new file:   Editeur/SFX/magic18.wav
+#	new file:   Editeur/SFX/magic19.wav
+#	new file:   Editeur/SFX/magic2.WAV
+#	new file:   Editeur/SFX/magic20.wav
+#	new file:   Editeur/SFX/magic3.wav
+#	new file:   Editeur/SFX/magic4.wav
+#	new file:   Editeur/SFX/magic5.wav
+#	new file:   Editeur/SFX/magic6.wav
+#	new file:   Editeur/SFX/magic7.wav
+#	new file:   Editeur/SFX/magic8.wav
+#	new file:   Editeur/SFX/magic9.wav
+#	new file:   Editeur/SFX/miss.wav
+#	new file:   Editeur/SFX/pain.wav
+#	new file:   Editeur/SFX/sword.wav
+#	new file:   Editeur/SFX/thunder.wav
+#	new file:   Editeur/SFX/walk1.mid
+#	new file:   Editeur/SFX/warp.wav
+#	new file:   Editeur/Stats.ini
+#	new file:   Editeur/emoticons.ini
+#	new file:   Editeur/experience.ini
+#	new file:   Editeur/items/item1.fco
+#	new file:   Editeur/items/item10.fco
+#	new file:   Editeur/items/item11.fco
+#	new file:   Editeur/items/item2.fco
+#	new file:   Editeur/items/item3.fco
+#	new file:   Editeur/items/item4.fco
+#	new file:   Editeur/items/item5.fco
+#	new file:   Editeur/items/item6.fco
+#	new file:   Editeur/items/item7.fco
+#	new file:   Editeur/items/item8.fco
+#	new file:   Editeur/items/item9.fco
+#	new file:   Editeur/pets/Pet1.fcf
+#	new file:   Editeur/pnjs/npc1.fcp
+#	new file:   Editeur/pnjs/npc2.fcp
+#	new file:   Editeur/pnjs/npc3.fcp
+#	new file:   Editeur/pnjs/npc4.fcp
+#	new file:   Editeur/quetes/quete1.fcq
+#	new file:   Editeur/shops/shop1.fcm
+#	new file:   Serveur/Arrows.ini
+#	new file:   Serveur/CMessages.ini
+#	new file:   Serveur/Classes Sources/clsCommands.cls
+#	new file:   Serveur/Classes Sources/clsHdV.cls
+#	new file:   Serveur/Classes Sources/clsHdVChild.cls
+#	new file:   Serveur/Classes Sources/clsMD5.cls
+#	new file:   Serveur/Classes Sources/clsParty.cls
+#	new file:   Serveur/Classes Sources/clsPartys.cls
+#	new file:   Serveur/Classes Sources/clsRC4.cls
+#	new file:   Serveur/Classes Sources/clsSadScript.CLS
+#	new file:   Serveur/Classes/Class0.ini
+#	new file:   Serveur/Classes/Class1.ini
+#	new file:   Serveur/Classes/Class2.ini
+#	new file:   Serveur/Data.ini
+#	new file:   Serveur/Forms Sources/ctlProgressBar.ctl
+#	new file:   Serveur/Forms Sources/ctlProgressBar.ctx
+#	new file:   Serveur/Forms Sources/ctlProgressBar_tbbm.bmp
+#	new file:   Serveur/Forms Sources/ctlSysTrayBalloon.ctl
+#	new file:   Serveur/Forms Sources/ctlSysTrayBalloon.ctx
+#	new file:   Serveur/Forms Sources/frmAbout.frm
+#	new file:   Serveur/Forms Sources/frmAbout.frx
+#	new file:   Serveur/Forms Sources/frmCoFTP.frm
+#	new file:   Serveur/Forms Sources/frmEditor.frm
+#	new file:   Serveur/Forms Sources/frmEditor.frx
+#	new file:   Serveur/Forms Sources/frmEnvFTP.frm
+#	new file:   Serveur/Forms Sources/frmFTP.frm
+#	new file:   Serveur/Forms Sources/frmInfosMap.frm
+#	new file:   Serveur/Forms Sources/frmLoad.frm
+#	new file:   Serveur/Forms Sources/frmLoad.frx
+#	new file:   Serveur/Forms Sources/frmOptCoul.frm
+#	new file:   Serveur/Forms Sources/frmOptFTP.frm
+#	new file:   Serveur/Forms Sources/frmOptInfoBulle.frm
+#	new file:   Serveur/Forms Sources/frmServer.frm
+#	new file:   Serveur/Forms Sources/frmServer.frx
+#	new file:   Serveur/Forms Sources/frmclasseseditor.frm
+#	new file:   Serveur/Guides/1.txt
+#	new file:   Serveur/Guides/10.txt
+#	new file:   Serveur/Guides/11.txt
+#	new file:   Serveur/Guides/12.txt
+#	new file:   Serveur/Guides/13.txt
+#	new file:   Serveur/Guides/2.txt
+#	new file:   Serveur/Guides/3.txt
+#	new file:   Serveur/Guides/4.txt
+#	new file:   Serveur/Guides/5.txt
+#	new file:   Serveur/Guides/6.txt
+#	new file:   Serveur/Guides/7.txt
+#	new file:   Serveur/Guides/8.txt
+#	new file:   Serveur/Guides/9.txt
+#	new file:   Serveur/Items/item1.fco
+#	new file:   Serveur/Items/item10.fco
+#	new file:   Serveur/Items/item11.fco
+#	new file:   Serveur/Items/item12.fco
+#	new file:   Serveur/Items/item2.fco
+#	new file:   Serveur/Items/item3.fco
+#	new file:   Serveur/Items/item4.fco
+#	new file:   Serveur/Items/item5.fco
+#	new file:   Serveur/Items/item6.fco
+#	new file:   Serveur/Items/item7.fco
+#	new file:   Serveur/Items/item8.fco
+#	new file:   Serveur/Items/item9.fco
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Admin.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Broadcast.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Emote.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Global.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Main.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Map.txt
+#	new file:   Serveur/Logs/01.04.2012/14.39.49/Private.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Admin.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Broadcast.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Emote.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Global.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Main.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Map.txt
+#	new file:   Serveur/Logs/03.11.2013/12.02.43/Private.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Admin.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Broadcast.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Emote.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Global.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Main.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Map.txt
+#	new file:   Serveur/Logs/03.11.2013/12.08.53/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/14.24.57/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/14.32.20/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/14.33.20/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.31/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/18.47.36/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.05.32/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.12.08/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.08/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.13.32/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.20.52/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.21.28/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.29.39/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.31.57/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.24/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.32.54/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.09/Private.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Admin.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Broadcast.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Emote.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Global.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Main.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Map.txt
+#	new file:   Serveur/Logs/06.08.2013/19.41.23/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.23.28/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.32.39/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.06/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.28/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.33.57/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.37.52/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.38.05/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.39.47/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.50.09/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.54.26/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.55.29/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.12/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/10.58.59/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.01.54/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.29/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.04.43/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.05.38/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.06.44/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.09.26/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.13.38/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.14.45/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.15.28/Private.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Admin.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Broadcast.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Emote.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Global.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Main.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Map.txt
+#	new file:   Serveur/Logs/08.09.2013/11.16.32/Private.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Admin.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Broadcast.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Emote.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Global.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Main.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Map.txt
+#	new file:   Serveur/Logs/13.08.2011/01.13.23/Private.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Admin.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Broadcast.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Emote.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Global.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Main.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Map.txt
+#	new file:   Serveur/Logs/13.08.2011/01.14.45/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/08.20.26/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/09.21.16/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/10.22.07/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/11.22.57/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/12.23.48/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/13.24.38/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/14.25.29/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/15.26.19/Private.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Admin.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Broadcast.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Emote.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Global.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Main.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Map.txt
+#	new file:   Serveur/Logs/25.11.2011/16.16.30/Private.txt
+#	new file:   Serveur/Logs/Err.txt
+#	new file:   Serveur/Logs/InfoBulle.txt
+#	new file:   Serveur/Logs/admin.txt
+#	new file:   Serveur/Logs/player.txt
+#	new file:   Serveur/Modules Sources/ModMetier.bas
+#	new file:   Serveur/Modules Sources/modAPIRequest.bas
+#	new file:   Serveur/Modules Sources/modCodeEdit.bas
+#	new file:   Serveur/Modules Sources/modDatabase.bas
+#	new file:   Serveur/Modules Sources/modFTP.bas
+#	new file:   Serveur/Modules Sources/modGameLogic.bas
+#	new file:   Serveur/Modules Sources/modGeneral.bas
+#	new file:   Serveur/Modules Sources/modInfoBulle.bas
+#	new file:   Serveur/Modules Sources/modMagieNpc.bas
+#	new file:   Serveur/Modules Sources/modServerTCP.bas
+#	new file:   Serveur/Modules Sources/modText.bas
+#	new file:   Serveur/Modules Sources/modTypes.bas
+#	new file:   Serveur/Modules Sources/modXp.bas
+#	new file:   Serveur/Npcs/npc1.fcp
+#	new file:   Serveur/Npcs/npc2.fcp
+#	new file:   Serveur/Npcs/npc3.fcp
+#	new file:   Serveur/Npcs/npc4.fcp
+#	new file:   Serveur/Npcs/npc5.fcp
+#	new file:   Serveur/Npcs/npc6.fcp
+#	new file:   Serveur/Options.ini
+#	new file:   Serveur/Pets/Pet1.fcf
+#	new file:   Serveur/Quetes/quete1.fcq
+#	new file:   Serveur/Quetes/quete2.fcq
+#	new file:   Serveur/Scripts/Boucle.txt
+#	new file:   Serveur/Scripts/Command.ini
+#	new file:   Serveur/Scripts/Commands.txt
+#	new file:   Serveur/Scripts/DropItems.txt
+#	new file:   Serveur/Scripts/JoinGame.txt
+#	new file:   Serveur/Scripts/KillNPC.txt
+#	new file:   Serveur/Scripts/LeftGame.txt
+#	new file:   Serveur/Scripts/Main.txt
+#	new file:   Serveur/Scripts/NewChar.txt
+#	new file:   Serveur/Scripts/OnDeath.txt
+#	new file:   Serveur/Scripts/PlayerLevelUp.txt
+#	new file:   Serveur/Scripts/PlayerPrompt.txt
+#	new file:   Serveur/Scripts/ScriptedTile.txt
+#	new file:   Serveur/Scripts/UseChar.txt
+#	new file:   Serveur/Scripts/UseItem.txt
+#	new file:   Serveur/Scripts/UsingStatPoints.txt
+#	new file:   Serveur/Serveur.exe
+#	new file:   Serveur/Serveur.exe.manifest
+#	new file:   Serveur/Serveur.vbp
+#	new file:   Serveur/Serveur.vbw
+#	new file:   Serveur/Shops/shop1.fcm
+#	new file:   Serveur/Stats.ini
+#	new file:   Serveur/accounts/Admin.ini
+#	new file:   Serveur/accounts/Elios.ini
+#	new file:   Serveur/accounts/charlist.txt
+#	new file:   Serveur/banlist.txt
+#	new file:   Serveur/commande.ini
+#	new file:   Serveur/emoticons.ini
+#	new file:   Serveur/experience.ini
+#	new file:   Serveur/keywords.txt
+#	new file:   Serveur/maps/map1.fcc
+#	new file:   Serveur/maps/map2.fcc
+#	new file:   Serveur/motd.ini
+#
+
