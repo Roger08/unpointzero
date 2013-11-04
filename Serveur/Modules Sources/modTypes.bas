@@ -705,7 +705,7 @@ Public Shop() As ShopRec
 Public Spell() As SpellRec
 Public Guild() As GuildRec
 Public Emoticons() As EmoRec
-Public experience() As Integer
+Public experience() As Long
 Public CMessages(1 To 6) As CMRec
 Public PnjMove() As Boolean
 Public bouclier() As Boolean
@@ -748,10 +748,10 @@ Public AdminMoMsg As Boolean
 Public CClasses As Boolean
 
 'utiliser pour les couleurs perso
-Public AccModo As Integer
-Public AccMapeur As Integer
-Public AccDevelopeur As Integer
-Public AccAdmin As Integer
+Public AccModo As Long
+Public AccMapeur As Long
+Public AccDevelopeur As Long
+Public AccAdmin As Long
 
 Public HotelDeVente As clsHdV
 Sub ClearTempTile()
@@ -1763,6 +1763,16 @@ End Sub
 Sub BattleMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Byte, ByVal Side As Byte)
     Call SendDataTo(Index, "damagedisplay" & SEP_CHAR & Side & SEP_CHAR & Msg & SEP_CHAR & Color & SEP_CHAR & END_CHAR)
 End Sub
+
+Public Function PlayerInMap(ByVal MapNum As Integer) As Byte
+    Dim i As Byte
+    Dim Player As Byte
+    Player = 0
+    For i = 1 To MAX_PLAYERS
+        If GetPlayerMap(i) = MapNum Then Player = Player + 1
+    Next i
+    PlayerInMap = Player
+End Function
 
 Public Sub Attendre(ByVal temps As Long)
 Dim lngEndingTime As Long

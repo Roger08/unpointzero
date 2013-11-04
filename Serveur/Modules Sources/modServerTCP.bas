@@ -2,24 +2,9 @@ Attribute VB_Name = "modServerTCP"
 Option Explicit
 'Affichage de petits détails
 Sub UpdateCaption()
-
-Dim ReturnedHTML As String, sIp As Long, sStop As Long, affIP As String
-    ReturnedHTML = SendAPIRequest("http://checkip.dyndns.org/")
-    sIp = InStr(ReturnedHTML, "Address: ") + 9
-    If InStr(sIp, ReturnedHTML, ",") > 0 Then
-        sStop = InStr(sIp, ReturnedHTML, ",")
-    Else
-        sStop = InStr(sIp, ReturnedHTML, "<")
-    End If
-    If sStop > 0 Then
-        affIP = Mid(ReturnedHTML, sIp, sStop - sIp)
-    Else
-        affIP = "0.0.0.0"
-    End If
-    
 With frmServer
     .Caption = GAME_NAME & " - FRoG Serveur 0.6.3"
-    .lblIP.Caption = "Adresse IP : " & affIP
+    .lblIP.Caption = "Adresse IP : " & SendAPIRequest("http://www.frogcreator.fr/update/getIP.php")
     '.lblIP.Caption = frmServer.lblIP & " (Local : " & frmServer.Socket(0).LocalIP & ")"
     .lblPort.Caption = "Port : " & STR$(frmServer.Socket(0).LocalPort)
     .TPO.Caption = "Nombre de joueurs en ligne : " & TotalOnlinePlayers
@@ -138,21 +123,21 @@ Sub SendDataToAllBut(ByVal Index As Byte, ByVal data As String)
     Next i
 End Sub
 
-Sub SendDataToMap(ByVal mapNum As Integer, ByVal data As String)
+Sub SendDataToMap(ByVal MapNum As Integer, ByVal data As String)
     Dim i As Byte
     On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
-        If IsPlaying(i) Then If GetPlayerMap(i) = mapNum Then Call SendDataTo(i, data)
+        If IsPlaying(i) Then If GetPlayerMap(i) = MapNum Then Call SendDataTo(i, data)
     Next i
 End Sub
 
-Sub SendDataToMapBut(ByVal Index As Byte, ByVal mapNum As Integer, ByVal data As String)
+Sub SendDataToMapBut(ByVal Index As Byte, ByVal MapNum As Integer, ByVal data As String)
     Dim i As Byte
     On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
-        If IsPlaying(i) Then If GetPlayerMap(i) = mapNum And i <> Index Then Call SendDataTo(i, data)
+        If IsPlaying(i) Then If GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, data)
     Next i
 End Sub
 
@@ -210,13 +195,13 @@ Public Sub QueteMsg(ByVal Index As Byte, ByVal Msg As String)
     Call SendDataTo(Index, Packet)
 End Sub
 'Message sur une map
-Sub MapMsg(ByVal mapNum As Integer, ByVal Msg As String, ByVal Color As Byte)
+Sub MapMsg(ByVal MapNum As Integer, ByVal Msg As String, ByVal Color As Byte)
     Dim Packet As String
     Dim text As String
 
     Packet = "MAPMSG" & SEP_CHAR & Msg & SEP_CHAR & Color & END_CHAR
     
-    Call SendDataToMap(mapNum, Packet)
+    Call SendDataToMap(MapNum, Packet)
 End Sub
 'Message d'alerte
 Sub AlertMsg(ByVal Index As Byte, ByVal Msg As String)
@@ -611,7 +596,7 @@ Dim Damage As Integer
 Dim PointType As Integer
 Dim Movement As Byte
 Dim i As Byte, n As Integer, X As Byte, Y As Byte, f As Long
-Dim mapNum As Integer
+Dim MapNum As Integer
 Dim s As String
 Dim ShopNum As Integer, ItemNum As Integer
 Dim DurNeeded As Integer, GoldNeeded As Integer
@@ -1219,96 +1204,96 @@ Player(Index).sync = True
                      ' Prevent hacking
                      If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                      n = 1
-                     mapNum = GetPlayerMap(Index)
-                     Map(mapNum).Name = Parse(n + 1)
-                     Map(mapNum).Revision = Map(mapNum).Revision + 1
-                     Map(mapNum).Moral = Val(Parse(n + 3))
-                     Map(mapNum).Up = Val(Parse(n + 4))
-                     Map(mapNum).Down = Val(Parse(n + 5))
-                     Map(mapNum).Left = Val(Parse(n + 6))
-                     Map(mapNum).Right = Val(Parse(n + 7))
-                     Map(mapNum).Music = Parse(n + 8)
-                     Map(mapNum).BootMap = Val(Parse(n + 9))
-                     Map(mapNum).BootX = Val(Parse(n + 10))
-                     Map(mapNum).BootY = Val(Parse(n + 11))
-                     Map(mapNum).Indoors = Val(Parse(n + 12))
+                     MapNum = GetPlayerMap(Index)
+                     Map(MapNum).Name = Parse(n + 1)
+                     Map(MapNum).Revision = Map(MapNum).Revision + 1
+                     Map(MapNum).Moral = Val(Parse(n + 3))
+                     Map(MapNum).Up = Val(Parse(n + 4))
+                     Map(MapNum).Down = Val(Parse(n + 5))
+                     Map(MapNum).Left = Val(Parse(n + 6))
+                     Map(MapNum).Right = Val(Parse(n + 7))
+                     Map(MapNum).Music = Parse(n + 8)
+                     Map(MapNum).BootMap = Val(Parse(n + 9))
+                     Map(MapNum).BootX = Val(Parse(n + 10))
+                     Map(MapNum).BootY = Val(Parse(n + 11))
+                     Map(MapNum).Indoors = Val(Parse(n + 12))
                      n = n + 13
                      
                      For Y = 0 To MAX_MAPY
                          For X = 0 To MAX_MAPX
-                             Map(mapNum).Tile(X, Y).Ground = Val(Parse(n))
-                             Map(mapNum).Tile(X, Y).Mask = Val(Parse(n + 1))
-                             Map(mapNum).Tile(X, Y).Anim = Val(Parse(n + 2))
-                             Map(mapNum).Tile(X, Y).Mask2 = Val(Parse(n + 3))
-                             Map(mapNum).Tile(X, Y).M2Anim = Val(Parse(n + 4))
-                             Map(mapNum).Tile(X, Y).Mask3 = Val(Parse(n + 32)) '<--
-                             Map(mapNum).Tile(X, Y).M3Anim = Val(Parse(n + 30)) '<--
-                             Map(mapNum).Tile(X, Y).Fringe = Val(Parse(n + 5))
-                             Map(mapNum).Tile(X, Y).FAnim = Val(Parse(n + 6))
-                             Map(mapNum).Tile(X, Y).Fringe2 = Val(Parse(n + 7))
-                             Map(mapNum).Tile(X, Y).F2Anim = Val(Parse(n + 8))
-                             Map(mapNum).Tile(X, Y).Fringe3 = Val(Parse(n + 26)) '<--
-                             Map(mapNum).Tile(X, Y).F3Anim = Val(Parse(n + 27)) '<--
-                             Map(mapNum).Tile(X, Y).type = Val(Parse(n + 9))
-                             Map(mapNum).Tile(X, Y).data1 = Val(Parse(n + 10))
-                             Map(mapNum).Tile(X, Y).data2 = Val(Parse(n + 11))
-                             Map(mapNum).Tile(X, Y).data3 = Val(Parse(n + 12))
-                             Map(mapNum).Tile(X, Y).String1 = Parse(n + 13)
-                             Map(mapNum).Tile(X, Y).String2 = Parse(n + 14)
-                             Map(mapNum).Tile(X, Y).String3 = Parse(n + 15)
-                             Map(mapNum).Tile(X, Y).Light = Val(Parse(n + 16))
-                             Map(mapNum).Tile(X, Y).GroundSet = Val(Parse(n + 17))
-                             Map(mapNum).Tile(X, Y).MaskSet = Val(Parse(n + 18))
-                             Map(mapNum).Tile(X, Y).AnimSet = Val(Parse(n + 19))
-                             Map(mapNum).Tile(X, Y).Mask2Set = Val(Parse(n + 20))
-                             Map(mapNum).Tile(X, Y).M2AnimSet = Val(Parse(n + 21))
-                             Map(mapNum).Tile(X, Y).Mask3Set = Val(Parse(n + 33)) '<--
-                             Map(mapNum).Tile(X, Y).M3AnimSet = Val(Parse(n + 31)) '<--
-                             Map(mapNum).Tile(X, Y).FringeSet = Val(Parse(n + 22))
-                             Map(mapNum).Tile(X, Y).FAnimSet = Val(Parse(n + 23))
-                             Map(mapNum).Tile(X, Y).Fringe2Set = Val(Parse(n + 24))
-                             Map(mapNum).Tile(X, Y).F2AnimSet = Val(Parse(n + 25))
-                             Map(mapNum).Tile(X, Y).Fringe3Set = Val(Parse(n + 28)) '<--
-                             Map(mapNum).Tile(X, Y).F3AnimSet = Val(Parse(n + 29)) '<--
+                             Map(MapNum).Tile(X, Y).Ground = Val(Parse(n))
+                             Map(MapNum).Tile(X, Y).Mask = Val(Parse(n + 1))
+                             Map(MapNum).Tile(X, Y).Anim = Val(Parse(n + 2))
+                             Map(MapNum).Tile(X, Y).Mask2 = Val(Parse(n + 3))
+                             Map(MapNum).Tile(X, Y).M2Anim = Val(Parse(n + 4))
+                             Map(MapNum).Tile(X, Y).Mask3 = Val(Parse(n + 32)) '<--
+                             Map(MapNum).Tile(X, Y).M3Anim = Val(Parse(n + 30)) '<--
+                             Map(MapNum).Tile(X, Y).Fringe = Val(Parse(n + 5))
+                             Map(MapNum).Tile(X, Y).FAnim = Val(Parse(n + 6))
+                             Map(MapNum).Tile(X, Y).Fringe2 = Val(Parse(n + 7))
+                             Map(MapNum).Tile(X, Y).F2Anim = Val(Parse(n + 8))
+                             Map(MapNum).Tile(X, Y).Fringe3 = Val(Parse(n + 26)) '<--
+                             Map(MapNum).Tile(X, Y).F3Anim = Val(Parse(n + 27)) '<--
+                             Map(MapNum).Tile(X, Y).type = Val(Parse(n + 9))
+                             Map(MapNum).Tile(X, Y).data1 = Val(Parse(n + 10))
+                             Map(MapNum).Tile(X, Y).data2 = Val(Parse(n + 11))
+                             Map(MapNum).Tile(X, Y).data3 = Val(Parse(n + 12))
+                             Map(MapNum).Tile(X, Y).String1 = Parse(n + 13)
+                             Map(MapNum).Tile(X, Y).String2 = Parse(n + 14)
+                             Map(MapNum).Tile(X, Y).String3 = Parse(n + 15)
+                             Map(MapNum).Tile(X, Y).Light = Val(Parse(n + 16))
+                             Map(MapNum).Tile(X, Y).GroundSet = Val(Parse(n + 17))
+                             Map(MapNum).Tile(X, Y).MaskSet = Val(Parse(n + 18))
+                             Map(MapNum).Tile(X, Y).AnimSet = Val(Parse(n + 19))
+                             Map(MapNum).Tile(X, Y).Mask2Set = Val(Parse(n + 20))
+                             Map(MapNum).Tile(X, Y).M2AnimSet = Val(Parse(n + 21))
+                             Map(MapNum).Tile(X, Y).Mask3Set = Val(Parse(n + 33)) '<--
+                             Map(MapNum).Tile(X, Y).M3AnimSet = Val(Parse(n + 31)) '<--
+                             Map(MapNum).Tile(X, Y).FringeSet = Val(Parse(n + 22))
+                             Map(MapNum).Tile(X, Y).FAnimSet = Val(Parse(n + 23))
+                             Map(MapNum).Tile(X, Y).Fringe2Set = Val(Parse(n + 24))
+                             Map(MapNum).Tile(X, Y).F2AnimSet = Val(Parse(n + 25))
+                             Map(MapNum).Tile(X, Y).Fringe3Set = Val(Parse(n + 28)) '<--
+                             Map(MapNum).Tile(X, Y).F3AnimSet = Val(Parse(n + 29)) '<--
                              n = n + 34
                          Next X
                      Next Y
                     
                      For X = 1 To MAX_MAP_NPCS
-                         Map(mapNum).Npc(X) = Val(Parse(n))
+                         Map(MapNum).Npc(X) = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).X = Val(Parse(n))
+                         Map(MapNum).Npcs(X).X = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).Y = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Y = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).x1 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).x1 = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).y1 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).y1 = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).x2 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).x2 = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).y2 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).y2 = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).Hasardm = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Hasardm = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).Hasardp = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Hasardp = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).boucle = Val(Parse(n))
+                         Map(MapNum).Npcs(X).boucle = Val(Parse(n))
                          n = n + 1
-                         Map(mapNum).Npcs(X).Imobile = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Imobile = Val(Parse(n))
                          n = n + 1
-                         Call ClearMapNpc(X, mapNum)
+                         Call ClearMapNpc(X, MapNum)
                      Next X
-                     Map(mapNum).PanoInf = Parse(n)
-                     Map(mapNum).TranInf = Val(Parse(n + 1))
-                     Map(mapNum).PanoSup = Parse(n + 2)
-                     Map(mapNum).TranSup = Val(Parse(n + 3))
-                     Map(mapNum).Fog = Val(Parse(n + 4))
-                     Map(mapNum).FogAlpha = Val(Parse(n + 5))
-                     Map(mapNum).guildSoloView = Parse(n + 6)
-                     Map(mapNum).petView = Parse(n + 7)
-                     Map(mapNum).traversable = Parse(n + 8)
-                     Map(mapNum).meteo = Val(Parse(n + 9))
+                     Map(MapNum).PanoInf = Parse(n)
+                     Map(MapNum).TranInf = Val(Parse(n + 1))
+                     Map(MapNum).PanoSup = Parse(n + 2)
+                     Map(MapNum).TranSup = Val(Parse(n + 3))
+                     Map(MapNum).Fog = Val(Parse(n + 4))
+                     Map(MapNum).FogAlpha = Val(Parse(n + 5))
+                     Map(MapNum).guildSoloView = Parse(n + 6)
+                     Map(MapNum).petView = Parse(n + 7)
+                     Map(MapNum).traversable = Parse(n + 8)
+                     Map(MapNum).meteo = Val(Parse(n + 9))
                      
                      ' Clear out it all
                      For i = 1 To MAX_MAP_ITEMS
@@ -1317,7 +1302,7 @@ Player(Index).sync = True
                      Next i
                      
                      ' Sauvegarde la map
-                     Call SaveMap(mapNum)
+                     Call SaveMap(MapNum)
                      
                      ' Respawn
                      Call SpawnMapItems(GetPlayerMap(Index))
@@ -1329,14 +1314,14 @@ Player(Index).sync = True
                      
                      ' Rafraichir la map pour tous les connectés
                      For i = 1 To MAX_PLAYERS
-                         If IsPlaying(i) And GetPlayerMap(i) = mapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
+                         If IsPlaying(i) And GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
                      Next i
                              
                      'Vérifier si les bords sont liés a une autre map et la modifier en conséquence
-                     If Map(mapNum).Up > 0 And Map(mapNum).Up < MAX_MAPS Then Map(Map(mapNum).Up).Down = mapNum: Map(Map(mapNum).Up).Revision = Map(Map(mapNum).Up).Revision + 1: Call SaveMap(Map(mapNum).Up)
-                     If Map(mapNum).Down > 0 And Map(mapNum).Down < MAX_MAPS Then Map(Map(mapNum).Down).Up = mapNum: Map(Map(mapNum).Down).Revision = Map(Map(mapNum).Down).Revision + 1: Call SaveMap(Map(mapNum).Down)
-                     If Map(mapNum).Left > 0 And Map(mapNum).Left < MAX_MAPS Then Map(Map(mapNum).Left).Right = mapNum: Map(Map(mapNum).Left).Revision = Map(Map(mapNum).Left).Revision + 1: Call SaveMap(Map(mapNum).Left)
-                     If Map(mapNum).Right > 0 And Map(mapNum).Right < MAX_MAPS Then Map(Map(mapNum).Right).Left = mapNum: Map(Map(mapNum).Right).Revision = Map(Map(mapNum).Right).Revision + 1: Call SaveMap(Map(mapNum).Right)
+                     If Map(MapNum).Up > 0 And Map(MapNum).Up < MAX_MAPS Then Map(Map(MapNum).Up).Down = MapNum: Map(Map(MapNum).Up).Revision = Map(Map(MapNum).Up).Revision + 1: Call SaveMap(Map(MapNum).Up)
+                     If Map(MapNum).Down > 0 And Map(MapNum).Down < MAX_MAPS Then Map(Map(MapNum).Down).Up = MapNum: Map(Map(MapNum).Down).Revision = Map(Map(MapNum).Down).Revision + 1: Call SaveMap(Map(MapNum).Down)
+                     If Map(MapNum).Left > 0 And Map(MapNum).Left < MAX_MAPS Then Map(Map(MapNum).Left).Right = MapNum: Map(Map(MapNum).Left).Revision = Map(Map(MapNum).Left).Revision + 1: Call SaveMap(Map(MapNum).Left)
+                     If Map(MapNum).Right > 0 And Map(MapNum).Right < MAX_MAPS Then Map(Map(MapNum).Right).Left = MapNum: Map(Map(MapNum).Right).Revision = Map(Map(MapNum).Right).Revision + 1: Call SaveMap(Map(MapNum).Right)
                      
                      Call AddLog(GetPlayerName(Index) & " a modifié(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
                      Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
@@ -1379,7 +1364,7 @@ Player(Index).sync = True
                     
                     ' Rafraichir la map pour tous les joueurs en ligne
                     For i = 1 To MAX_PLAYERS
-                        If IsPlaying(i) And GetPlayerMap(i) = mapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
+                        If IsPlaying(i) And GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
                     Next i
                     Call PlayerWarp(Index, GetPlayerMap(Index), GetPlayerX(Index), GetPlayerY(Index))
                     Call AddLog(GetPlayerName(Index) & " a modifié(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
@@ -3419,7 +3404,7 @@ If IBErr Then Call IBMsg("Un erreur c'est produite dans la réception du serveur"
 If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoie, relancez s'il vous plait.", 3)
 End Sub
 
-Sub MapDo(ByVal mapNum As Integer, ByVal url As String, ByVal rep As String)
+Sub MapDo(ByVal MapNum As Integer, ByVal url As String, ByVal rep As String)
 If FileExist("\Maps\Map" & z & ".fcc") Then Call Kill(App.Path & "\Maps\Map" & z & ".fcc")
 Call ClearMap(z)
 If Mid(url, Len(url)) = "/" And rep = "/" Then
@@ -3566,7 +3551,7 @@ If IBErr Then Call IBMsg("Erreur pendant l'envoi du changement de carte d'un jou
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendLeaveMap(ByVal Index As Byte, ByVal mapNum As Integer)
+Sub SendLeaveMap(ByVal Index As Byte, ByVal MapNum As Integer)
 Dim Packet As String
 
 On Error GoTo er:
@@ -3587,13 +3572,13 @@ On Error GoTo er:
     Packet = Packet & GetPlayerLevel(Index) & SEP_CHAR
     Packet = Packet & Player(Index).InParty
     Packet = Packet & END_CHAR
-    Call SendDataToMapBut(Index, mapNum, Packet)
+    Call SendDataToMapBut(Index, MapNum, Packet)
 
 Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le dépard du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",De la carte : " & mapNum & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le dépard du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",De la carte : " & MapNum & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant le dépard de " & GetPlayerName(Index) & " d'une la carte", BrightRed)
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
@@ -3673,17 +3658,17 @@ Dim Packet As String
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendMap(ByVal Index As Byte, ByVal mapNum As Integer)
+Sub SendMap(ByVal Index As Byte, ByVal MapNum As Integer)
 Dim Packet As String
 Dim X As Byte
 Dim Y As Byte
 On Error GoTo er:
 
 If CarteFTP Then
-    Packet = "MAPDOWN" & SEP_CHAR & mapNum & SEP_CHAR & GetVar(App.Path & "\Data.ini", "FTP", "URL") & SEP_CHAR & GetVar(App.Path & "\Data.ini", "FTP", "REP") & END_CHAR
+    Packet = "MAPDOWN" & SEP_CHAR & MapNum & SEP_CHAR & GetVar(App.Path & "\Data.ini", "FTP", "URL") & SEP_CHAR & GetVar(App.Path & "\Data.ini", "FTP", "REP") & END_CHAR
     Call SendDataTo(Index, Packet)
 Else
-    Packet = "MAPDATAS" & SEP_CHAR & mapNum & SEP_CHAR & Trim$(Map(mapNum).Name) & SEP_CHAR & Map(mapNum).Revision & SEP_CHAR & Map(mapNum).Moral & SEP_CHAR & Map(mapNum).Up & SEP_CHAR & Map(mapNum).Down & SEP_CHAR & Map(mapNum).Left & SEP_CHAR & Map(mapNum).Right & SEP_CHAR & Map(mapNum).Music & SEP_CHAR & Map(mapNum).BootMap & SEP_CHAR & Map(mapNum).BootX & SEP_CHAR & Map(mapNum).BootY & SEP_CHAR & Map(mapNum).Indoors & SEP_CHAR & Map(mapNum).PanoInf & SEP_CHAR & Map(mapNum).TranInf & SEP_CHAR & Map(mapNum).PanoSup & SEP_CHAR & Map(mapNum).TranSup & SEP_CHAR & Map(mapNum).Fog & SEP_CHAR & Map(mapNum).FogAlpha & SEP_CHAR & Map(mapNum).guildSoloView & SEP_CHAR & Map(mapNum).petView & SEP_CHAR & Map(mapNum).traversable & SEP_CHAR & Map(mapNum).meteo & END_CHAR
+    Packet = "MAPDATAS" & SEP_CHAR & MapNum & SEP_CHAR & Trim$(Map(MapNum).Name) & SEP_CHAR & Map(MapNum).Revision & SEP_CHAR & Map(MapNum).Moral & SEP_CHAR & Map(MapNum).Up & SEP_CHAR & Map(MapNum).Down & SEP_CHAR & Map(MapNum).Left & SEP_CHAR & Map(MapNum).Right & SEP_CHAR & Map(MapNum).Music & SEP_CHAR & Map(MapNum).BootMap & SEP_CHAR & Map(MapNum).BootX & SEP_CHAR & Map(MapNum).BootY & SEP_CHAR & Map(MapNum).Indoors & SEP_CHAR & Map(MapNum).PanoInf & SEP_CHAR & Map(MapNum).TranInf & SEP_CHAR & Map(MapNum).PanoSup & SEP_CHAR & Map(MapNum).TranSup & SEP_CHAR & Map(MapNum).Fog & SEP_CHAR & Map(MapNum).FogAlpha & SEP_CHAR & Map(MapNum).guildSoloView & SEP_CHAR & Map(MapNum).petView & SEP_CHAR & Map(MapNum).traversable & SEP_CHAR & Map(MapNum).meteo & END_CHAR
     
     Call SendDataTo(Index, Packet)
     
@@ -3691,7 +3676,7 @@ Else
     
     For Y = 0 To MAX_MAPY
         For X = 0 To MAX_MAPX
-        With Map(mapNum).Tile(X, Y)
+        With Map(MapNum).Tile(X, Y)
             Packet = Packet & .Ground & SEP_CHAR & .Mask & SEP_CHAR & .Anim & SEP_CHAR & .Mask2 & SEP_CHAR & .M2Anim & SEP_CHAR & .Fringe & SEP_CHAR & .FAnim & SEP_CHAR & .Fringe2 & SEP_CHAR & .F2Anim & SEP_CHAR & .type & SEP_CHAR & .data1 & SEP_CHAR & .data2 & SEP_CHAR & .data3 & SEP_CHAR & .String1 & SEP_CHAR & .String2 & SEP_CHAR & .String3 & SEP_CHAR & .Light & SEP_CHAR
             Packet = Packet & .GroundSet & SEP_CHAR & .MaskSet & SEP_CHAR & .AnimSet & SEP_CHAR & .Mask2Set & SEP_CHAR & .M2AnimSet & SEP_CHAR & .FringeSet & SEP_CHAR & .FAnimSet & SEP_CHAR & .Fringe2Set & SEP_CHAR & .F2AnimSet & SEP_CHAR & .Fringe3 & SEP_CHAR & .F3Anim & SEP_CHAR & .Fringe3Set & SEP_CHAR & .F3AnimSet & SEP_CHAR & .M3Anim & SEP_CHAR & .M3AnimSet & SEP_CHAR & .Mask3 & SEP_CHAR & .Mask3Set & SEP_CHAR  '<--
         End With
@@ -3725,61 +3710,61 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant l'envoi de la carte " & mapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur pendant l'envoi de la carte " & mapNum & " au joueur : " & GetPlayerName(Index), BrightRed)
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index), BrightRed)
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendMapItemsTo(ByVal Index As Byte, ByVal mapNum As Integer)
+Sub SendMapItemsTo(ByVal Index As Byte, ByVal MapNum As Integer)
 Dim Packet As String
 Dim i As Integer
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        If mapNum > 0 Then Packet = Packet & MapItem(mapNum, i).Num & SEP_CHAR & MapItem(mapNum, i).value & SEP_CHAR & MapItem(mapNum, i).Dur & SEP_CHAR & MapItem(mapNum, i).X & SEP_CHAR & MapItem(mapNum, i).Y & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMapItemsToAll(ByVal mapNum As Integer)
+Sub SendMapItemsToAll(ByVal MapNum As Integer)
 Dim Packet As String
 Dim i As Integer
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        Packet = Packet & MapItem(mapNum, i).Num & SEP_CHAR & MapItem(mapNum, i).value & SEP_CHAR & MapItem(mapNum, i).Dur & SEP_CHAR & MapItem(mapNum, i).X & SEP_CHAR & MapItem(mapNum, i).Y & SEP_CHAR
+        Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
-    Call SendDataToMap(mapNum, Packet)
+    Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Sub SendMapNpcsTo(ByVal Index As Byte, ByVal mapNum As Integer)
+Sub SendMapNpcsTo(ByVal Index As Byte, ByVal MapNum As Integer)
 Dim Packet As String
 Dim i As Byte
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        If mapNum > 0 Then Packet = Packet & MapNpc(mapNum, i).Num & SEP_CHAR & MapNpc(mapNum, i).X & SEP_CHAR & MapNpc(mapNum, i).Y & SEP_CHAR & MapNpc(mapNum, i).Dir & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMapNpcsToMap(ByVal mapNum As Integer)
+Sub SendMapNpcsToMap(ByVal MapNum As Integer)
 Dim Packet As String
 Dim i As Byte
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        Packet = Packet & MapNpc(mapNum, i).Num & SEP_CHAR & MapNpc(mapNum, i).X & SEP_CHAR & MapNpc(mapNum, i).Y & SEP_CHAR & MapNpc(mapNum, i).Dir & SEP_CHAR
+        Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
-    Call SendDataToMap(mapNum, Packet)
+    Call SendDataToMap(MapNum, Packet)
 End Sub
 
 Sub SendItems(ByVal Index As Byte)
@@ -4381,12 +4366,12 @@ Dim i As Byte
     Call SpawnAllMapNpcs
 End Sub
 
-Sub MapMsg2(ByVal mapNum As Integer, ByVal Msg As String, ByVal Index As Byte)
+Sub MapMsg2(ByVal MapNum As Integer, ByVal Msg As String, ByVal Index As Byte)
 Dim Packet As String
 
     Packet = "MAPMSG2" & SEP_CHAR & Msg & SEP_CHAR & Index & END_CHAR
     
-    Call SendDataToMap(mapNum, Packet)
+    Call SendDataToMap(MapNum, Packet)
 End Sub
 
 Function MMsg(ByVal Msg As String) As Boolean

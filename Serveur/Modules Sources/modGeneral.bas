@@ -76,15 +76,15 @@ End Sub
 
 Sub InitServer()
 Dim IPMask As String
-Dim i As Long
-Dim f As Long
+Dim i As Integer
+Dim f As Integer
     'On Error GoTo er:
     
     Randomize Timer
     
     
     If Not FileExist("Serveur.exe.manifest") Then
-    Call URLDownloadToFile(0, "http://frogcreator/update/Serveur.exe.manifest", App.Path & "\Serveur.exe.manifest", 0, 0)
+    Call URLDownloadToFile(0, "http://frogcreator.fr/update/Serveur.exe.manifest", App.Path & "\Serveur.exe.manifest", 0, 0)
     End If
 
     Call InitXpStyle
@@ -116,7 +116,7 @@ Dim f As Long
     
     If LCase$(Dir(App.Path & "\Maps", vbDirectory)) <> "maps" Then Call MkDir(App.Path & "\Maps")
     If LCase$(Dir(App.Path & "\logs", vbDirectory)) <> "logs" Then Call MkDir(App.Path & "\Logs")
-    If LCase$(Dir(App.Path & "\accounts", vbDirectory)) <> "accounts" Then Call MkDir(App.Path & "\accounts")
+    If LCase$(Dir(App.Path & "\Comptes", vbDirectory)) <> "comptes" Then Call MkDir(App.Path & "\Comptes")
     If LCase$(Dir(App.Path & "\npcs", vbDirectory)) <> "npcs" Then Call MkDir(App.Path & "\Npcs")
     If LCase$(Dir(App.Path & "\items", vbDirectory)) <> "items" Then Call MkDir(App.Path & "\Items")
     If LCase$(Dir(App.Path & "\spells", vbDirectory)) <> "spells" Then Call MkDir(App.Path & "\Spells")
@@ -294,7 +294,7 @@ Dim f As Long
     ReDim quete(1 To MAX_QUETES) As QueteRec
     ReDim Map(1 To MAX_MAPS) As MapRec
     ReDim TempTile(1 To MAX_MAPS) As TempTileRec
-    ReDim PlayersOnMap(1 To MAX_MAPS) As Long
+    ReDim PlayersOnMap(1 To MAX_MAPS) As Integer
     ReDim Player(1 To MAX_PLAYERS) As AccountRec
     ReDim item(0 To MAX_ITEMS) As ItemRec
     ReDim Npc(0 To MAX_NPCS) As NpcRec
@@ -326,13 +326,13 @@ Dim f As Long
     ReDim experience(1 To MAX_LEVEL) As Long
     ReDim PnjMove(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Boolean
     ReDim bouclier(1 To MAX_PLAYERS) As Boolean
-    ReDim BouclierT(1 To MAX_PLAYERS) As Long
+    ReDim BouclierT(1 To MAX_PLAYERS) As Integer
     ReDim Para(1 To MAX_PLAYERS) As Boolean
-    ReDim ParaT(1 To MAX_PLAYERS) As Long
-    ReDim Point(1 To MAX_PLAYERS) As Long
-    ReDim PointT(1 To MAX_PLAYERS) As Long
+    ReDim ParaT(1 To MAX_PLAYERS) As Integer
+    ReDim Point(1 To MAX_PLAYERS) As Integer
+    ReDim PointT(1 To MAX_PLAYERS) As Integer
     ReDim ParaN(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Boolean
-    ReDim ParaNT(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Long
+    ReDim ParaNT(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Integer
     
     START_MAP = 1
     START_X = MAX_MAPX / 2
@@ -509,7 +509,7 @@ Dim f As Long
     frmServer.Command13.Enabled = False
     
     ' Check if the master charlist file exists for checking duplicate names, and if it doesnt make it
-    If Not FileExist("accounts\charlist.txt") Then
+    If Not FileExist("Comptes\charlist.txt") Then
         f = FreeFile
         Open App.Path & "\Comptes\charlist.txt" For Output As #f
         Close #f
@@ -641,7 +641,7 @@ Sub SetStatus(ByVal Status As String)
 End Sub
 
 Sub ServerLogic()
-Dim i As Long
+Dim i As Byte
 
     ' Check for disconnections
     For i = 1 To MAX_PLAYERS
@@ -654,7 +654,7 @@ Dim i As Long
 End Sub
 
 Sub CheckSpawnMapItems()
-Dim X As Long, Y As Long
+Dim X As Byte, Y As Byte
 
     ' Used for map item respawning
     SpawnSeconds = SpawnSeconds + 1
@@ -957,7 +957,7 @@ Dim SpellSlot As Byte
 End Sub
 
 Sub CheckGiveHP()
-Dim i As Long, n As Long
+Dim i As Byte
 
     If GetTickCount > GiveHPTimer + 10000 Then
         For i = 1 To MAX_PLAYERS
@@ -977,8 +977,8 @@ Dim i As Long, n As Long
 End Sub
 
 Sub VerifEffetsJoueur()
-Dim i As Long
-Dim z As Long
+Dim i As Byte
+Dim z As Integer 'Compteur boucle NPC
 For i = 1 To MAX_PLAYERS
     If bouclier(i) And GetTickCount >= BouclierT(i) Then bouclier(i) = False: BouclierT(i) = 0
     If Para(i) And GetTickCount >= ParaT(i) Then Call ContrOnOff(i): Para(i) = False: ParaT(i) = 0
@@ -1011,7 +1011,6 @@ End Sub
 
 Sub PlayerSaveTimer()
 Static MinPassed As Long
-Dim i As Long
 
 MinPassed = MinPassed + 1
 If MinPassed >= 60 Then
@@ -1045,10 +1044,10 @@ If Trim$(GetVar(App.Path & "\Data.ini", "COULEURS", "MsgGuilde")) <> vbNullStrin
 frmOptCoul.Show vbModeless, frmServer
 End Sub
 
-Public Function ValidTarget(ByVal value As Long, ByVal mapNum As Long, ByVal TType As Byte) As Boolean
+Public Function ValidTarget(ByVal value As Long, ByVal MapNum As Long, ByVal TType As Byte) As Boolean
     Select Case TType
-        Case TARGET_TYPE_PLAYER: If value > 0 And value <= MAX_PLAYERS Then If IsPlaying(value) And GetPlayerMap(value) = mapNum Then ValidTarget = True
-        Case TARGET_TYPE_NPC: If value > 0 And value < MAX_MAP_NPCS Then If MapNpc(mapNum, value).Num > 0 Then ValidTarget = True
+        Case TARGET_TYPE_PLAYER: If value > 0 And value <= MAX_PLAYERS Then If IsPlaying(value) And GetPlayerMap(value) = MapNum Then ValidTarget = True
+        Case TARGET_TYPE_NPC: If value > 0 And value < MAX_MAP_NPCS Then If MapNpc(MapNum, value).Num > 0 Then ValidTarget = True
         Case TARGET_TYPE_CASE: If value >= 0 And value <= (MAX_MAPX + 1) * (MAX_MAPY + 1) Then ValidTarget = True
     End Select
 End Function
@@ -1065,216 +1064,216 @@ If MapNpc(Map, MapNpc1).X = MapNpc(Map, MapNpc2).X And MapNpc(Map, MapNpc1).Y + 
 If MapNpc(Map, MapNpc1).X + 1 = MapNpc(Map, MapNpc2).X And MapNpc(Map, MapNpc1).Y = MapNpc(Map, MapNpc2).Y Then NpcBeside = True: Exit Function
 End Function
 
-Public Sub SelectMoveNpc(ByVal value As Byte, ByVal mapNum As Long, ByVal MapNpcNum As Long, ByVal Index As Long, ByVal IndexType As Long, DidWalk As Boolean)
+Public Sub SelectMoveNpc(ByVal value As Byte, ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Index As Long, ByVal IndexType As Long, DidWalk As Boolean)
 Dim i As Byte, TmpX As Byte, TmpY As Byte
 Select Case value
     Case 0
         If IndexType = TARGET_TYPE_PLAYER Then
             ' Up
-            If MapNpc(mapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
             If Not DidWalk And Not ACoter(MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             End If
         ElseIf IndexType = TARGET_TYPE_NPC Then
             ' Up
-            If MapNpc(mapNum, MapNpcNum).Y > MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).Y > MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
-            If Not DidWalk And Not NpcBeside(mapNum, MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            If Not DidWalk And Not NpcBeside(MapNum, MapNpcNum, Index) Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             End If
         End If
 
     Case 1
         If IndexType = TARGET_TYPE_PLAYER Then
             ' Right
-            If MapNpc(mapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
             If Not DidWalk And Not ACoter(MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             End If
         ElseIf IndexType = TARGET_TYPE_NPC Then
             ' Right
-            If MapNpc(mapNum, MapNpcNum).X < MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).X < MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
-            If Not DidWalk And Not NpcBeside(mapNum, MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            If Not DidWalk And Not NpcBeside(MapNum, MapNpcNum, Index) Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             End If
         End If
 
     Case 2
         If IndexType = TARGET_TYPE_PLAYER Then
             ' Down
-            If MapNpc(mapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
             If Not DidWalk And Not ACoter(MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             End If
         ElseIf IndexType = TARGET_TYPE_NPC Then
             ' Down
-            If MapNpc(mapNum, MapNpcNum).Y < MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).Y < MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Left
-            ElseIf MapNpc(mapNum, MapNpcNum).X > MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X > MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
-            If Not DidWalk And Not NpcBeside(mapNum, MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            If Not DidWalk And Not NpcBeside(MapNum, MapNpcNum, Index) Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             End If
         End If
 
     Case 3
         If IndexType = TARGET_TYPE_PLAYER Then
             ' Left
-            If MapNpc(mapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).X > GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < GetPlayerX(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < GetPlayerY(Index) And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
             If Not DidWalk And Not ACoter(MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             End If
         ElseIf IndexType = TARGET_TYPE_NPC Then
             ' Left
-            If MapNpc(mapNum, MapNpcNum).X > MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(mapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
+            If MapNpc(MapNum, MapNpcNum).X > MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Call NpcMove(MapNum, MapNpcNum, DIR_LEFT, MOVING_WALKING): DidWalk = True
             ' Right
-            ElseIf MapNpc(mapNum, MapNpcNum).X < MapNpc(mapNum, Index).X And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).X < MapNpc(MapNum, Index).X And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             ' Up
-            ElseIf MapNpc(mapNum, MapNpcNum).Y > MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_UP) Then Call NpcMove(mapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y > MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Call NpcMove(MapNum, MapNpcNum, DIR_UP, MOVING_WALKING): DidWalk = True
             ' Down
-            ElseIf MapNpc(mapNum, MapNpcNum).Y < MapNpc(mapNum, Index).Y And DidWalk = False Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(mapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
+            ElseIf MapNpc(MapNum, MapNpcNum).Y < MapNpc(MapNum, Index).Y And DidWalk = False Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Call NpcMove(MapNum, MapNpcNum, DIR_DOWN, MOVING_WALKING): DidWalk = True
             End If
             'Débloquer
-            If Not DidWalk And Not NpcBeside(mapNum, MapNpcNum, Index) Then
-                If CanNpcMove(mapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(mapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
+            If Not DidWalk And Not NpcBeside(MapNum, MapNpcNum, Index) Then
+                If CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Call NpcMove(MapNum, MapNpcNum, DIR_RIGHT, MOVING_WALKING): DidWalk = True
             End If
         End If
 End Select
 If Not DidWalk Then
     If IndexType = TARGET_TYPE_PLAYER Then
-        If MapNpc(mapNum, MapNpcNum).X - 1 = GetPlayerX(Index) And MapNpc(mapNum, MapNpcNum).Y = GetPlayerY(Index) Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_LEFT Then Call NpcDir(mapNum, MapNpcNum, DIR_LEFT)
+        If MapNpc(MapNum, MapNpcNum).X - 1 = GetPlayerX(Index) And MapNpc(MapNum, MapNpcNum).Y = GetPlayerY(Index) Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_LEFT Then Call NpcDir(MapNum, MapNpcNum, DIR_LEFT)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X + 1 = GetPlayerX(Index) And MapNpc(mapNum, MapNpcNum).Y = GetPlayerY(Index) Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_RIGHT Then Call NpcDir(mapNum, MapNpcNum, DIR_RIGHT)
+        If MapNpc(MapNum, MapNpcNum).X + 1 = GetPlayerX(Index) And MapNpc(MapNum, MapNpcNum).Y = GetPlayerY(Index) Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_RIGHT Then Call NpcDir(MapNum, MapNpcNum, DIR_RIGHT)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X = GetPlayerX(Index) And MapNpc(mapNum, MapNpcNum).Y - 1 = GetPlayerY(Index) Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_UP Then Call NpcDir(mapNum, MapNpcNum, DIR_UP)
+        If MapNpc(MapNum, MapNpcNum).X = GetPlayerX(Index) And MapNpc(MapNum, MapNpcNum).Y - 1 = GetPlayerY(Index) Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_UP Then Call NpcDir(MapNum, MapNpcNum, DIR_UP)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X = GetPlayerX(Index) And MapNpc(mapNum, MapNpcNum).Y + 1 = GetPlayerY(Index) Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_DOWN Then Call NpcDir(mapNum, MapNpcNum, DIR_DOWN)
+        If MapNpc(MapNum, MapNpcNum).X = GetPlayerX(Index) And MapNpc(MapNum, MapNpcNum).Y + 1 = GetPlayerY(Index) Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_DOWN Then Call NpcDir(MapNum, MapNpcNum, DIR_DOWN)
             DidWalk = True
         End If
     ElseIf IndexType = TARGET_TYPE_NPC Then
-        If MapNpc(mapNum, MapNpcNum).X - 1 = MapNpc(mapNum, Index).X And MapNpc(mapNum, MapNpcNum).Y = MapNpc(mapNum, Index).Y Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_LEFT Then Call NpcDir(mapNum, MapNpcNum, DIR_LEFT)
+        If MapNpc(MapNum, MapNpcNum).X - 1 = MapNpc(MapNum, Index).X And MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, Index).Y Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_LEFT Then Call NpcDir(MapNum, MapNpcNum, DIR_LEFT)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X + 1 = MapNpc(mapNum, Index).X And MapNpc(mapNum, MapNpcNum).Y = MapNpc(mapNum, Index).Y Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_RIGHT Then Call NpcDir(mapNum, MapNpcNum, DIR_RIGHT)
+        If MapNpc(MapNum, MapNpcNum).X + 1 = MapNpc(MapNum, Index).X And MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, Index).Y Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_RIGHT Then Call NpcDir(MapNum, MapNpcNum, DIR_RIGHT)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X = MapNpc(mapNum, Index).X And MapNpc(mapNum, MapNpcNum).Y - 1 = MapNpc(mapNum, Index).Y Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_UP Then Call NpcDir(mapNum, MapNpcNum, DIR_UP)
+        If MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, Index).X And MapNpc(MapNum, MapNpcNum).Y - 1 = MapNpc(MapNum, Index).Y Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_UP Then Call NpcDir(MapNum, MapNpcNum, DIR_UP)
             DidWalk = True
         End If
-        If MapNpc(mapNum, MapNpcNum).X = MapNpc(mapNum, Index).X And MapNpc(mapNum, MapNpcNum).Y + 1 = MapNpc(mapNum, Index).Y Then
-            If MapNpc(mapNum, MapNpcNum).Dir <> DIR_DOWN Then Call NpcDir(mapNum, MapNpcNum, DIR_DOWN)
+        If MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, Index).X And MapNpc(MapNum, MapNpcNum).Y + 1 = MapNpc(MapNum, Index).Y Then
+            If MapNpc(MapNum, MapNpcNum).Dir <> DIR_DOWN Then Call NpcDir(MapNum, MapNpcNum, DIR_DOWN)
             DidWalk = True
         End If
     End If
 
     ' We could not move so player must be behind something, walk randomly.
     If Not DidWalk Then
-        If Map(mapNum).Npcs(MapNpcNum).X <= -1 Then
+        If Map(MapNum).Npcs(MapNpcNum).X <= -1 Then
             i = Int(Rnd * 2)
             If i = 1 Then
                 i = Int(Rnd * 4)
-                If CanNpcMove(mapNum, MapNpcNum, i) Then Call NpcMove(mapNum, MapNpcNum, i, MOVING_WALKING)
+                If CanNpcMove(MapNum, MapNpcNum, i) Then Call NpcMove(MapNum, MapNpcNum, i, MOVING_WALKING)
             End If
         End If
     End If
 End If
 End Sub
 
-Function CanNPCAttackNPC(ByVal mapNum As Integer, ByVal MapNpcNumAtt As Byte, ByVal MapNpcNumDef As Byte) As Boolean
+Function CanNPCAttackNPC(ByVal MapNum As Integer, ByVal MapNpcNumAtt As Byte, ByVal MapNpcNumDef As Byte) As Boolean
 Dim npcnum As Integer
     
     CanNPCAttackNPC = False
@@ -1285,28 +1284,28 @@ Dim npcnum As Integer
     If MapNpcNumAtt <= 0 Or MapNpcNumAtt > MAX_MAP_NPCS Or MapNpcNumDef <= 0 Or MapNpcNumDef > MAX_MAP_NPCS Then Exit Function
         
     ' Check for subscript out of range
-    If MapNpc(mapNum, MapNpcNumAtt).Num <= 0 Or MapNpc(mapNum, MapNpcNumAtt).Num > MAX_NPCS Or MapNpc(mapNum, MapNpcNumDef).Num <= 0 Or MapNpc(mapNum, MapNpcNumDef).Num > MAX_NPCS Then Exit Function
+    If MapNpc(MapNum, MapNpcNumAtt).Num <= 0 Or MapNpc(MapNum, MapNpcNumAtt).Num > MAX_NPCS Or MapNpc(MapNum, MapNpcNumDef).Num <= 0 Or MapNpc(MapNum, MapNpcNumDef).Num > MAX_NPCS Then Exit Function
     
-    npcnum = MapNpc(mapNum, MapNpcNumAtt).Num
+    npcnum = MapNpc(MapNum, MapNpcNumAtt).Num
     
     ' Make sure the npc isn't already dead
-    If MapNpc(mapNum, MapNpcNumAtt).HP <= 0 And CLng(Npc(npcnum).Inv) = 0 Or MapNpc(mapNum, MapNpcNumDef).HP <= 0 And CLng(Npc(MapNpc(mapNum, MapNpcNumDef).Num).Inv) = 0 Then Exit Function
+    If MapNpc(MapNum, MapNpcNumAtt).HP <= 0 And CLng(Npc(npcnum).Inv) = 0 Or MapNpc(MapNum, MapNpcNumDef).HP <= 0 And CLng(Npc(MapNpc(MapNum, MapNpcNumDef).Num).Inv) = 0 Then Exit Function
         
     ' Make sure npcs dont attack more then once a second
-    If GetTickCount < MapNpc(mapNum, MapNpcNumAtt).AttackTimer + 1000 Then Exit Function
+    If GetTickCount < MapNpc(MapNum, MapNpcNumAtt).AttackTimer + 1000 Then Exit Function
     
-    MapNpc(mapNum, MapNpcNumAtt).AttackTimer = GetTickCount
+    MapNpc(MapNum, MapNpcNumAtt).AttackTimer = GetTickCount
             ' Check if at same coordinates
-            If (MapNpc(mapNum, MapNpcNumDef).Y + 1 = MapNpc(mapNum, MapNpcNumAtt).Y) And (MapNpc(mapNum, MapNpcNumDef).X = MapNpc(mapNum, MapNpcNumAtt).X) Then
+            If (MapNpc(MapNum, MapNpcNumDef).Y + 1 = MapNpc(MapNum, MapNpcNumAtt).Y) And (MapNpc(MapNum, MapNpcNumDef).X = MapNpc(MapNum, MapNpcNumAtt).X) Then
                 CanNPCAttackNPC = True
             Else
-                If (MapNpc(mapNum, MapNpcNumDef).Y - 1 = MapNpc(mapNum, MapNpcNumAtt).Y) And (MapNpc(mapNum, MapNpcNumDef).X = MapNpc(mapNum, MapNpcNumAtt).X) Then
+                If (MapNpc(MapNum, MapNpcNumDef).Y - 1 = MapNpc(MapNum, MapNpcNumAtt).Y) And (MapNpc(MapNum, MapNpcNumDef).X = MapNpc(MapNum, MapNpcNumAtt).X) Then
                     CanNPCAttackNPC = True
                 Else
-                    If (MapNpc(mapNum, MapNpcNumDef).Y = MapNpc(mapNum, MapNpcNumAtt).Y) And (MapNpc(mapNum, MapNpcNumDef).X + 1 = MapNpc(mapNum, MapNpcNumAtt).X) Then
+                    If (MapNpc(MapNum, MapNpcNumDef).Y = MapNpc(MapNum, MapNpcNumAtt).Y) And (MapNpc(MapNum, MapNpcNumDef).X + 1 = MapNpc(MapNum, MapNpcNumAtt).X) Then
                         CanNPCAttackNPC = True
                     Else
-                        If (MapNpc(mapNum, MapNpcNumDef).Y = MapNpc(mapNum, MapNpcNumAtt).Y) And (MapNpc(mapNum, MapNpcNumDef).X - 1 = MapNpc(mapNum, MapNpcNumAtt).X) Then
+                        If (MapNpc(MapNum, MapNpcNumDef).Y = MapNpc(MapNum, MapNpcNumAtt).Y) And (MapNpc(MapNum, MapNpcNumDef).X - 1 = MapNpc(MapNum, MapNpcNumAtt).X) Then
                             CanNPCAttackNPC = True
                         End If
                     End If
@@ -1317,38 +1316,38 @@ Exit Function
 er:
 CanNPCAttackNPC = False
 On Error Resume Next
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un PNJ(" & MapNpc(mapNum, MapNpcNumDef).Num & ")par un PNJ(" & npcnum & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & MapNpc(mapNum, MapNpcNumDef).Num & ")par un PNJ(" & npcnum & ")", BrightRed)
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un PNJ(" & MapNpc(MapNum, MapNpcNumDef).Num & ")par un PNJ(" & npcnum & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & MapNpc(MapNum, MapNpcNumDef).Num & ")par un PNJ(" & npcnum & ")", BrightRed)
 End Function
 
-Sub NPCAttackNPC(ByVal mapNum As Integer, ByVal Damage As Integer, ByVal MapNpcNumAtt As Byte, ByVal MapNpcNumDef As Byte)
+Sub NPCAttackNPC(ByVal MapNum As Integer, ByVal Damage As Integer, ByVal MapNpcNumAtt As Byte, ByVal MapNpcNumDef As Byte)
 Dim AttNpcNum As Integer, DefNpcNum As Integer
 
     On Error GoTo er
     
     ' Check for subscript out of range
     If MapNpcNumDef <= 0 Or MapNpcNumDef > MAX_MAP_NPCS Or MapNpcNumAtt <= 0 Or MapNpcNumAtt > MAX_MAP_NPCS Or Damage < 0 Then Exit Sub
-    If MapNpc(mapNum, MapNpcNumDef).Num <= 0 Or MapNpc(mapNum, MapNpcNumAtt).Num <= 0 Then Exit Sub
+    If MapNpc(MapNum, MapNpcNumDef).Num <= 0 Or MapNpc(MapNum, MapNpcNumAtt).Num <= 0 Then Exit Sub
 
     ' Send this packet so they can see the person attacking
-    Call SendDataToMap(mapNum, "NPCATTACKNPC" & SEP_CHAR & MapNpcNumAtt & END_CHAR)
+    Call SendDataToMap(MapNum, "NPCATTACKNPC" & SEP_CHAR & MapNpcNumAtt & END_CHAR)
     
-    If Damage >= MapNpc(mapNum, MapNpcNumDef).HP Then
+    If Damage >= MapNpc(MapNum, MapNpcNumDef).HP Then
         
         ' Now set HP to 0 so we know to actually kill them in the server loop (this prevents subscript out of range)
-        MapNpc(mapNum, MapNpcNumDef).Num = 0
-        MapNpc(mapNum, MapNpcNumDef).SpawnWait = GetTickCount
-        MapNpc(mapNum, MapNpcNumDef).HP = 0
-        Call SendDataToMap(mapNum, "NPCDEAD" & SEP_CHAR & MapNpcNumDef & END_CHAR)
+        MapNpc(MapNum, MapNpcNumDef).Num = 0
+        MapNpc(MapNum, MapNpcNumDef).SpawnWait = GetTickCount
+        MapNpc(MapNum, MapNpcNumDef).HP = 0
+        Call SendDataToMap(MapNum, "NPCDEAD" & SEP_CHAR & MapNpcNumDef & END_CHAR)
         
         ' Set NPC target to 0
-        MapNpc(mapNum, MapNpcNumDef).Target = 0
-        MapNpc(mapNum, MapNpcNumDef).TargetType = 0
-        MapNpc(mapNum, MapNpcNumAtt).Target = 0
-        MapNpc(mapNum, MapNpcNumAtt).TargetType = 0
+        MapNpc(MapNum, MapNpcNumDef).Target = 0
+        MapNpc(MapNum, MapNpcNumDef).TargetType = 0
+        MapNpc(MapNum, MapNpcNumAtt).Target = 0
+        MapNpc(MapNum, MapNpcNumAtt).TargetType = 0
     Else
-        MapNpc(mapNum, MapNpcNumDef).HP = MapNpc(mapNum, MapNpcNumDef).HP - Damage
-        If MapNpc(mapNum, MapNpcNumDef).Target <> MapNpcNumAtt Then MapNpc(mapNum, MapNpcNumDef).Target = MapNpcNumAtt: MapNpc(mapNum, MapNpcNumDef).TargetType = TARGET_TYPE_NPC
+        MapNpc(MapNum, MapNpcNumDef).HP = MapNpc(MapNum, MapNpcNumDef).HP - Damage
+        If MapNpc(MapNum, MapNpcNumDef).Target <> MapNpcNumAtt Then MapNpc(MapNum, MapNpcNumDef).Target = MapNpcNumAtt: MapNpc(MapNum, MapNpcNumDef).TargetType = TARGET_TYPE_NPC
     End If
     
     'Call SendDataTomap(mapnum, "NPCBLITNPCDMG" & SEP_CHAR & mapnpcnumdef & sep_char & Damage & END_CHAR) ' --> <--
@@ -1358,11 +1357,11 @@ Exit Sub
 er:
 On Error Resume Next
 
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un PNJ(" & MapNpc(mapNum, MapNpcNumDef).Num & ")par un PNJ(" & MapNpc(mapNum, MapNpcNumAtt).Num & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & MapNpc(mapNum, MapNpcNumDef).Num & ")par un PNJ(" & MapNpc(mapNum, MapNpcNumAtt).Num & ")", BrightRed)
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un PNJ(" & MapNpc(MapNum, MapNpcNumDef).Num & ")par un PNJ(" & MapNpc(MapNum, MapNpcNumAtt).Num & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & MapNpc(MapNum, MapNpcNumDef).Num & ")par un PNJ(" & MapNpc(MapNum, MapNpcNumAtt).Num & ")", BrightRed)
 End Sub
 'Script Hotel de ventes par Horace
-Public Sub HdvCmd(ByVal Index As Long, ByVal s As String)
+Public Sub HdvCmd(ByVal Index As Byte, ByVal s As String)
 Dim Parse() As String, Answer As Integer
     s = Mid$(s, 7)
     Parse = Split(s, " ")

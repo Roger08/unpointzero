@@ -123,9 +123,9 @@ Public Sub SetPlayerQuete(ByVal Index As Integer, ByVal QuestNum As Integer, Opt
 End Sub
 
 'Code by Cryo
-Public Function PlayerInMap(ByVal MapNum As Integer) As Integer
-    Dim i As Integer
-    Dim Player As Integer
+Public Function PlayerInMap(ByVal MapNum As Integer) As Byte
+    Dim i As Byte
+    Dim Player As Byte
     Player = 0
     For i = 1 To MAX_PLAYERS
         If GetPlayerMap(i) = MapNum Then Player = Player + 1

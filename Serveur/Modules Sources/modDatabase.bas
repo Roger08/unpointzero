@@ -14,16 +14,6 @@ Public Const PLAYER_LOG = "logs\player.txt"
 Public Const GUILDE_LOG = "logs\guildes.txt"
 Public surcharge As Boolean
 
-'Code by Cryo
-Public Function PlayerInMap(ByVal mapNum As Integer) As Integer
-    Dim i As Integer
-    Dim Player As Integer
-    Player = 0
-    For i = 1 To MAX_PLAYERS
-        If GetPlayerMap(i) = mapNum Then Player = Player + 1
-    Next i
-    PlayerInMap = Player
-End Function
 
 Public Function GetVar(File As String, Header As String, Var As String) As String
 Dim sSpaces As String   ' Max string length
@@ -466,15 +456,15 @@ End Sub
 Function AccountExist(ByVal Name As String) As Boolean
 Dim FileName As String
 
-    FileName = "accounts\" & Trim$(Name) & ".ini"
+    FileName = "Comptes\" & Trim$(Name) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
     
-    FileName = "accounts\" & Trim$(LCase$(Name)) & ".ini"
+    FileName = "Comptes\" & Trim$(LCase$(Name)) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
     
-    FileName = "accounts\" & Trim$(UCase$(Name)) & ".ini"
+    FileName = "Comptes\" & Trim$(UCase$(Name)) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
 End Function
@@ -1084,15 +1074,15 @@ Sub CheckNpcs()
     Call SaveNpcs
 End Sub
 
-Sub SaveMap(ByVal mapNum As Long)
+Sub SaveMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
 
-    FileName = App.Path & "\Maps\Map" & mapNum & ".fcc"
+    FileName = App.Path & "\Maps\Map" & MapNum & ".fcc"
     
     f = FreeFile
     Open FileName For Binary As #f
-        Put #f, , Map(mapNum)
+        Put #f, , Map(MapNum)
     Close #f
 End Sub
 
@@ -1129,20 +1119,20 @@ Dim r As Integer
     End If
 End Sub
 
-Sub LoadMap(ByVal mapNum As Long)
+Sub LoadMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
             
-    FileName = App.Path & "\Maps\Map" & mapNum & ".fcc"
+    FileName = App.Path & "\Maps\Map" & MapNum & ".fcc"
 
-    If Not FileExist("\Maps\Map" & mapNum & ".fcc") Then Exit Sub
+    If Not FileExist("\Maps\Map" & MapNum & ".fcc") Then Exit Sub
     
     f = FreeFile
     Open FileName For Binary Access Read As #f
-        Get #f, , Map(mapNum)
+        Get #f, , Map(MapNum)
     Close #f
-    SpawnMapItems (mapNum)
-    SpawnMapNpcs (mapNum)
+    SpawnMapItems (MapNum)
+    SpawnMapNpcs (MapNum)
 End Sub
 
 
