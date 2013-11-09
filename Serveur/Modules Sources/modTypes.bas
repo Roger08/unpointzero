@@ -781,7 +781,7 @@ If PnjMove(Index, Carte) = False Then PnjMove(Index, Carte) = True Else PnjMove(
 End Sub
 
 Sub ClearClasses()
-Dim i As Long
+Dim i As Byte
 
     For i = 0 To Max_Classes
        Call ZeroMemory(ByVal VarPtr(Classe(i)), LenB(Classe(i)))
@@ -789,8 +789,8 @@ Dim i As Long
 End Sub
 
 Sub ClearPlayer(ByVal Index As Byte)
-Dim i As Long
-Dim n As Long
+Dim i As Byte
+Dim n As Integer
 With Player(Index)
     .Login = vbNullString
     .Password = vbNullString
@@ -898,7 +898,7 @@ End With
 End Sub
 
 Sub ClearChar(ByVal Index As Byte, ByVal CharNum As Byte)
-Dim n As Long
+Dim n As Integer
 With Player(Index)
     .Char(CharNum).Name = vbNullString
     .Char(CharNum).Class = 0
@@ -999,7 +999,7 @@ End With
 End Sub
 
 Sub ClearItems()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_ITEMS
         Call ClearItem(i)
@@ -1007,7 +1007,7 @@ Dim i As Long
 End Sub
 
 Sub ClearNpc(ByVal Index As Integer)
-Dim i As Long
+Dim i As Integer
 With Npc(Index)
     .Name = vbNullString
     .AttackSay = vbNullString
@@ -1037,7 +1037,7 @@ End With
 End Sub
 
 Sub ClearNpcs()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_NPCS
         Call ClearNpc(i)
@@ -1054,7 +1054,7 @@ End With
 End Sub
 
 Sub ClearPets()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_PETS
         Call ClearPet(i)
@@ -1062,7 +1062,7 @@ Dim i As Long
 End Sub
 
 Sub ClearMetier(ByVal Index As Integer)
-Dim i As Long
+Dim i As Integer
 With metier(Index)
     .nom = ""
     .type = 0
@@ -1075,7 +1075,7 @@ End With
 End Sub
 
 Sub ClearMetiers()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_METIER
         Call ClearMetier(i)
@@ -1083,7 +1083,7 @@ Dim i As Long
 End Sub
 
 Sub ClearRecette(ByVal Index As Integer)
-Dim i As Long, z As Long
+Dim i As Integer, z As Integer
 With recette(Index)
     .nom = ""
     For i = 0 To 9
@@ -1097,7 +1097,7 @@ End With
 End Sub
 
 Sub ClearRecettes()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_RECETTE
         Call ClearRecette(i)
@@ -1147,8 +1147,8 @@ End With
 End Sub
 
 Sub ClearMapNpcs()
-Dim X As Long
-Dim Y As Long
+Dim X As Byte
+Dim Y As Byte
 
     For Y = 1 To MAX_MAPS
         For X = 1 To MAX_MAP_NPCS
@@ -1157,9 +1157,9 @@ Dim Y As Long
     Next Y
 End Sub
 Sub ClearMap(ByVal MapNum As Integer)
-Dim i As Long
-Dim X As Long
-Dim Y As Long
+Dim i As Integer
+Dim X As Byte
+Dim Y As Byte
 
 With Map(MapNum)
     .Name = vbNullString
@@ -1241,7 +1241,7 @@ End With
 
 End Sub
 Sub ClearQuete(ByVal Index As Integer)
-Dim i As Long
+Dim i As Byte
 With quete(Index)
     .nom = vbNullString
     .data1 = 0
@@ -1272,7 +1272,7 @@ End With
 End Sub
 
 Sub ClearPlayerQuete(ByVal Index As Integer)
-Dim i As Long
+Dim i As Byte
 With Player(Index).Char(Player(Index).CharNum)
     .QueteEnCour = 0
     .Quetep.data1 = 0
@@ -1290,7 +1290,7 @@ End With
 End Sub
 
 Sub ClearMaps()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_MAPS
         Call ClearMap(i)
@@ -1298,7 +1298,7 @@ Dim i As Long
 End Sub
 
 Sub ClearQuetes()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_QUETES
         Call ClearQuete(i)
@@ -1306,8 +1306,8 @@ Dim i As Long
 End Sub
 
 Sub ClearShop(ByVal Index As Integer)
-Dim i As Long
-Dim z As Long
+Dim i As Byte
+Dim z As Integer
 
     Shop(Index).Name = vbNullString
     Shop(Index).JoinSay = vbNullString
@@ -1326,7 +1326,7 @@ Dim z As Long
 End Sub
 
 Sub ClearShops()
-Dim i As Long
+Dim i As Integer
 
     For i = 1 To MAX_SHOPS
         Call ClearShop(i)
@@ -1359,7 +1359,7 @@ End With
 End Sub
 
 Sub ClearSpells()
-Dim i As Long
+Dim i As Byte
 
     For i = 1 To MAX_SPELLS
         Call ClearSpell(i)
@@ -1406,7 +1406,7 @@ Function GetPlayerGuildAccess(ByVal Index As Byte) As Byte
     GetPlayerGuildAccess = Player(Index).Char(Player(Index).CharNum).Guildaccess
 End Function
 
-Sub SetPlayerGuildAccess(ByVal Index As Byte, ByVal Guildaccess As Long)
+Sub SetPlayerGuildAccess(ByVal Index As Byte, ByVal Guildaccess As Byte)
     Player(Index).Char(Player(Index).CharNum).Guildaccess = Guildaccess
 End Sub
 
@@ -1502,9 +1502,8 @@ Sub SetPlayerSP(ByVal Index As Byte, ByVal SP As Integer)
 End Sub
 
 Function GetPlayerMaxHP(ByVal Index As Byte) As Integer
-Dim CharNum As Long
-Dim i As Long
-Dim add As Long
+Dim CharNum As Byte
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddHP
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddHP
@@ -1517,8 +1516,8 @@ add = 0
 End Function
 
 Function GetPlayerMaxMP(ByVal Index As Byte) As Integer
-Dim CharNum As Long
-Dim add As Long
+Dim CharNum As Byte
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddMP
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddMP
@@ -1531,8 +1530,8 @@ add = 0
 End Function
 
 Function GetPlayerMaxSP(ByVal Index As Byte) As Integer
-Dim CharNum As Long
-Dim add As Long
+Dim CharNum As Byte
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddSP
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddSP
@@ -1577,7 +1576,7 @@ Function GetClassMAGI(ByVal ClassNum As Byte) As Integer
 End Function
 
 Function GetPlayerStr(ByVal Index As Byte) As Integer
-Dim add As Long
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddStr
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddStr
@@ -1592,7 +1591,7 @@ Sub SetPlayerStr(ByVal Index As Byte, ByVal STR As Integer)
 End Sub
 
 Function GetPlayerDEF(ByVal Index As Byte) As Integer
-Dim add As Long
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddDef
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddDef
@@ -1607,7 +1606,7 @@ Sub SetPlayerDEF(ByVal Index As Byte, ByVal def As Integer)
 End Sub
 
 Function GetPlayerSPEED(ByVal Index As Byte) As Long
-Dim add As Long
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddSpeed
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddSpeed
@@ -1622,7 +1621,7 @@ Sub SetPlayerSPEED(ByVal Index As Byte, ByVal Speed As Integer)
 End Sub
 
 Function GetPlayerMAGI(ByVal Index As Byte) As Integer
-Dim add As Long
+Dim add As Integer
 add = 0
     If GetPlayerWeaponSlot(Index) > 0 Then add = item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).AddMagi
     If GetPlayerArmorSlot(Index) > 0 Then add = add + item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).AddMagi
