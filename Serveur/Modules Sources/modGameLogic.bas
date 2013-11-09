@@ -1,8 +1,8 @@
 Attribute VB_Name = "modGameLogic"
 Option Explicit
 
-Function GetPlayerDamage(ByVal Index As Long) As Long
-Dim WeaponSlot As Long
+Function GetPlayerDamage(ByVal Index As Byte) As Long
+Dim WeaponSlot As Byte
 
     GetPlayerDamage = 0
     
@@ -38,8 +38,8 @@ Dim WeaponSlot As Long
     
 End Function
 
-Function GetPlayerProtection(ByVal Index As Long) As Long
-Dim ArmorSlot As Long, HelmSlot As Long, ShieldSlot As Long
+Function GetPlayerProtection(ByVal Index As Byte) As Long
+Dim ArmorSlot As Byte, HelmSlot As Byte, ShieldSlot As Byte
     
     GetPlayerProtection = 0
     
@@ -98,8 +98,8 @@ Dim ArmorSlot As Long, HelmSlot As Long, ShieldSlot As Long
     End If
 End Function
 
-Function FindOpenPlayerSlot() As Long
-Dim i As Long
+Function FindOpenPlayerSlot() As Byte
+Dim i As Byte
 
     FindOpenPlayerSlot = 0
     
@@ -108,8 +108,8 @@ Dim i As Long
     Next i
 End Function
 
-Function FindOpenInvSlot(ByVal Index As Long, ByVal ItemNum As Long) As Long
-Dim i As Long
+Function FindOpenInvSlot(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
+Dim i As Byte
     
     FindOpenInvSlot = 0
     
@@ -129,8 +129,8 @@ Dim i As Long
     Next i
 End Function
 
-Function FindOpenMapItemSlot(ByVal MapNum As Long) As Long
-Dim i As Long
+Function FindOpenMapItemSlot(ByVal MapNum As Integer) As Byte
+Dim i As Byte
 
     FindOpenMapItemSlot = 0
     
@@ -142,8 +142,8 @@ Dim i As Long
     Next i
 End Function
 
-Function FindOpenSpellSlot(ByVal Index As Long) As Long
-Dim i As Long
+Function FindOpenSpellSlot(ByVal Index As Byte) As Byte
+Dim i As Byte
 
     FindOpenSpellSlot = 0
     
@@ -152,8 +152,8 @@ Dim i As Long
     Next i
 End Function
 
-Function HasSpell(ByVal Index As Long, ByVal SpellNum As Long) As Boolean
-Dim i As Long
+Function HasSpell(ByVal Index As Byte, ByVal SpellNum As Integer) As Boolean
+Dim i As Byte
 
     HasSpell = False
     
@@ -162,8 +162,8 @@ Dim i As Long
     Next i
 End Function
 
-Function TotalOnlinePlayers() As Long
-Dim i As Long
+Function TotalOnlinePlayers() As Byte
+Dim i As Byte
 TotalOnlinePlayers = 0
 
 For i = 1 To MAX_PLAYERS
@@ -171,8 +171,8 @@ For i = 1 To MAX_PLAYERS
 Next i
 End Function
 
-Function FindPlayer(ByVal Name As String) As Long
-Dim i As Long
+Function FindPlayer(ByVal Name As String) As Byte
+Dim i As Byte
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then
@@ -189,8 +189,8 @@ Dim i As Long
     FindPlayer = 0
 End Function
 
-Function HasItem(ByVal Index As Long, ByVal ItemNum As Long) As Long
-Dim i As Long
+Function HasItem(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
+Dim i As Byte
     
     HasItem = 0
     
@@ -210,8 +210,8 @@ Dim i As Long
     Next i
 End Function
 
-Sub TakeItem(ByVal Index As Long, ByVal ItemNum As Long, ByVal ItemVal As Long)
-Dim i As Long, n As Long
+Sub TakeItem(ByVal Index As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer)
+Dim i As Byte, n As Byte
 Dim TakeItem As Boolean
 
     TakeItem = False
@@ -329,8 +329,8 @@ Dim TakeItem As Boolean
     Next i
 End Sub
 
-Sub GiveItem(ByVal Index As Long, ByVal ItemNum As Long, ByVal ItemVal As Long)
-Dim i As Long
+Sub GiveItem(ByVal Index As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer)
+Dim i As Byte
 
     ' Check for subscript out of range
     If IsPlaying(Index) = False Or ItemNum <= 0 Or ItemNum > MAX_ITEMS Then Exit Sub
@@ -352,8 +352,8 @@ Dim i As Long
     End If
 End Sub
 
-Sub SpawnItem(ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long)
-Dim i As Long
+Sub SpawnItem(ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
+Dim i As Byte
 
     ' Check for subscript out of range
     If ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -364,9 +364,9 @@ Dim i As Long
     Call SpawnItemSlot(i, ItemNum, ItemVal, item(ItemNum).data1, MapNum, X, Y)
 End Sub
 
-Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal ItemDur As Long, ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long)
+Sub SpawnItemSlot(ByVal MapItemSlot As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal ItemDur As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
 Dim Packet As String
-Dim i As Long
+Dim i As Byte
     
     ' Check for subscript out of range
     If MapItemSlot <= 0 Or MapItemSlot > MAX_MAP_ITEMS Or ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -396,17 +396,16 @@ Dim i As Long
 End Sub
 
 Sub SpawnAllMapsItems()
-Dim i As Long
+Dim i As Integer
     
     For i = 1 To MAX_MAPS
         Call SpawnMapItems(i)
     Next i
 End Sub
 
-Sub SpawnMapItems(ByVal MapNum As Long)
-Dim X As Long
-Dim Y As Long
-Dim i As Long
+Sub SpawnMapItems(ByVal MapNum As Integer)
+Dim X As Byte
+Dim Y As Byte
 
     ' Check for subscript out of range
     If MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -428,10 +427,10 @@ Dim i As Long
     Next Y
 End Sub
 
-Sub PlayerMapGetItem(ByVal Index As Long)
-Dim i As Long
-Dim n As Long
-Dim MapNum As Long
+Sub PlayerMapGetItem(ByVal Index As Byte)
+Dim i As Byte
+Dim n As Integer
+Dim MapNum As Integer
 Dim Msg As String
 
 
@@ -489,8 +488,8 @@ Dim Msg As String
     Next i
 End Sub
 
-Sub PlayerMapDropItem(ByVal Index As Long, ByVal InvNum As Long, ByVal Amount As Long)
-Dim i As Long
+Sub PlayerMapDropItem(ByVal Index As Byte, ByVal InvNum As Integer, ByVal Amount As Integer)
+Dim i As Byte
 
     ' Check for subscript out of range
     If IsPlaying(Index) = False Or InvNum <= 0 Or InvNum > MAX_INV Then Exit Sub
@@ -545,7 +544,7 @@ Dim i As Long
                     
                 Case ITEM_TYPE_MONTURE
                     If InvNum = GetPlayerArmorSlot(Index) Then
-                        Dim s As Long
+                        Dim s As Integer
                         Call SetPlayerArmorSlot(Index, 0)
                         Call SendInventory(Index)
                         Call SendWornEquipment(Index)
@@ -604,10 +603,9 @@ End Sub
 'Thanks to Gotakk 'cause he's the one who tracked a bug (after almost a year, he's the only one)
 'The bug was a forgot to check if we already informed the player about the QuestStatus
 
-Sub PlayerQueteTypeRecup(ByVal Index As Long, ByVal Queteec As Long, ByVal Objnum As Long, ByVal Objvalue As Long)
-Dim i As Long
-Dim n As Long
-Dim z As Long
+Sub PlayerQueteTypeRecup(ByVal Index As Byte, ByVal Queteec As Integer, ByVal Objnum As Integer, ByVal Objvalue As Integer)
+Dim i As Byte
+Dim n As Integer
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Then Exit Sub
@@ -641,9 +639,9 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeAport(ByVal Index As Long, ByVal Queteec As Long)
-Dim i As Long
-Dim n As Long
+Sub PlayerQueteTypeAport(ByVal Index As Byte, ByVal Queteec As Integer)
+Dim i As Byte
+Dim n As Byte
 n = 0
 
 If Not IsPlaying(Index) Then Exit Sub
@@ -672,9 +670,9 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeTuer(ByVal Index As Long, ByVal Queteec As Long, ByVal NpcTnum As Long)
-Dim i As Long
-Dim n As Long
+Sub PlayerQueteTypeTuer(ByVal Index As Byte, ByVal Queteec As Integer, ByVal NpcTnum As Integer)
+Dim i As Byte
+Dim n As Byte
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Then Exit Sub
@@ -709,9 +707,7 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeXp(ByVal Index As Long, ByVal Queteec As Long, ByVal Xp As Long)
-Dim i As Long
-Dim n As Long
+Sub PlayerQueteTypeXp(ByVal Index As Byte, ByVal Queteec As Integer, ByVal Xp As Long)
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Or Xp <= 0 Then Exit Sub
@@ -729,10 +725,8 @@ End If
 
 End Sub
 
-Sub TerminerPlayerQuete(ByVal Index As Long, ByVal QueteTindex As Long)
+Sub TerminerPlayerQuete(ByVal Index As Byte, ByVal QueteTindex As Integer)
 Dim Packet As String
-Dim i As Long
-
 If Not IsPlaying(Index) Then Exit Sub
 If QueteTindex <= 0 Then Exit Sub
 If GetPlayerQueteEtat(Index, QueteTindex) Then Exit Sub
@@ -772,10 +766,10 @@ Call SendDataTo(Index, Packet)
 
 End Sub
 
-Sub SpawnNpc(ByVal MapNpcNum As Long, ByVal MapNum As Long)
+Sub SpawnNpc(ByVal MapNpcNum As Integer, ByVal MapNum As Integer)
 Dim Packet As String
-Dim npcnum As Long
-Dim i As Long, X As Long, Y As Long
+Dim npcnum As Integer
+Dim i As Byte, X As Byte, Y As Byte
 Dim Spawned As Boolean
 
     ' Check for subscript out of range
@@ -860,10 +854,9 @@ Dim Spawned As Boolean
         Call SendDataToMap(MapNum, Packet)
     End If
     
-    'Call SendDataToMap(MapNum, "npchp" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).HP & SEP_CHAR & GetNpcMaxHP(MapNpc(MapNum, MapNpcNum).num) & END_CHAR)
 End Sub
 
-Sub SpawnMapNpcs(ByVal MapNum As Long)
+Sub SpawnMapNpcs(ByVal MapNum As Integer)
 Dim i As Integer
 
     For i = 1 To MAX_MAP_NPCS
@@ -879,8 +872,8 @@ Dim i As Integer
     Next i
 End Sub
 
-Function CanAttackPlayer(ByVal Attacker As Long, ByVal Victim As Long) As Boolean
-Dim AttackSpeed As Long
+Function CanAttackPlayer(ByVal Attacker As Byte, ByVal Victim As Byte) As Boolean
+Dim AttackSpeed As Integer
 
     ' Check for subscript out of range
     If IsPlaying(Attacker) = False Or IsPlaying(Victim) = False Then Exit Function
@@ -1013,11 +1006,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(ATT : " & GetPlayerName(Attacker) & ",VIC : " & GetPlayerName(Victim) & ")", BrightRed)
 End Function
 
-Function CanAttackNpc(ByVal Attacker As Long, ByVal MapNpcNum As Long) As Boolean
-Dim MapNum As Long, npcnum As Long
-Dim AttackSpeed As Long
+Function CanAttackNpc(ByVal Attacker As Byte, ByVal MapNpcNum As Integer) As Boolean
+Dim X As Byte, Y As Byte, npcnum As Integer
+Dim AttackSpeed As Integer
 Dim TmpX As Byte, TmpY As Byte
-
+Dim MapNum As Integer
 
 
 ' Check for subscript out of range
@@ -1163,8 +1156,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ") par un joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Function
 
-Function CanNpcAttackPlayer(ByVal MapNpcNum As Long, ByVal Index As Long) As Boolean
-Dim MapNum As Long, npcnum As Long
+Function CanNpcAttackPlayer(ByVal MapNpcNum As Integer, ByVal Index As Byte) As Boolean
+Dim X As Byte, Y As Byte, npcnum As Integer
+Dim MapNum As Integer
     
     CanNpcAttackPlayer = False
     
@@ -1224,10 +1218,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Index) & ")par un PNJ(" & npcnum & ")", BrightRed)
 End Function
 
-Sub AttackPlayer(ByVal Attacker As Long, ByVal Victim As Long, ByVal Damage As Long)
+Sub AttackPlayer(ByVal Attacker As Byte, ByVal Victim As Byte, ByVal Damage As Long)
 Dim Exp As Long
-Dim n As Long
-Dim i As Long
+Dim n As Integer
     
     ' Check for subscript out of range
     If IsPlaying(Attacker) = False Or IsPlaying(Victim) = False Or Damage < 0 Then Exit Sub
@@ -1390,10 +1383,10 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ")par un autre joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Sub
 
-Sub NpcAttackPlayer(ByVal MapNpcNum As Long, ByVal Victim As Long, ByVal Damage As Long)
+Sub NpcAttackPlayer(ByVal MapNpcNum As Integer, ByVal Victim As Byte, ByVal Damage As Integer)
 Dim Name As String
 Dim Exp As Long
-Dim MapNum As Long
+Dim MapNum As Integer
 
     If Not IsPlaying(Victim) Then Exit Sub
     
@@ -1510,11 +1503,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ")par un PNJ(" & MapNpc(MapNum, MapNpcNum).Num & ")", BrightRed)
 End Sub
 
-Sub AttackNpc(ByVal Attacker As Long, ByVal MapNpcNum As Long, ByVal Damage As Long)
+Sub AttackNpc(ByVal Attacker As Byte, ByVal MapNpcNum As Integer, ByVal Damage As Integer)
 Dim Name As String
 Dim Exp As Long, ExpG As Long
-Dim n As Long, i As Long, q As Integer, X As Long
-Dim STR As Long, def As Long, MapNum As Long, npcnum As Long
+Dim n As Long, i As Long, q As Integer, X As Byte
+Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
 
     On Error GoTo er:
     
@@ -1737,9 +1730,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ")par un joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Sub
 
-Sub PlayerWarp(ByVal Index As Long, ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long)
+Sub PlayerWarp(ByVal Index As Byte, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
 Dim Packet As String
-Dim OldMap As Long
+Dim OldMap As Integer
 
     On Error GoTo er:
 
@@ -1755,7 +1748,7 @@ Dim OldMap As Long
     Call SetPlayerY(Index, Y)
                 
     ' Now we check if there were any players left on the map the player just left, and if not stop processing npcs
-    If GetTotalMapPlayers(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
+    If PlayerInMap(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
         
     ' Sets it so we know to process npcs on the map
     PlayersOnMap(MapNum) = YES
@@ -1767,7 +1760,7 @@ Dim OldMap As Long
     Call SendInventory(Index)
     'Call SendWornEquipment(Index)
     'PAPERDOLL
-    Dim i As Long
+    Dim i As Byte
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(Index) Then
             If Index <> i Then Call SendInventory(i)
@@ -1803,7 +1796,7 @@ If IBErr Then Call IBMsg("Erreur pendant la téléportation du joueur : " & GetPla
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function canPetMove(ByVal Index As Long, ByVal Dir As Byte) As Boolean
+Function canPetMove(ByVal Index As Byte, ByVal Dir As Byte) As Boolean
     canPetMove = True
     With Player(Index).Char(Player(Index).CharNum).pet
         Select Case Dir
@@ -1819,7 +1812,7 @@ Function canPetMove(ByVal Index As Long, ByVal Dir As Byte) As Boolean
     End With
 End Function
 
-Sub PetMove(ByVal Index As Long)
+Sub PetMove(ByVal Index As Byte)
 Dim Moved As Byte
     If IsPlaying(Index) = False Then Exit Sub
     With Player(Index).Char(Player(Index).CharNum).pet
@@ -1869,13 +1862,13 @@ Dim Moved As Byte
     End With
 End Sub
 
-Sub PlayerMove(ByVal Index As Long, ByVal Dir As Long, ByVal Movement As Long)
+Sub PlayerMove(ByVal Index As Byte, ByVal Dir As Byte, ByVal Movement As Byte)
 Dim Packet As String
-Dim MapNum As Long
-Dim X As Long
-Dim Y As Long
-Dim i As Long
+Dim X As Byte
+Dim Y As Byte
+Dim i As Integer
 Dim Moved As Byte
+Dim MapNum As Integer
     On Error GoTo er:
         
     ' Check for subscript out of range
@@ -2198,7 +2191,6 @@ Dim Moved As Byte
             If (GetPlayerX(Index) = Player(Index).Char(Player(Index).CharNum).LastX) And (GetPlayerY(Index) <> Player(Index).Char(Player(Index).CharNum).Y) Then
                 Call QueteMsg(Index, Shop(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1).JoinSay)
                 Call SendTrade(Index, Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1)
-                MsgBox ("OK")
             End If
         Else
             Call PlayerMsg(Index, "Il n'y a pas de magasin ici.", BrightRed)
@@ -2263,7 +2255,7 @@ Dim Moved As Byte
             Call SetPlayerMAGI(Index, (Player(Index).Char(Player(Index).CharNum).magi + Classe(GetPlayerClass(Index)).magi + GetVar("Classes\Class" & GetPlayerClass(Index) & ".ini", "CLASSCHANGE", "AddMagi")))
             Call SetPlayerSPEED(Index, (Player(Index).Char(Player(Index).CharNum).Speed + Classe(GetPlayerClass(Index)).Speed + GetVar("Classes\Class" & GetPlayerClass(Index) & ".ini", "CLASSCHANGE", "AddSpeed")))
             
-            Dim ItemNum As Long
+            Dim ItemNum As Integer
             ItemNum = Val(GetVar(App.Path & "\" & "Classes\Class" & GetPlayerClass(Index) & ".ini", "STARTUP", "Weapon"))
             If item(ItemNum).type = ITEM_TYPE_WEAPON Then
                 i = FindOpenInvSlot(Index, ItemNum)
@@ -2397,10 +2389,10 @@ If IBErr Then Call IBMsg("Erreur pendant le mouvement du joueur : " & GetPlayerN
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function CanNpcMove(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir) As Boolean
-Dim i As Long, n As Long
-Dim X As Long, Y As Long
-Dim BX As Long, BY As Long
+Function CanNpcMove(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte) As Boolean
+Dim i As Integer, n As Integer
+Dim X As Byte, Y As Byte
+Dim BX As Byte, BY As Byte
 Dim TmpX As Byte, TmpY As Byte
 
     On Error GoTo er:
@@ -2493,11 +2485,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur du mouvement du PNJ
 If IBErr Then Call IBMsg("Erreur du mouvement du PNJ" & MapNpcNum & " sur la carte " & MapNum, BrightRed)
 End Function
 
-Sub NpcMove(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long, ByVal Movement As Long)
+Sub NpcMove(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte, ByVal Movement As Byte)
 Dim Packet As String
-Dim X As Long
-Dim Y As Long
-Dim i As Long
+Dim X As Byte
+Dim Y As Byte
+Dim i As Integer
     
     On Error GoTo er:
     
@@ -2536,9 +2528,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le mouvemen
 If IBErr Then Call IBMsg("Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum, BrightRed)
 End Sub
 
-Sub NpcMoveTo(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long, ByVal Movement As Long, ByVal X As Long, ByVal Y As Long)
+Sub NpcMoveTo(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte, ByVal Movement As Byte, ByVal X As Byte, ByVal Y As Byte)
 Dim Packet As String
-Dim i As Long
+Dim i As Byte
  
    On Error GoTo er:
         
@@ -2670,7 +2662,7 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le mouvemen
 If IBErr Then Call IBMsg("Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum, BrightRed)
 End Sub
 
-Sub NpcDir(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long)
+Sub NpcDir(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte)
 Dim Packet As String
 
     ' Check for subscript out of range
@@ -2683,7 +2675,7 @@ Dim Packet As String
     Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Sub JoinGame(ByVal Index As Long)
+Sub JoinGame(ByVal Index As Byte)
 Dim MOTD As String
 Dim f As Long
     
@@ -2745,19 +2737,12 @@ Dim f As Long
         ' Send motd
         If Trim$(MOTD) <> vbNullString Then Call PlayerMsg(Index, "MOTD: " & MOTD, 11)
     End If
-    
-        'Send time quete
-        'Dim Queten As Long
-        'Queten = Val(Player(Index).Char(Player(Index).CharNum).QueteEnCour)
-        'If Queten <= 0 Then
-        '    If quete(Queten).temps > 0 Then Call SendDataTo(Index, "TEMPSQUETE" & SEP_CHAR & quete(Queten).temps & END_CHAR)
-        'End If
 
     ' Send whos online
     Call SendWhosOnline(Index)
     Call ShowPLR(Index)
     'PAPERDOLL
-    Dim i As Long
+    Dim i As Byte
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(Index) Then
             If Index <> i Then Call SendInventory(i)
@@ -2779,8 +2764,8 @@ If IBErr Then Call IBMsg("Erreur de connexion au jeu, joueur : " & GetPlayerName
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub LeftGame(ByVal Index As Long, Optional ByVal Bypass As Boolean = False)
-Dim n As Long
+Sub LeftGame(ByVal Index As Byte, Optional ByVal Bypass As Boolean = False)
+Dim n As Integer
 
 'If Len(Trim$(Player(Index).Login)) <= 1 Then Exit Sub
 
@@ -2811,7 +2796,7 @@ Dim n As Long
     If Player(Index).InGame Then
         
         ' Check if player was the only player on the map and stop npc processing if so
-        If GetTotalMapPlayers(GetPlayerMap(Index)) = 0 Then PlayersOnMap(GetPlayerMap(Index)) = NO
+        If PlayerInMap(GetPlayerMap(Index)) = 0 Then PlayersOnMap(GetPlayerMap(Index)) = NO
         
         Player(Index).InGame = False
         
@@ -2866,19 +2851,7 @@ If IBErr Then Call IBMsg("Erreur de déconnexion au jeu, joueur : " & GetPlayerNa
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function GetTotalMapPlayers(ByVal MapNum As Long) As Long
-Dim i As Long, n As Long
-
-    n = 0
-    
-    For i = 1 To MAX_PLAYERS
-        If IsPlaying(i) And GetPlayerMap(i) = MapNum Then n = n + 1
-    Next i
-    
-    GetTotalMapPlayers = n
-End Function
-
-Function GetNpcMaxHP(ByVal npcnum As Long)
+Function GetNpcMaxHP(ByVal npcnum As Integer)
 
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxHP = 0: Exit Function
@@ -2886,22 +2859,22 @@ Function GetNpcMaxHP(ByVal npcnum As Long)
     GetNpcMaxHP = Npc(npcnum).MaxHp
 End Function
 
-Function GetNpcMaxMP(ByVal npcnum As Long)
+Function GetNpcMaxMP(ByVal npcnum As Integer)
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxMP = 0: Exit Function
         
     GetNpcMaxMP = Npc(npcnum).magi * 2
 End Function
 
-Function GetNpcMaxSP(ByVal npcnum As Long)
+Function GetNpcMaxSP(ByVal npcnum As Integer)
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxSP = 0: Exit Function
         
     GetNpcMaxSP = Npc(npcnum).Speed * 2
 End Function
 
-Function GetPlayerHPRegen(ByVal Index As Long)
-Dim i As Long
+Function GetPlayerHPRegen(ByVal Index As Byte)
+Dim i As Byte
     
     GetPlayerHPRegen = 0
     
@@ -2916,8 +2889,8 @@ Dim i As Long
     End If
 End Function
 
-Function GetPlayerMPRegen(ByVal Index As Long)
-Dim i As Long
+Function GetPlayerMPRegen(ByVal Index As Byte)
+Dim i As Byte
     
     GetPlayerMPRegen = 0
     
@@ -2932,8 +2905,8 @@ Dim i As Long
     End If
 End Function
 
-Function GetPlayerSPRegen(ByVal Index As Long)
-Dim i As Long
+Function GetPlayerSPRegen(ByVal Index As Byte)
+Dim i As Byte
     
     GetPlayerSPRegen = 0
     
@@ -2948,8 +2921,8 @@ Dim i As Long
     End If
 End Function
 
-Function GetNpcHPRegen(ByVal npcnum As Long)
-Dim i As Long
+Function GetNpcHPRegen(ByVal npcnum As Integer)
+Dim i As Byte
 
     'Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcHPRegen = 0: Exit Function
@@ -2960,8 +2933,8 @@ Dim i As Long
     GetNpcHPRegen = i
 End Function
 
-Sub CheckPlayerLevelUp(ByVal Index As Long)
-Dim i As Long
+Sub CheckPlayerLevelUp(ByVal Index As Byte)
+Dim i As Integer
 Dim d As Long
 Dim c As Long
     c = 0
@@ -3016,8 +2989,8 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur lors de la vérifica
 If IBErr Then Call IBMsg("Erreur lors de la vérification du niveau du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
-Sub CastSpell(ByVal Index As Long, ByVal SpellSlot As Long)
-Dim SpellNum As Long, i As Long, n As Long, Damage As Long
+Sub CastSpell(ByVal Index As Byte, ByVal SpellSlot As Byte)
+Dim SpellNum As Integer, i As Integer, n As Integer, Damage As Integer
 Dim Casted As Boolean
 
     Casted = False
@@ -3036,7 +3009,7 @@ Dim Casted As Boolean
         Exit Sub
     End If
     
-    i = GetSpellReqLevel(Index, SpellNum)
+    i = GetSpellReqLevel(SpellNum)
 
     ' Check if they have enough MP
     If GetPlayerMP(Index) < Spell(SpellNum).MPCost Then
@@ -3072,7 +3045,7 @@ Dim Casted As Boolean
         Exit Sub
     End If
         
-Dim X As Long, Y As Long
+Dim X As Byte, Y As Byte
 
 If Spell(SpellNum).AE = 1 Then
     For Y = GetPlayerY(Index) - Spell(SpellNum).Range To GetPlayerY(Index) + Spell(SpellNum).Range
@@ -3499,12 +3472,12 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur de lancement d'un s
 If IBErr Then Call IBMsg("Erreur de lancement d'un sort du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
-Function GetSpellReqLevel(ByVal Index As Long, ByVal SpellNum As Long)
+Function GetSpellReqLevel(ByVal SpellNum As Integer)
     GetSpellReqLevel = Spell(SpellNum).LevelReq
 End Function
 
-Function CanPlayerCriticalHit(ByVal Index As Long) As Boolean
-Dim i As Long, n As Long
+Function CanPlayerCriticalHit(ByVal Index As Byte) As Boolean
+Dim i As Integer, n As Integer
 
     CanPlayerCriticalHit = False
         
@@ -3519,8 +3492,8 @@ Dim i As Long, n As Long
     End If
 End Function
 
-Function CanPlayerBlockHit(ByVal Index As Long) As Boolean
-Dim i As Long, n As Long, ShieldSlot As Long
+Function CanPlayerBlockHit(ByVal Index As Byte) As Boolean
+Dim i As Integer, n As Integer, ShieldSlot As Byte
 
     CanPlayerBlockHit = False
     
@@ -3537,8 +3510,8 @@ Dim i As Long, n As Long, ShieldSlot As Long
     End If
 End Function
 
-Function CanPlayerEsquiveHit(ByVal Index As Long) As Boolean
-Dim i As Long, n As Long
+Function CanPlayerEsquiveHit(ByVal Index As Byte) As Boolean
+Dim i As Integer, n As Integer
 
     CanPlayerEsquiveHit = False
     
@@ -3552,8 +3525,8 @@ Dim i As Long, n As Long
     
 End Function
 
-Sub CheckEquippedItems(ByVal Index As Long)
-Dim Slot As Long, ItemNum As Long
+Sub CheckEquippedItems(ByVal Index As Byte)
+Dim Slot As Byte, ItemNum As Integer
 
     ' We want to check incase an admin takes away an object but they had it equipped
     Slot = GetPlayerWeaponSlot(Index)
@@ -3614,7 +3587,7 @@ Dim Slot As Long, ItemNum As Long
     End If
 End Sub
 
-Public Sub ShowPLR(ByVal Index As Long)
+Public Sub ShowPLR(ByVal Index As Byte)
 Dim lS As ListItem
 On Error Resume Next
 
@@ -3642,9 +3615,12 @@ Public Sub RemovePLR()
     frmServer.lvUsers.ListItems.Clear
 End Sub
 
-Function CanAttackNpcWithArrow(ByVal Attacker As Long, ByVal MapNpcNum As Long) As Boolean
-Dim MapNum As Long, npcnum As Long
-Dim AttackSpeed As Long
+Function CanAttackNpcWithArrow(ByVal Attacker As Byte, ByVal MapNpcNum As Integer) As Boolean
+Dim X As Byte
+Dim Y As Byte
+Dim npcnum As Integer
+Dim AttackSpeed As Integer
+Dim MapNum As Integer
 
 On Error GoTo er:
 If CLng(Npc(MapNpc(GetPlayerMap(Attacker), MapNpcNum).Num).Vol) <> 0 Then CanAttackNpcWithArrow = False: Exit Function
@@ -3720,7 +3696,7 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ") par un joueur(" & GetPlayerName(Attacker) & ")avec un arc", BrightRed)
 End Function
 
-Function CanAttackPlayerWithArrow(ByVal Attacker As Long, ByVal Victim As Long) As Boolean
+Function CanAttackPlayerWithArrow(ByVal Attacker As Byte, ByVal Victim As Byte) As Boolean
 
 CanAttackPlayerWithArrow = False
 
@@ -3761,13 +3737,13 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ") par un joueur(" & GetPlayerName(Attacker) & ")avec un arc", BrightRed)
 End Function
 
-Function AvMonture(ByVal Index As Long) As Boolean
+Function AvMonture(ByVal Index As Byte) As Boolean
     If Not IsPlaying(Index) Then Exit Function
     
     If GetPlayerArmorSlot(Index) > 0 Then If item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).type = ITEM_TYPE_MONTURE Then AvMonture = True Else AvMonture = False
 End Function
 
-Sub Debloque(ByVal Index As Long)
+Sub Debloque(ByVal Index As Byte)
 Dim Packet As String
 
 If Not IsPlaying(Index) Then Exit Sub
@@ -3794,7 +3770,7 @@ Call SendDataToMap(GetPlayerMap(Index), Packet)
 
 End Sub
 
-Function ACoter(ByVal MapNpcNum As Long, ByVal Index As Long) As Boolean
+Function ACoter(ByVal MapNpcNum As Integer, ByVal Index As Byte) As Boolean
 On Error Resume Next
 
 ACoter = False
@@ -3806,15 +3782,15 @@ If GetPlayerX(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(I
 If GetPlayerX(Index) + 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).Y Then ACoter = True: Exit Function
 End Function
 
-Sub EnMonture(ByVal Index As Long)
-Dim s As Long
+Sub EnMonture(ByVal Index As Byte)
+Dim s As Integer
 s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
 Call SetPlayerSprite(Index, s)
 Call SendPlayerData(Index)
 End Sub
 
-Function AObjet(ByVal Index As Long, ByVal ItemNum As Long) As Long
-Dim i As Long
+Function AObjet(ByVal Index As Byte, ByVal ItemNum As Integer) As Integer
+Dim i As Byte
     
     AObjet = 0
     
@@ -3830,8 +3806,8 @@ Dim i As Long
     Next i
 End Function
 
-Function NbObjet(ByVal Index As Long, ByVal ItemNum As Long) As Long
-Dim i As Long
+Function NbObjet(ByVal Index As Byte, ByVal ItemNum As Integer) As Integer
+Dim i As Byte
 
     NbObjet = 0
     

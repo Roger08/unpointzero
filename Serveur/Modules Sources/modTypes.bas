@@ -247,7 +247,7 @@ Type PlayerRec
     Class As Integer
     sprite As Integer
     Level As Integer
-    Exp As Integer
+    Exp As Long
     Access As Byte
     PK As Byte
 
@@ -540,7 +540,7 @@ Type MapItemRec
 End Type
 
 Type NPCEditorRec
-    ItemNum As Long
+    ItemNum As Integer
     ItemValue As Long
     chance As Long
 End Type
@@ -1444,7 +1444,7 @@ Function GetPlayerExp(ByVal Index As Byte) As Integer
     GetPlayerExp = Player(Index).Char(Player(Index).CharNum).Exp
 End Function
 
-Sub SetPlayerExp(ByVal Index As Byte, ByVal Exp As Integer)
+Sub SetPlayerExp(ByVal Index As Byte, ByVal Exp As Long)
 Dim Queten As Long
 Queten = Val(Player(Index).Char(Player(Index).CharNum).QueteEnCour)
     If Queten > 0 Then If quete(Queten).type = QUETE_TYPE_GAGNE_XP Then Call PlayerQueteTypeXp(Index, Queten, Exp)
@@ -1720,43 +1720,43 @@ Sub SetPlayerSpell(ByVal Index As Byte, ByVal SpellSlot As Byte, ByVal SpellNum 
     Player(Index).Char(Player(Index).CharNum).Spell(SpellSlot) = SpellNum
 End Sub
 
-Function GetPlayerArmorSlot(ByVal Index As Byte) As Integer
+Function GetPlayerArmorSlot(ByVal Index As Byte) As Byte
     GetPlayerArmorSlot = Player(Index).Char(Player(Index).CharNum).ArmorSlot
 End Function
 
-Sub SetPlayerArmorSlot(ByVal Index As Byte, InvNum As Integer)
+Sub SetPlayerArmorSlot(ByVal Index As Byte, ByVal InvNum As Byte)
     Player(Index).Char(Player(Index).CharNum).ArmorSlot = InvNum
 End Sub
 
-Function GetPlayerWeaponSlot(ByVal Index As Byte) As Integer
+Function GetPlayerWeaponSlot(ByVal Index As Byte) As Byte
     GetPlayerWeaponSlot = Player(Index).Char(Player(Index).CharNum).WeaponSlot
 End Function
 
-Sub SetPlayerWeaponSlot(ByVal Index As Byte, InvNum As Integer)
+Sub SetPlayerWeaponSlot(ByVal Index As Byte, ByVal InvNum As Byte)
     Player(Index).Char(Player(Index).CharNum).WeaponSlot = InvNum
 End Sub
 
-Function GetPlayerHelmetSlot(ByVal Index As Byte) As Integer
+Function GetPlayerHelmetSlot(ByVal Index As Byte) As Byte
     GetPlayerHelmetSlot = Player(Index).Char(Player(Index).CharNum).HelmetSlot
 End Function
 
-Sub SetPlayerHelmetSlot(ByVal Index As Byte, InvNum As Integer)
+Sub SetPlayerHelmetSlot(ByVal Index As Byte, ByVal InvNum As Byte)
     Player(Index).Char(Player(Index).CharNum).HelmetSlot = InvNum
 End Sub
 
-Function GetPlayerShieldSlot(ByVal Index As Byte) As Integer
+Function GetPlayerShieldSlot(ByVal Index As Byte) As Byte
     GetPlayerShieldSlot = Player(Index).Char(Player(Index).CharNum).ShieldSlot
 End Function
 
-Sub SetPlayerShieldSlot(ByVal Index As Byte, InvNum As Integer)
+Sub SetPlayerShieldSlot(ByVal Index As Byte, ByVal InvNum As Byte)
     Player(Index).Char(Player(Index).CharNum).ShieldSlot = InvNum
 End Sub
 
-Function GetPlayerPetSlot(ByVal Index As Byte) As Integer
+Function GetPlayerPetSlot(ByVal Index As Byte) As Byte
     GetPlayerPetSlot = Player(Index).Char(Player(Index).CharNum).PetSlot
 End Function
 
-Sub SetPlayerPetSlot(ByVal Index As Byte, InvNum As Integer)
+Sub SetPlayerPetSlot(ByVal Index As Byte, ByVal InvNum As Byte)
     Player(Index).Char(Player(Index).CharNum).PetSlot = InvNum
 End Sub
 

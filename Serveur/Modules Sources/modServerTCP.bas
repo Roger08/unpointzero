@@ -1825,7 +1825,7 @@ Player(Index).sync = True
                                         If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort ne peut être utilisé que par un administrateur.", BrightRed): Exit Sub
                                                                     
                                         ' Etre sur qu'on a un level suffisant
-                                        i = GetSpellReqLevel(Index, n)
+                                        i = GetSpellReqLevel(n)
                                         If i <= GetPlayerLevel(Index) Then
                                             i = FindOpenSpellSlot(Index)
                                             
@@ -3399,22 +3399,22 @@ Exit Sub
 er:
 Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans la réception du serveur. Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 On Error Resume Next
-If IBErr Then Call IBMsg("Un erreur c'est produite dans la réception du serveur", BrightRed)
-If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoie, relancez s'il vous plait.", 3)
+If IBErr Then Call IBMsg("Un erreur s'est produite dans la réception du serveur", BrightRed)
+If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoi, relancez s'il vous plait.", 3)
 End Sub
 
 Sub MapDo(ByVal MapNum As Integer, ByVal url As String, ByVal rep As String)
-If FileExist("\Maps\Map" & z & ".fcc") Then Call Kill(App.Path & "\Maps\Map" & z & ".fcc")
-Call ClearMap(z)
+If FileExist("\Maps\Map" & MapNum & ".fcc") Then Call Kill(App.Path & "\Maps\Map" & MapNum & ".fcc")
+Call ClearMap(MapNum)
 If Mid(url, Len(url)) = "/" And rep = "/" Then
-    Call DeleteUrlCacheEntry(url & "Map" & z & ".fcc")
-    Call URLDownloadToFile(0, url & "Map" & z & ".fcc", App.Path & "\Maps\Map" & z & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & "Map" & MapNum & ".fcc")
+    Call URLDownloadToFile(0, url & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
 ElseIf Mid(url, Len(url)) <> "/" And Mid(rep, 1, 1) = "/" Then
-    Call DeleteUrlCacheEntry(url & rep & "Map" & z & ".fcc")
-    Call URLDownloadToFile(0, url & rep & "Map" & z & ".fcc", App.Path & "\Maps\Map" & z & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & rep & "Map" & MapNum & ".fcc")
+    Call URLDownloadToFile(0, url & rep & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
 Else
-    Call DeleteUrlCacheEntry(url & rep & "Map" & z & ".fcc")
-    Call URLDownloadToFile(0, url & rep & "Map" & z & ".fcc", App.Path & "\Maps\Map" & z & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & rep & "Map" & MapNum & ".fcc")
+    Call URLDownloadToFile(0, url & rep & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
 End If
 End Sub
 
