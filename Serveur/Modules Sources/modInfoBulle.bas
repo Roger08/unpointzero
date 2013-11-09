@@ -24,13 +24,13 @@ On Error Resume Next
 
 If Coul = BrightRed Then
 frmServer.ctlSysTrayBalloon.BalloonTipShow _
-        "FRoG Server", _
+        "FRoG Creator", _
         Msg, _
         NIIF_ERROR, _
         8000
 Else
 frmServer.ctlSysTrayBalloon.BalloonTipShow _
-        "FRoG Server", _
+        "FRoG Creator", _
         Msg, _
         NIIF_INFO, _
         8000
