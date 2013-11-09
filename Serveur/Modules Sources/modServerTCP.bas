@@ -5,7 +5,6 @@ Sub UpdateCaption()
 With frmServer
     .Caption = GAME_NAME & " - FRoG Serveur 0.6.3"
     .lblIP.Caption = "Adresse IP : " & SendAPIRequest("http://www.frogcreator.fr/update/getIP.php")
-    '.lblIP.Caption = frmServer.lblIP & " (Local : " & frmServer.Socket(0).LocalIP & ")"
     .lblPort.Caption = "Port : " & STR$(frmServer.Socket(0).LocalPort)
     .TPO.Caption = "Nombre de joueurs en ligne : " & TotalOnlinePlayers
     .lblgamename.Caption = "Jeu : " & GAME_NAME
@@ -1510,7 +1509,7 @@ Player(Index).sync = True
                     If InvNum < 1 Or InvNum > MAX_INV Then Call HackingAttempt(Index, "Invalide InvNum"): Exit Sub
                             
                     ' Prevent hacking
-                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéros de personnage invalide."): Exit Sub
+                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéro de personnage invalide."): Exit Sub
                             
                     If (GetPlayerInvItemNum(Index, InvNum) > 0) And (GetPlayerInvItemNum(Index, InvNum) <= MAX_ITEMS) Then
                         n = item(GetPlayerInvItemNum(Index, InvNum)).data2
@@ -1823,7 +1822,7 @@ Player(Index).sync = True
                                 If n > 0 Then
                                     ' Etre sur que on est dans la bonne classe
                                     If Spell(n).ClassReq - 1 = GetPlayerClass(Index) Or Spell(n).ClassReq = 0 Then
-                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort peut uniquement être utilisé par un admin.", BrightRed): Exit Sub
+                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort ne peut être utilisé que par un administrateur.", BrightRed): Exit Sub
                                                                     
                                         ' Etre sur qu'on a un level suffisant
                                         i = GetSpellReqLevel(Index, n)
@@ -1852,7 +1851,7 @@ Player(Index).sync = True
                                         Call PlayerMsg(Index, "Ce sort peut être appris uniquement par un " & GetClassName(Spell(n).ClassReq - 1) & ".", White)
                                     End If
                                 Else
-                                    Call PlayerMsg(Index, "Ce parchemin n'est pas lié à un sort, contactez l'admin.", White)
+                                    Call PlayerMsg(Index, "Ce parchemin n'est pas lié à un sort, contactez l'administrateur.", White)
                                 End If
                         End Select
                         
@@ -1913,7 +1912,7 @@ Player(Index).sync = True
                     
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                 
-                    If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre Guilde", Red): Exit Sub
+                    If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre guilde.", Red): Exit Sub
                     
                     If GetPlayerGuild(Index) = vbNullString Then Call PlayerMsg(Index, "Vous n'êtes pas dans une guilde", Red): Exit Sub
                     
@@ -2032,9 +2031,9 @@ Player(Index).sync = True
                 Case "broadcastmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractère incorrecte dans ses paroles(global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractères incorrects dans ses paroles (global)"): Exit Sub
                     
-                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlement ont été désactivés.", BrightRed): Exit Sub
+                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlements ont été désactivés.", BrightRed): Exit Sub
                     
                     If Player(Index).Mute = True Then Exit Sub
                     
@@ -2048,7 +2047,7 @@ Player(Index).sync = True
                 Case "globalmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractère incorrects dans ses paroles(global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractères incorrects dans ses paroles (global)"): Exit Sub
                     
                     If frmServer.chkG.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages globaux ont été désactivés.", BrightRed): Exit Sub
                         
@@ -2701,7 +2700,7 @@ Player(Index).sync = True
                     ' The spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Indes de qete Invalide"): Exit Sub
+                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quête invalide."): Exit Sub
                     Call AddLog(GetPlayerName(Index) & " edite la quete #" & n & ".", ADMIN_LOG)
                     Call SendEditQuetesTo(Index, n)
                     Exit Sub
@@ -2732,7 +2731,7 @@ Player(Index).sync = True
                     ' Spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Indes de quete Invalide"): Exit Sub
+                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quête invalide."): Exit Sub
                     ' Update the quete
                     quete(n).nom = Parse(2)
                     quete(n).data1 = Val(Parse(3))
@@ -2793,7 +2792,7 @@ Player(Index).sync = True
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     ShopNum = Val(Parse(1))
                     ' Prevent hacking
-                    If ShopNum < 0 Or ShopNum > MAX_SHOPS Then Call HackingAttempt(Index, "Index de magasin Invalide"): Exit Sub
+                    If ShopNum < 0 Or ShopNum > MAX_SHOPS Then Call HackingAttempt(Index, "Index de magasin invalide"): Exit Sub
                     ' Update the shop
                     Shop(ShopNum).Name = Parse(2)
                     Shop(ShopNum).JoinSay = Parse(3)
@@ -2829,7 +2828,7 @@ Player(Index).sync = True
                     ' The spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Indes de sort Invalide"): Exit Sub
+                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Index de sort invalide"): Exit Sub
                     Call AddLog(GetPlayerName(Index) & " edite le sorrt #" & n & ".", ADMIN_LOG)
                     Call SendEditSpellTo(Index, n)
                     Exit Sub
@@ -2840,7 +2839,7 @@ Player(Index).sync = True
                     ' Spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Invalide Spell Index"): Exit Sub
+                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Index de sort invalide"): Exit Sub
                     ' Update the spell
                     Spell(n).Name = Parse(2)
                     Spell(n).ClassReq = Val(Parse(3))
@@ -2922,14 +2921,14 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
                     X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GetItem)
-                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
+                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, inventaire plein.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GiveItem) >= Shop(i).TradeItem(n).value(z).GiveValue Then
                         Call TakeItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Shop(i).TradeItem(n).value(z).GiveValue)
@@ -2949,14 +2948,14 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
                     X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GiveItem) 'Shop(i).TradeItem(N).value(z).GetItem)
-                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
+                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, inventaire plein.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GetItem) >= Shop(i).TradeItem(n).value(z).GetValue Then
                         Call GiveItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Math.Round(Shop(i).TradeItem(n).value(z).GiveValue / 2))
@@ -3194,8 +3193,8 @@ Player(Index).sync = True
                                     End If
                                 Next X
                             Next i
-                            Call PlayerMsg(n, "Echange réussit.", BrightGreen)
-                            Call PlayerMsg(Index, "Echange réussit.", BrightGreen)
+                            Call PlayerMsg(n, "Echange réussi.", BrightGreen)
+                            Call PlayerMsg(Index, "Echange réussi.", BrightGreen)
                             Call SendInventory(n)
                             Call SendInventory(Index)
                         Else
@@ -3225,7 +3224,7 @@ Player(Index).sync = True
                     If n > 0 Then
                         ' Check to make sure they aren't the starter
                             ' Check to make sure that each of there party players match
-                        Call PlayerMsg(Index, "Tu as rejoins le groupe de " & GetPlayerName(n) & " .", Pink)
+                        Call PlayerMsg(Index, "Tu as rejoint le groupe de " & GetPlayerName(n) & " .", Pink)
                         If Player(n).InParty = 0 Then ' Set the party leader up
                             Party.CreateParty n, Index
                         Else
@@ -3449,7 +3448,7 @@ Dim n As Byte, i As Byte
     Next i
             
     If n = 0 Then
-        s = "Il n'y a pas d'autres joueurs connectés..."
+        s = "Il n'y a pas d'autre joueur connecté..."
     ElseIf n = 1 Then
         s = Mid$(s, 1, Len(s) - 2)
         s = "Il y a 1 autre joueur en ligne : " & s & "."
@@ -3712,7 +3711,7 @@ On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
 Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index), BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plaît. Pour tout problème récurent, visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ".", 3)
 End Sub
 
 Sub SendMapItemsTo(ByVal Index As Byte, ByVal MapNum As Integer)
