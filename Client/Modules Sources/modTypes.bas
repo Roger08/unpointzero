@@ -4,26 +4,26 @@ Option Explicit
 ' General constants
 Public GAME_NAME As String
 Public WEBSITE As String
-Public MAX_PLAYERS As Long
-Public MAX_SPELLS As Long
-Public MAX_MAPS As Long
-Public MAX_SHOPS As Long
-Public MAX_ITEMS As Long
-Public MAX_NPCS As Long
-Public MAX_MAP_ITEMS As Long
-Public MAX_EMOTICONS As Long
-Public MAX_SPELL_ANIM As Long
-Public MAX_BLT_LINE As Long
-Public MAX_LEVEL As Long
-Public MAX_QUETES As Long
-Public MAX_DX_PETS As Long
-Public MAX_PETS As Long
-Public MAX_METIER As Long
+Public MAX_PLAYERS As Byte
+Public MAX_SPELLS As Integer
+Public MAX_MAPS As Integer
+Public MAX_SHOPS As Integer
+Public MAX_ITEMS As Integer
+Public MAX_NPCS As Integer
+Public MAX_MAP_ITEMS As Byte
+Public MAX_EMOTICONS As Byte
+Public MAX_SPELL_ANIM As Byte
+Public MAX_BLT_LINE As Byte
+Public MAX_LEVEL As Integer
+Public MAX_QUETES As Integer
+Public MAX_DX_PETS As Byte
+Public MAX_PETS As Integer
+Public MAX_METIER As Integer
 
 Public Const MAX_ARROWS As Byte = 100
 Public Const MAX_PLAYER_ARROWS As Byte = 100
 
-Public MAX_INV As Integer
+Public Const MAX_INV As Integer = 26
 Public Const MAX_PARTY_MEMBERS As Byte = 20
 Public Const MAX_MAP_NPCS As Byte = 15
 Public Const MAX_PLAYER_SPELLS As Byte = 20
@@ -54,8 +54,8 @@ Public Const SEX_FEMALE As Byte = 1
 ' Map constants
 'Public Const MAX_MAPX = 30
 'Public Const MAX_MAPY = 30
-Public MAX_MAPX As Long
-Public MAX_MAPY As Long
+Public MAX_MAPX As Byte
+Public MAX_MAPY As Byte
 Public Const MAP_MORAL_NONE As Byte = 0
 Public Const MAP_MORAL_SAFE As Byte = 1
 Public Const MAP_MORAL_NO_PENALTY As Byte = 2
@@ -215,14 +215,14 @@ Type ChatBubble
 End Type
 
 Type PlayerInvRec
-    num As Long
-    Value As Long
+    num As Integer
+    Value As Integer
     dur As Long
 End Type
 
 Type CoffreTempRec
-    Numeros As Long
-    Valeur As Long
+    Numeros As Integer
+    Valeur As Integer
     Durabiliter As Long
 End Type
 
@@ -233,19 +233,19 @@ Type SpellAnimRec
     SpellVar As Long
     SpellDone As Long
     
-    Target As Long
-    TargetType As Long
+    Target As Byte
+    TargetType As Byte
 End Type
 
 Type PlayerArrowRec
     Arrow As Byte
-    ArrowNum As Long
-    ArrowAnim As Long
+    ArrowNum As Byte
+    ArrowAnim As Byte
     ArrowTime As Long
-    ArrowVarX As Long
-    ArrowVarY As Long
-    ArrowX As Long
-    ArrowY As Long
+    ArrowVarX As Byte
+    ArrowVarY As Byte
+    ArrowX As Byte
+    ArrowY As Byte
     ArrowPosition As Byte
 End Type
 
@@ -266,11 +266,11 @@ Type PlayerQueteRec
 End Type
 
 Type PetPosRec
-    x As Integer
-    y As Integer
+    x As Byte
+    y As Byte
     Dir As Byte
-    XOffset As Integer
-    YOffset As Integer
+    XOffset As Byte
+    YOffset As Byte
     Anim As Byte
 End Type
 
@@ -280,9 +280,9 @@ Type PlayerRec
     name As String * NAME_LENGTH
     Guild As String
     Guildaccess As Byte
-    Class As Long
-    Sprite As Long
-    level As Long
+    Class As Byte
+    Sprite As Byte
+    level As Integer
     exp As Long
     Access As Byte
     PK As Byte
@@ -293,26 +293,26 @@ Type PlayerRec
     SP As Long
     
     ' Stats
-    STR As Long
-    DEF As Long
-    speed As Long
-    MAGI As Long
-    POINTS As Long
+    STR As Integer
+    DEF As Integer
+    speed As Integer
+    MAGI As Integer
+    POINTS As Integer
     
     ' Worn equipment
-    ArmorSlot As Long
-    WeaponSlot As Long
-    HelmetSlot As Long
-    ShieldSlot As Long
-    PetSlot As Long
+    ArmorSlot As Integer
+    WeaponSlot As Integer
+    HelmetSlot As Integer
+    ShieldSlot As Integer
+    PetSlot As Integer
     
     ' Inventory
     Inv() As PlayerInvRec
-    Spell(1 To MAX_PLAYER_SPELLS) As Long
+    Spell(1 To MAX_PLAYER_SPELLS) As Integer
     pet As PetPosRec
     
     ' Position
-    Map As Long
+    Map As Integer
     x As Byte
     y As Byte
     Dir As Byte
@@ -321,8 +321,8 @@ Type PlayerRec
     MaxHp As Long
     MaxMp As Long
     MaxSP As Long
-    XOffset As Integer
-    YOffset As Integer
+    XOffset As Byte
+    YOffset As Byte
     Moving As Byte
     Attacking As Byte
     AttackTimer As Long
@@ -334,7 +334,7 @@ Type PlayerRec
     SpellAnim() As SpellAnimRec
     BloodAnim As SpellAnimRec
 
-    EmoticonNum As Long
+    EmoticonNum As Byte
     EmoticonTime As Long
     EmoticonVar As Long
     
@@ -342,36 +342,36 @@ Type PlayerRec
     LevelUpT As Long
 
     Arrow(1 To MAX_PLAYER_ARROWS) As PlayerArrowRec
-    QueteEnCour As Long
+    QueteEnCour As Integer
     Quetep As PlayerQueteRec
     
     Anim As Byte
     'PAPERDOLL
-    Casque As Long
-    Armure As Long
-    Arme As Long
-    Bouclier As Long
+    Casque As Integer
+    Armure As Integer
+    Arme As Integer
+    Bouclier As Integer
     'FIN PAPERDOLL
 
-    Metier As Long
-    MetierLvl As Long
-    MetierExp As Long
+    Metier As Integer
+    MetierLvl As Integer
+    MetierExp As Integer
 End Type
     
 Type TileRec
-    Ground As Long
-    Mask As Long
-    Anim As Long
-    Mask2 As Long
-    M2Anim As Long
-    Mask3 As Long
-    M3Anim As Long
-    Fringe As Long
-    FAnim As Long
-    Fringe2 As Long
-    F2Anim As Long
-    Fringe3 As Long
-    F3Anim As Long
+    Ground As Integer
+    Mask As Integer
+    Anim As Integer
+    Mask2 As Integer
+    M2Anim As Integer
+    Mask3 As Integer
+    M3Anim As Integer
+    Fringe As Integer
+    FAnim As Integer
+    Fringe2 As Integer
+    F2Anim As Integer
+    Fringe3 As Integer
+    F3Anim As Integer
     Type As Byte
     Data1 As Long
     Data2 As Long
@@ -421,17 +421,17 @@ End Type
 
 Type MapRec
     name As String * 40
-    Revision As Long
+    Revision As Integer
     Moral As Byte
-    Up As Long
-    Down As Long
-    Left As Long
-    Right As Long
+    Up As Integer
+    Down As Integer
+    Left As Integer
+    Right As Integer
     Music As String
-    BootMap As Long
+    BootMap As Integer
     BootX As Byte
     BootY As Byte
-    Shop As Long
+    Shop As Integer
     Indoors As Byte
     Tile() As TileRec
     Npc(1 To MAX_MAP_NPCS) As Long
@@ -451,17 +451,17 @@ End Type
 
 Type RecompRec
     exp As Long
-    objn1 As Long
-    objn2 As Long
-    objn3 As Long
-    objq1 As Long
-    objq2 As Long
-    objq3 As Long
+    objn1 As Integer
+    objn2 As Integer
+    objn3 As Integer
+    objq1 As Integer
+    objq2 As Integer
+    objq3 As Integer
 End Type
 
 Type QueteRec
     nom As String * 40
-    Type As Long
+    Type As Byte
     description As String
     reponse As String
     Temps As Long
@@ -476,15 +476,15 @@ End Type
 
 Type ClassRec
     name As String * NAME_LENGTH
-    MaleSprite As Long
-    FemaleSprite As Long
+    MaleSprite As Integer
+    FemaleSprite As Integer
     
-    Locked As Long
+    Locked As Byte
     
-    STR As Long
-    DEF As Long
-    speed As Long
-    MAGI As Long
+    STR As Integer
+    DEF As Integer
+    speed As Integer
+    MAGI As Integer
     
     ' For client use
     HP As Long
@@ -496,49 +496,49 @@ Type ItemRec
     name As String * NAME_LENGTH
     desc As String * 150
     
-    Pic As Long
+    Pic As Integer
     Type As Byte
     Data1 As Long
     Data2 As Long
     Data3 As Long
-    StrReq As Long
-    DefReq As Long
-    SpeedReq As Long
-    ClassReq As Long
+    StrReq As Integer
+    DefReq As Integer
+    SpeedReq As Integer
+    ClassReq As Byte
     AccessReq As Byte
     LevelReq As Integer
     
     paperdoll As Byte
-    paperdollPic As Long
+    paperdollPic As Integer
     
     Empilable As Byte
     
     AddHP As Long
     AddMP As Long
     AddSP As Long
-    AddStr As Long
-    AddDef As Long
-    AddMagi As Long
-    AddSpeed As Long
+    AddStr As Integer
+    AddDef As Integer
+    AddMagi As Integer
+    AddSpeed As Integer
     AddEXP As Long
-    AttackSpeed As Long
+    AttackSpeed As Integer
     
     NCoul As Long
     tArme As Long
 End Type
 
 Type MapItemRec
-    num As Long
-    Value As Long
-    dur As Long
+    num As Integer
+    Value As Integer
+    dur As Integer
     
     x As Byte
     y As Byte
 End Type
 
 Type NPCEditorRec
-    ItemNum As Long
-    ItemValue As Long
+    ItemNum As Integer
+    ItemValue As Integer
     Chance As Long
 End Type
 
@@ -546,29 +546,29 @@ Type NpcRec
     name As String * NAME_LENGTH
     AttackSay As String
     
-    Sprite As Long
+    Sprite As Integer
     SpawnSecs As Long
     Behavior As Byte
     Range As Byte
         
-    STR  As Long
-    DEF As Long
-    speed As Long
-    MAGI As Long
+    STR  As Integer
+    DEF As Integer
+    speed As Integer
+    MAGI As Integer
     MaxHp As Long
     exp As Long
     SpawnTime As Long
     
     ItemNPC(1 To MAX_NPC_DROPS) As NPCEditorRec
-    QueteNum As Long
-    Inv As Long
-    Vol As Long
+    QueteNum As Integer
+    Inv As Integer
+    Vol As Byte
 End Type
 
 Type MapNpcRec
-    num As Long
+    num As Integer
     
-    Target As Long
+    Target As Byte
     
     HP As Long
     MaxHp As Long
@@ -576,7 +576,7 @@ Type MapNpcRec
     MaxMp As Long
     SP As Long
     
-    Map As Long
+    Map As Integer
     x As Byte
     y As Byte
     x2 As Byte
@@ -600,10 +600,10 @@ Type MapNpcRec
 End Type
 
 Type TradeItemRec
-    GiveItem As Long
-    GiveValue As Long
-    GetItem As Long
-    getValue As Long
+    GiveItem As Integer
+    GiveValue As Integer
+    GetItem As Integer
+    getValue As Integer
 End Type
 
 Type TradeItemsRec
@@ -621,8 +621,8 @@ End Type
 
 Type SpellRec
     name As String * NAME_LENGTH
-    ClassReq As Long
-    LevelReq As Long
+    ClassReq As Byte
+    LevelReq As Integer
     Sound As Long
     MPCost As Long
     Type As Long
@@ -633,11 +633,11 @@ Type SpellRec
     
     Big As Byte
     
-    SpellAnim As Long
+    SpellAnim As Integer
     SpellTime As Long
     SpellDone As Long
     
-    SpellIco As Long
+    SpellIco As Integer
     
     AE As Long
 End Type
@@ -647,32 +647,32 @@ Type TempTileRec
 End Type
 
 Type PlayerTradeRec
-    InvNum As Long
+    InvNum As Byte
     InvName As String
-    InvVal As Long
+    InvVal As Integer
 End Type
 Public Trading(1 To MAX_PLAYER_TRADES) As PlayerTradeRec
 Public Trading2(1 To MAX_PLAYER_TRADES) As PlayerTradeRec
 
 Type EmoRec
-    Pic As Long
+    Pic As Integer
     Command As String
 End Type
 
 Type DropRainRec
-    x As Long
-    y As Long
+    x As Byte
+    y As Byte
     Randomized As Boolean
     speed As Byte
 End Type
 
 Type PetsRec
     nom As String
-    Sprite As Long
+    Sprite As Integer
     addForce As Byte
     addDefence As Byte
 End Type
-
+' <-- ici --
 ' Bubble thing
 Public Bubble() As ChatBubble
 
