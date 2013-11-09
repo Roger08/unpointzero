@@ -244,7 +244,7 @@ Type PlayerRec
     Guild As String
     Guildaccess As Byte
     Sex As Byte
-    Class As Integer
+    Class As Byte
     sprite As Integer
     Level As Integer
     Exp As Long
