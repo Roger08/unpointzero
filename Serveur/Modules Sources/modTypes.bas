@@ -252,9 +252,9 @@ Type PlayerRec
     PK As Byte
 
     ' Vitals
-    HP As Integer
-    MP As Integer
-    SP As Integer
+    HP As Long
+    MP As Long
+    SP As Long
     
     ' Stats
     STR As Integer
@@ -1467,11 +1467,11 @@ Sub SetPlayerPK(ByVal Index As Byte, ByVal PK As Integer)
     Player(Index).Char(Player(Index).CharNum).PK = PK
 End Sub
 
-Function GetPlayerHP(ByVal Index As Byte) As Integer
+Function GetPlayerHP(ByVal Index As Byte) As Long
     GetPlayerHP = Player(Index).Char(Player(Index).CharNum).HP
 End Function
 
-Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Integer)
+Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Long)
     Player(Index).Char(Player(Index).CharNum).HP = HP
     
     If GetPlayerHP(Index) > GetPlayerMaxHP(Index) Then Player(Index).Char(Player(Index).CharNum).HP = GetPlayerMaxHP(Index)
@@ -1479,29 +1479,29 @@ Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Integer)
     Call SendStats(Index)
 End Sub
 
-Function GetPlayerMP(ByVal Index As Byte) As Integer
+Function GetPlayerMP(ByVal Index As Byte) As Long
     GetPlayerMP = Player(Index).Char(Player(Index).CharNum).MP
 End Function
 
-Sub SetPlayerMP(ByVal Index As Byte, ByVal MP As Integer)
+Sub SetPlayerMP(ByVal Index As Byte, ByVal MP As Long)
     Player(Index).Char(Player(Index).CharNum).MP = MP
 
     If GetPlayerMP(Index) > GetPlayerMaxMP(Index) Then Player(Index).Char(Player(Index).CharNum).MP = GetPlayerMaxMP(Index)
     If GetPlayerMP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).MP = 0
 End Sub
 
-Function GetPlayerSP(ByVal Index As Byte) As Integer
+Function GetPlayerSP(ByVal Index As Byte) As Long
     GetPlayerSP = Player(Index).Char(Player(Index).CharNum).SP
 End Function
 
-Sub SetPlayerSP(ByVal Index As Byte, ByVal SP As Integer)
+Sub SetPlayerSP(ByVal Index As Byte, ByVal SP As Long)
     Player(Index).Char(Player(Index).CharNum).SP = SP
 
     If GetPlayerSP(Index) > GetPlayerMaxSP(Index) Then Player(Index).Char(Player(Index).CharNum).SP = GetPlayerMaxSP(Index)
     If GetPlayerSP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).SP = 0
 End Sub
 
-Function GetPlayerMaxHP(ByVal Index As Byte) As Integer
+Function GetPlayerMaxHP(ByVal Index As Byte) As Long
 Dim CharNum As Byte
 Dim add As Integer
 add = 0
@@ -1515,7 +1515,7 @@ add = 0
     GetPlayerMaxHP = (GetPlayerLevel(Index) * AddHP.Level) + (GetPlayerStr(Index) * AddHP.STR) + (GetPlayerDEF(Index) * AddHP.def) + (GetPlayerMAGI(Index) * AddHP.magi) + (GetPlayerSPEED(Index) * AddHP.Speed) + add
 End Function
 
-Function GetPlayerMaxMP(ByVal Index As Byte) As Integer
+Function GetPlayerMaxMP(ByVal Index As Byte) As Long
 Dim CharNum As Byte
 Dim add As Integer
 add = 0
@@ -1529,7 +1529,7 @@ add = 0
     GetPlayerMaxMP = (GetPlayerLevel(Index) * AddMP.Level) + (GetPlayerStr(Index) * AddMP.STR) + (GetPlayerDEF(Index) * AddMP.def) + (GetPlayerMAGI(Index) * AddMP.magi) + (GetPlayerSPEED(Index) * AddMP.Speed) + add
 End Function
 
-Function GetPlayerMaxSP(ByVal Index As Byte) As Integer
+Function GetPlayerMaxSP(ByVal Index As Byte) As Long
 Dim CharNum As Byte
 Dim add As Integer
 add = 0
@@ -1547,15 +1547,15 @@ Function GetClassName(ByVal ClassNum As Byte) As String
     GetClassName = Trim$(Classe(ClassNum).Name)
 End Function
 
-Function GetClassMaxHP(ByVal ClassNum As Byte) As Integer
+Function GetClassMaxHP(ByVal ClassNum As Byte) As Long
     GetClassMaxHP = (1 + Int(Classe(ClassNum).STR / 2) + Classe(ClassNum).STR) * 2
 End Function
 
-Function GetClassMaxMP(ByVal ClassNum As Byte) As Integer
+Function GetClassMaxMP(ByVal ClassNum As Byte) As Long
     GetClassMaxMP = (1 + Int(Classe(ClassNum).magi / 2) + Classe(ClassNum).magi) * 2
 End Function
 
-Function GetClassMaxSP(ByVal ClassNum As Byte) As Integer
+Function GetClassMaxSP(ByVal ClassNum As Byte) As Long
     GetClassMaxSP = (1 + Int(Classe(ClassNum).Speed / 2) + Classe(ClassNum).Speed) * 2
 End Function
 
