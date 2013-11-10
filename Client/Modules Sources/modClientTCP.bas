@@ -138,7 +138,7 @@ On Error Resume Next
             frmMirage.picInv(i).Visible = True
         Next
         
-        frmMirage.Picture9.height = frmMirage.picInv(i - 1).Top + 40
+        frmMirage.Picture9.Height = frmMirage.picInv(i - 1).Top + 40
         
         For i = 1 To MAX_PLAYER_SPELLS - 1
             If Loading = False Then Load frmMirage.picspell(i)
@@ -315,13 +315,13 @@ On Error Resume Next
                 frmMainMenu.PicChar.Picture = LoadPNG(App.Path & "/GFX/Sprites/Sprites" & charSelect(charSelectNum).sprt & Ending)
             End If
         Next i
-        frmMainMenu.PicChar.height = frmMainMenu.PicChar.height / 4
+        frmMainMenu.PicChar.Height = frmMainMenu.PicChar.Height / 4
         frmMainMenu.PicChar.Width = frmMainMenu.PicChar.Width / 4
         If frmMainMenu.PicChar.Width > 960 Then
             frmMainMenu.PicChar.Width = 960
         End If
-        If frmMainMenu.PicChar.height > 960 Then
-            frmMainMenu.PicChar.height = 960
+        If frmMainMenu.PicChar.Height > 960 Then
+            frmMainMenu.PicChar.Height = 960
         End If
         If frmMainMenu.PicChar.Width > 480 Then
             frmMainMenu.PicChar.Left = 840 - frmMainMenu.PicChar.Width + 480
@@ -416,8 +416,8 @@ On Error Resume Next
             .lblDEF.Caption = STR$(Class(0).DEF)
             .lblSPEED.Caption = STR$(Class(0).speed)
             .lblMAGI.Caption = STR$(Class(0).MAGI)
-            .Picpic.height = (PIC_Y + (PIC_Y / 2))
-            .Picture4.height = (PIC_Y + (PIC_Y / 2)) + 4
+            .Picpic.Height = (PIC_Y + (PIC_Y / 2))
+            .Picture4.Height = (PIC_Y + (PIC_Y / 2)) + 4
         End With
         
         Exit Sub
@@ -1383,7 +1383,7 @@ mont:
         For i = 1 To MAX_NPC_DROPS
             With .ItemNPC(i)
                 .Chance = 0
-                .ItemNum = 0
+                .Itemnum = 0
                 .ItemValue = 0
             End With
         Next i
@@ -1601,10 +1601,10 @@ mont:
         
         Trade(1).Selected = YES
                     
-        frmTrade.shopType.Top = frmTrade.label(1).Top
-        frmTrade.shopType.Left = frmTrade.label(1).Left
-        frmTrade.shopType.height = frmTrade.label(1).height
-        frmTrade.shopType.Width = frmTrade.label(1).Width
+        frmTrade.shopType.Top = frmTrade.Label(1).Top
+        frmTrade.shopType.Left = frmTrade.Label(1).Left
+        frmTrade.shopType.Height = frmTrade.Label(1).Height
+        frmTrade.shopType.Width = frmTrade.Label(1).Width
         Trade(1).SelectedItem = 1
         
         NumShop = ShopNum
@@ -1836,34 +1836,6 @@ mont:
     ' :: Change Player Direction Packet ::
     ' ::::::::::::::::::::::::::::::::::::
     If LCase$(Parse(0)) = "changedir" Then Player(Val(Parse(2))).Dir = Val(Parse(1)): Exit Sub
-    
-    ' ::::::::::::::::::::::::::::::
-    ' :: Flash Movie Event Packet ::
-    ' ::::::::::::::::::::::::::::::
-    If LCase$(Parse(0)) = "flashevent" Then
-        If LCase$(Mid$(Trim$(Parse(1)), 1, 7)) = "http://" Then
-            WriteINI "CONFIG", "Music", 0, App.Path & "\Config\Account.ini"
-            WriteINI "CONFIG", "Sound", 0, App.Path & "\Config\Account.ini"
-            Call StopMidi
-            Call StopSound
-            frmFlash.Flash.LoadMovie 0, Trim$(Parse(1))
-            frmFlash.Flash.Play
-            frmFlash.Check.Enabled = True
-            frmFlash.Show vbModeless, frmMirage
-        ElseIf FileExiste("Flashs\" & Trim$(Parse(1))) = True Then
-            WriteINI "CONFIG", "Music", 0, App.Path & "\Config\Account.ini"
-            WriteINI "CONFIG", "Sound", 0, App.Path & "\Config\Account.ini"
-            Call StopMidi
-            Call StopSound
-            frmFlash.Flash.LoadMovie 0, App.Path & "\Flashs\" & Trim$(Parse(1))
-            frmFlash.Flash.Play
-            frmFlash.Check.Enabled = True
-            frmFlash.Show vbModeless, frmMirage
-        End If
-        Exit Sub
-    End If
-    
-
     
     ' :::::::::::::::::::
     ' :: Prompt Packet ::
@@ -2309,11 +2281,11 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub WarpTo(ByVal MapNum As Long)
+Sub WarpTo(ByVal mapnum As Long)
 Dim Packet As String
     
     OldMap = GetPlayerMap(MyIndex)
-    Packet = "WARPTO" & SEP_CHAR & MapNum & END_CHAR
+    Packet = "WARPTO" & SEP_CHAR & mapnum & END_CHAR
     Call SendData(Packet)
 End Sub
 

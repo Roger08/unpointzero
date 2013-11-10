@@ -234,11 +234,10 @@ On Error GoTo er:
     frmsplash.Shape1.Width = frmsplash.Shape1.Width + 200
     ' Check if the maps directory is there, if its not make it
     If LCase$(Dir$(App.Path & "\Maps", vbDirectory)) <> "maps" Then Call MkDir$(App.Path & "\Maps")
-    If UCase$(Dir$(App.Path & "\GFX", vbDirectory)) <> "GFX" Then Call MkDir$(App.Path & "\GFX")
-    If UCase$(Dir$(App.Path & "\Music", vbDirectory)) <> "MUSIC" Then Call MkDir$(App.Path & "\Music")
-    If UCase$(Dir$(App.Path & "\SFX", vbDirectory)) <> "SFX" Then Call MkDir$(App.Path & "\SFX")
-    If UCase$(Dir$(App.Path & "\Flashs", vbDirectory)) <> "FLASHS" Then Call MkDir$(App.Path & "\Flashs")
-    If UCase$(Dir$(App.Path & "\Videos", vbDirectory)) <> "VIDEOS" Then Call MkDir$(App.Path & "\Videos")
+    If LCase$(Dir$(App.Path & "\GFX", vbDirectory)) <> "gfx" Then Call MkDir$(App.Path & "\GFX")
+    If LCase$(Dir$(App.Path & "\Music", vbDirectory)) <> "music" Then Call MkDir$(App.Path & "\Music")
+    If LCase$(Dir$(App.Path & "\SFX", vbDirectory)) <> "sfx" Then Call MkDir$(App.Path & "\SFX")
+    If LCase$(Dir$(App.Path & "\Videos", vbDirectory)) <> "videos" Then Call MkDir$(App.Path & "\Videos")
         
     Dim FileName As String
     FileName = App.Path & "\Config\Account.ini"
@@ -638,15 +637,15 @@ Dim MinDrawMapY As Long 'Calcul du minimum a dessiner en Y
     'Initialisation des variables pour les limites de la "vue" du joueur
     screen_xg = (frmMirage.picScreen.Width \ 64) - 1
     screen_xd = (frmMirage.picScreen.Width \ 32) - screen_xg - 1
-    screen_yh = (frmMirage.picScreen.height \ 64) - 1
-    screen_yb = (frmMirage.picScreen.height \ 32) - screen_yh - 1
+    screen_yh = (frmMirage.picScreen.Height \ 64) - 1
+    screen_yb = (frmMirage.picScreen.Height \ 32) - screen_yh - 1
     
     Do While InGame
         Tick = GetTickCount
         
         ' Check to make sure they aren't trying to auto do anything
         'ne peux plus bouger si certaines frames sont visibles
-        If frmMirage.txtMyTextBox.Locked = False Or frmTrade.Visible = True Or frmbank.Visible = True Or frmPlayerTrade.Visible = True Or frmFlash.Visible = True Or frmFixItem.Visible = True Or frmcraft.Visible = True Then
+        If frmMirage.txtMyTextBox.Locked = False Or frmTrade.Visible = True Or frmbank.Visible = True Or frmPlayerTrade.Visible = True Or frmFixItem.Visible = True Or frmcraft.Visible = True Then
             DirUp = False
             DirDown = False
             DirLeft = False
@@ -1254,7 +1253,7 @@ Dim ty As Long
     End If
 End Sub
 
-Sub BltItem(ByVal ItemNum As Long)
+Sub BltItem(ByVal Itemnum As Long)
     ' Only used if ever want to switch to blt rather then bltfast
 '    With rec_pos
         '.Top = MapItem(ItemNum).y * PIC_Y
@@ -1263,13 +1262,13 @@ Sub BltItem(ByVal ItemNum As Long)
         '.Right = .Left + PIC_X
     'End With
     
-    rec.Top = (Item(MapItem(ItemNum).num).Pic \ 6) * PIC_Y
+    rec.Top = (Item(MapItem(Itemnum).num).Pic \ 6) * PIC_Y
     rec.Bottom = rec.Top + PIC_Y
-    rec.Left = (Item(MapItem(ItemNum).num).Pic - (Item(MapItem(ItemNum).num).Pic \ 6) * 6) * PIC_X
+    rec.Left = (Item(MapItem(Itemnum).num).Pic - (Item(MapItem(Itemnum).num).Pic \ 6) * 6) * PIC_X
     rec.Right = rec.Left + PIC_X
     
     'Call DD_BackBuffer.Blt(rec_pos, DD_ItemSurf, rec, DDBLT_WAIT Or DDBLT_KEYSRC)
-    Call DD_BackBuffer.BltFast((MapItem(ItemNum).x - NewPlayerX) * PIC_X + sx - NewXOffset, (MapItem(ItemNum).y - NewPlayerY) * PIC_Y + sx - NewYOffset, DD_ItemSurf, rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
+    Call DD_BackBuffer.BltFast((MapItem(Itemnum).x - NewPlayerX) * PIC_X + sx - NewXOffset, (MapItem(Itemnum).y - NewPlayerY) * PIC_Y + sx - NewYOffset, DD_ItemSurf, rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
 End Sub
 
 Sub BltFog(ByVal MinX As Long, ByVal MaxX As Long, ByVal MinY As Long, ByVal MaxY As Long)
@@ -2698,7 +2697,7 @@ End Sub
 
 Public Sub InitMirageVars()
     PicScWidth = frmMirage.picScreen.Width
-    PicScHeight = frmMirage.picScreen.height
+    PicScHeight = frmMirage.picScreen.Height
 End Sub
 
 Function IsTryingToMove() As Boolean
@@ -3652,18 +3651,18 @@ Dim i As Long
     FindPlayer = 0
 End Function
 
-Function FindOpenInvSlot(ByVal ItemNum As Long) As Long
+Function FindOpenInvSlot(ByVal Itemnum As Long) As Long
 Dim i As Long
     
     FindOpenInvSlot = 0
     
     ' Check for subscript out of range
-    If IsPlaying(MyIndex) = False Or ItemNum <= 0 Or ItemNum > MAX_ITEMS Then Exit Function
+    If IsPlaying(MyIndex) = False Or Itemnum <= 0 Or Itemnum > MAX_ITEMS Then Exit Function
     
-    If Item(ItemNum).Type = ITEM_TYPE_CURRENCY Then
+    If Item(Itemnum).Type = ITEM_TYPE_CURRENCY Then
         ' If currency then check to see if they already have an instance of the item and add it to that
         For i = 1 To MAX_INV
-            If GetPlayerInvItemNum(MyIndex, i) = ItemNum Then FindOpenInvSlot = i: Exit Function
+            If GetPlayerInvItemNum(MyIndex, i) = Itemnum Then FindOpenInvSlot = i: Exit Function
         Next i
     End If
     
@@ -4103,13 +4102,13 @@ Dim dRECT As RECT
     PicBox.Picture = LoadPicture()
     With dRECT
         .Top = 0
-        .Bottom = PicBox.height
+        .Bottom = PicBox.Height
         .Left = 0
         .Right = PicBox.Width
     End With
     With sRECT
         .Top = y
-        .Bottom = .Top + PicBox.height
+        .Bottom = .Top + PicBox.Height
         .Left = x
         .Right = .Left + PicBox.Width
     End With
@@ -4140,8 +4139,8 @@ Dim Ending As String
     If netbook = True Then
         frmMirage.Interface.Width = 640
         frmMirage.picScreen.Width = 640
-        frmMirage.picScreen.height = 416
-        frmMirage.height = 7625
+        frmMirage.picScreen.Height = 416
+        frmMirage.Height = 7625
         frmMirage.Width = 9570
         For i = 0 To 8
             frmMirage.picRac(i).Visible = True
@@ -4171,15 +4170,15 @@ Dim Ending As String
         'Elios - bug du frmMirage
         frmMirage.pictHide.Top = 408
         frmMirage.pictHide.Left = 0
-        frmMirage.pictHide.height = 8
+        frmMirage.pictHide.Height = 8
         frmMirage.pictHide.Width = 640
         frmMirage.pictHide.Visible = True
     Else
     'Mode Normal
         frmMirage.Interface.Width = 800
         frmMirage.picScreen.Width = 800
-        frmMirage.picScreen.height = 608
-        frmMirage.height = 10500
+        frmMirage.picScreen.Height = 608
+        frmMirage.Height = 10500
         frmMirage.Width = 12075
         For i = 0 To 13
             frmMirage.picRac(i).Visible = True
@@ -4209,23 +4208,23 @@ Dim Ending As String
         'Elios - bug du frmMirage
         frmMirage.pictHide.Top = 600
         frmMirage.pictHide.Left = 0
-        frmMirage.pictHide.height = 8
+        frmMirage.pictHide.Height = 8
         frmMirage.pictHide.Width = 800
         frmMirage.pictHide.Visible = True
     End If
     
-    frmMirage.Interface.Top = frmMirage.picScreen.height
-    frmMirage.txtQ.Top = frmMirage.picScreen.height - frmMirage.txtQ.height
-    frmMirage.Canal.Top = frmMirage.picScreen.height - frmMirage.Canal.height - 10
-    frmMirage.txtMyTextBox.Top = frmMirage.picScreen.height - frmMirage.txtMyTextBox.height - 10
-    frmMirage.picParty.Top = frmMirage.picScreen.height - frmMirage.picParty.height
-    frmMirage.fra_fenetre.Top = frmMirage.picScreen.height - frmMirage.fra_fenetre.height - 10
+    frmMirage.Interface.Top = frmMirage.picScreen.Height
+    frmMirage.txtQ.Top = frmMirage.picScreen.Height - frmMirage.txtQ.Height
+    frmMirage.Canal.Top = frmMirage.picScreen.Height - frmMirage.Canal.Height - 10
+    frmMirage.txtMyTextBox.Top = frmMirage.picScreen.Height - frmMirage.txtMyTextBox.Height - 10
+    frmMirage.picParty.Top = frmMirage.picScreen.Height - frmMirage.picParty.Height
+    frmMirage.fra_fenetre.Top = frmMirage.picScreen.Height - frmMirage.fra_fenetre.Height - 10
     frmMirage.fra_fenetre.Left = frmMirage.picScreen.Width - frmMirage.fra_fenetre.Width - 30
     If netbook = True Then
         frmMirage.itmDesc.Left = frmMirage.fra_fenetre.Left - frmMirage.itmDesc.Width
-        frmMirage.itmDesc.Top = frmMirage.picScreen.height - frmMirage.itmDesc.height - 10
+        frmMirage.itmDesc.Top = frmMirage.picScreen.Height - frmMirage.itmDesc.Height - 10
     Else
         frmMirage.itmDesc.Left = frmMirage.picScreen.Width - frmMirage.itmDesc.Width - 30
-        frmMirage.itmDesc.Top = frmMirage.fra_fenetre.Top - frmMirage.itmDesc.height
+        frmMirage.itmDesc.Top = frmMirage.fra_fenetre.Top - frmMirage.itmDesc.Height
     End If
 End Sub

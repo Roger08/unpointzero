@@ -748,10 +748,6 @@ Dim Packet As String
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub Flash(ByVal Index As Byte, ByVal flashfile As String)
-    Call SendDataTo(Index, "flashevent" & SEP_CHAR & flashfile & END_CHAR)
-End Sub
-
 Sub Prompt(ByVal Index As Byte, ByVal question As String, ByVal value As Long)
     Call SendDataTo(Index, "prompt" & SEP_CHAR & question & SEP_CHAR & value & END_CHAR)
 End Sub
