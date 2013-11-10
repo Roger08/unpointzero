@@ -264,11 +264,11 @@ Type PlayerRec
     POINTS As Integer
     
     ' Worn equipment
-    ArmorSlot As Integer
-    WeaponSlot As Integer
-    HelmetSlot As Integer
-    ShieldSlot As Integer
-    PetSlot As Integer
+    ArmorSlot As Byte
+    WeaponSlot As Byte
+    HelmetSlot As Byte
+    ShieldSlot As Byte
+    PetSlot As Byte
     
     ' Inventory
     Inv(1 To MAX_INV) As PlayerInvRec
@@ -290,7 +290,6 @@ Type PlayerRec
     armure As Integer
     arme As Integer
     bouclier As Integer
-    
     'FIN PAPERDOLL
     
     vendeur As Integer

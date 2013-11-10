@@ -1,0 +1,11 @@
+20:49:53: Compte test a été créé.
+20:49:57: test s'est connecté depuis 127.0.0.1.
+20:50:16: Le personnage test a été ajouté au compte de test.
+20:50:19: test/test est en train de jouer à FRoG Creator.
+20:52:12: test s'est connecté depuis 127.0.0.1.
+20:52:15: test/test est en train de jouer à FRoG Creator.
+20:52:28: Carte #1 : test : test
+20:59:54: test s'est connecté depuis 127.0.0.1.
+20:59:56: test/test est en train de jouer à FRoG Creator.
+21:17:17: test s'est connecté depuis 127.0.0.1.
+21:17:18: test/test est en train de jouer à FRoG Creator.

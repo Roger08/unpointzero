@@ -199,7 +199,7 @@ On Error Resume Next
             Call ClearPlayer(i)
         Next i
         
-        Call ClearMap
+        Call ClearMaps
         
         For i = 1 To MAX_MAPS
             DoEvents
@@ -1601,10 +1601,10 @@ mont:
         
         Trade(1).Selected = YES
                     
-        frmTrade.shopType.Top = frmTrade.Label(1).Top
-        frmTrade.shopType.Left = frmTrade.Label(1).Left
-        frmTrade.shopType.Height = frmTrade.Label(1).Height
-        frmTrade.shopType.Width = frmTrade.Label(1).Width
+        frmTrade.shopType.Top = frmTrade.label(1).Top
+        frmTrade.shopType.Left = frmTrade.label(1).Left
+        frmTrade.shopType.Height = frmTrade.label(1).Height
+        frmTrade.shopType.Width = frmTrade.label(1).Width
         Trade(1).SelectedItem = 1
         
         NumShop = ShopNum
@@ -2281,11 +2281,11 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub WarpTo(ByVal mapnum As Long)
+Sub WarpTo(ByVal MapNum As Long)
 Dim Packet As String
     
     OldMap = GetPlayerMap(MyIndex)
-    Packet = "WARPTO" & SEP_CHAR & mapnum & END_CHAR
+    Packet = "WARPTO" & SEP_CHAR & MapNum & END_CHAR
     Call SendData(Packet)
 End Sub
 

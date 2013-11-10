@@ -125,8 +125,8 @@ Sub InitDirectX()
     Set D3D = DD.GetDirect3D
     
 End Sub
-Function LoadMaxSprite() As Long
-Dim i As Long
+Function LoadMaxSprite() As Integer
+Dim i As Integer
     
 i = 0
 Do While FileExiste("\GFX\Sprites\Sprites" & i & ".png")
@@ -136,8 +136,8 @@ Loop
 
 End Function
 
-Function LoadMaxPaperdolls() As Long
-Dim i As Long
+Function LoadMaxPaperdolls() As Integer
+Dim i As Integer
     
 i = 0
 Do While FileExiste("\GFX\Paperdolls\Paperdolls" & i & ".png")
@@ -147,8 +147,8 @@ Loop
 
 End Function
 
-Function LoadMaxSpells() As Long
-Dim i As Long
+Function LoadMaxSpells() As Integer
+Dim i As Integer
     
 i = 0
 Do While FileExiste("\GFX\Spells\Spells" & i & ".png")
@@ -158,8 +158,8 @@ Loop
 
 End Function
 
-Function LoadMaxBigSpells() As Long
-Dim i As Long
+Function LoadMaxBigSpells() As Integer
+Dim i As Integer
 
 i = 0
 Do While FileExiste("\GFX\BigSpells\BigSpells" & i & ".png")
@@ -169,8 +169,8 @@ Loop
 
 End Function
 
-Function LoadMaxPet() As Long
-Dim i As Long
+Function LoadMaxPet() As Integer
+Dim i As Integer
 
 i = 0
 Do While FileExiste("\GFX\Pets\Pet" & i & ".png")
@@ -183,7 +183,7 @@ End Function
 
 Sub InitBackBuffer()
 Dim Key As DDCOLORKEY
-Dim i As Long
+'Dim i As Long
 
     ' Check for files existing
     'If Not FileExiste("\GFX\sprites.png") Or Not
@@ -214,7 +214,7 @@ Dim i As Long
 
 End Sub
 Public Sub UnloadTextures()
-    Dim i As Long
+    Dim i As Integer
     For i = 1 To MaxSprite
             If SpriteTimer(i) > GetTickCount + SurfaceTimerMax Then
                 Set DD_SpriteSurf(i) = Nothing
@@ -260,7 +260,7 @@ Public Sub UnloadTextures()
     Next
     
 End Sub
-Sub PrepareSprite(i As Long)
+Sub PrepareSprite(i As Integer)
 If SpriteUsed(i) = False Then
 If FileExiste("\GFX\Sprites\Sprites" & i & ".png") Then
 DDSD_Character(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
@@ -272,7 +272,7 @@ End If
 End If
 SpriteTimer(i) = GetTickCount
 End Sub
-Sub PrepareSpell(i As Long)
+Sub PrepareSpell(i As Integer)
 If SpellUsed(i) = False Then
 If FileExiste("\GFX\Spells\Spells" & i & ".png") Then
 DDSD_SpellAnim(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
@@ -284,7 +284,7 @@ End If
 End If
 SpellTimer(i) = GetTickCount
 End Sub
-Sub PrepareBigSpell(i As Long)
+Sub PrepareBigSpell(i As Integer)
 If BigSpellUsed(i) = False Then
 If FileExiste("\GFX\BigSpells\BigSpells" & i & ".png") Then
 DDSD_BigSpellAnim(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
@@ -296,7 +296,7 @@ End If
 End If
 BigSpellTimer(i) = GetTickCount
 End Sub
-Sub PreparePaperDoll(i As Long)
+Sub PreparePaperDoll(i As Integer)
 If PaperDollUsed(i) = False Then
 If FileExiste("\GFX\Paperdolls\Paperdolls" & i & ".png") Then
 DDSD_PaperDoll(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
@@ -308,7 +308,7 @@ End If
 End If
 PaperDollTimer(i) = GetTickCount
 End Sub
-Sub PreparePet(i As Long)
+Sub PreparePet(i As Integer)
 If PetUsed(i) = False Then
 If FileExiste("\GFX\Pets\Pet" & i & ".png") Then
 DDSD_Pets(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH
@@ -568,7 +568,7 @@ On Error Resume Next
     End With
 End Sub
 
-Sub BltPlayerAnim(ByVal Index As Long)
+Sub BltPlayerAnim(ByVal Index As Byte)
 Dim x As Long, y As Long
     If PlayerAnim(Index, 0) = 0 Then Exit Sub
     Call PrepareSpell(PlayerAnim(Index, 0) - 1)
@@ -602,7 +602,7 @@ Dim x As Long, y As Long
 End Sub
 
 
-Sub BltPlayerInt(ByVal Index As Long)
+Sub BltPlayerInt(ByVal Index As Byte)
 rec.Top = 6 * PIC_Y + (PIC_Y / 2)
 rec.Bottom = rec.Top + (PIC_Y / 2)
 rec.Left = 0 * PIC_X
@@ -657,7 +657,7 @@ End If
 End Sub
 
 
-Sub BltSpell(ByVal Index As Long)
+Sub BltSpell(ByVal Index As Byte)
 Dim x As Long, y As Long, i As Long
 
 If Player(Index).SpellNum <= 0 Or Player(Index).SpellNum > MAX_SPELLS Then Exit Sub
@@ -722,7 +722,7 @@ For i = 1 To MAX_SPELL_ANIM
 Next i
 End Sub
 ' Effet de sang
-Sub BltBlood(ByVal Index As Long, Optional TailleX As Byte, Optional TailleY As Byte, Optional ImgTime As Byte)
+Sub BltBlood(ByVal Index As Byte, Optional TailleX As Byte, Optional TailleY As Byte, Optional ImgTime As Byte)
 Dim x As Integer, y As Integer, i As Integer, BloodNum As Byte
 
 
@@ -768,7 +768,7 @@ If Player(Index).BloodAnim.CastedSpell = YES Then
 End If
 End Sub
 
-Sub BltEmoticons(ByVal Index As Long)
+Sub BltEmoticons(ByVal Index As Byte)
 Dim x2 As Long, y2 As Long
     If Player(Index).EmoticonNum < 0 Then Exit Sub
 
@@ -800,7 +800,7 @@ Dim x2 As Long, y2 As Long
     End With
 End Sub
 
-Sub BltArrow(ByVal Index As Long)
+Sub BltArrow(ByVal Index As Byte)
 Dim x As Long, y As Long, i As Long, z As Long
 Dim BX As Long, by As Long
 
@@ -878,7 +878,7 @@ Next z
 End Sub
 
 Sub ChrgSpriteSurf()
-Dim i As Long
+Dim i As Integer
 Set DD = dX.DirectDrawCreate("")
 Call DD.SetCooperativeLevel(frmMirage.hwnd, DDSCL_NORMAL)
 ' Init sprite ddsd type and load the bitmap
@@ -892,7 +892,7 @@ Next i
 
 End Sub
 
-Public Sub InitPano(ByVal MapNum As Long)
+Public Sub InitPano(ByVal MapNum As Integer)
     If MapNum <= 0 Or MapNum > MAX_MAPS Or DD Is Nothing Then Exit Sub
     If Trim$(Map(MapNum).PanoInf) <> vbNullString And InStr(1, Trim$(Map(MapNum).PanoInf), ".png") > 0 Then
         If Not FileExiste("GFX\" & Trim$(Map(MapNum).PanoInf)) Then
@@ -919,7 +919,7 @@ Public Sub InitPano(ByVal MapNum As Long)
     End If
 End Sub
 
-Public Sub InitNightAndFog(ByVal MapNum As Long)
+Public Sub InitNightAndFog(ByVal MapNum As Integer)
     If MapNum <= 0 Or MapNum > MAX_MAPS Or DD Is Nothing Then Exit Sub
     
     'Initialisation du brouillard

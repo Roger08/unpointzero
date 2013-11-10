@@ -1043,7 +1043,7 @@ End With
 End Sub
 
 Sub ClearItem(ByVal Itemnum As Integer)
-With Item(Index)
+With Item(Itemnum)
     .name = vbNullString
     .desc = vbNullString
     
@@ -1085,8 +1085,8 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub ClearMapItem(ByVal mapnum As Integer)
-With MapItem(mapnum)
+Sub ClearMapItem(ByVal MapNum As Integer)
+With MapItem(MapNum)
     .num = 0
     .Value = 0
     .dur = 0
@@ -1195,7 +1195,7 @@ Dim i As Byte
             .Attacking = 0
             .AttackTimer = 0
         End With
-        PNJAnim(Index) = 1
+        PNJAnim(i) = 1
     Next i
 End Sub
 
@@ -1361,8 +1361,8 @@ If Index <= 0 Then Exit Function
     GetPlayerMap = Player(Index).Map
 End Function
 
-Sub SetPlayerMap(ByVal Index As Byte, ByVal mapnum As Integer)
-    Player(Index).Map = mapnum
+Sub SetPlayerMap(ByVal Index As Byte, ByVal MapNum As Integer)
+    Player(Index).Map = MapNum
 End Sub
 
 Function GetPlayerX(ByVal Index As Byte) As Byte
