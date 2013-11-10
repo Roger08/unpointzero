@@ -323,7 +323,7 @@ Type AccountRec
     CharNum As Byte
     InGame As Boolean
     AttackTimer As Integer
-    DataTimer As Integer
+    DataTimer As Long
     DataBytes As Integer
     DataPackets As Integer
     
