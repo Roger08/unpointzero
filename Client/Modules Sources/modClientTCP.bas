@@ -5,8 +5,8 @@ Public Declare Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCa
 Public ServerIP As String
 Public PlayerBuffer As String
 Public InGame As Boolean
-Public TradePlayer As Long
-Private MapNumS As Long
+Public TradePlayer As Byte
+Private MapNumS As Integer
 
 Sub TcpInit()
     SEP_CHAR = Chr$(0)
@@ -58,23 +58,16 @@ Sub HandleData(ByVal data As String)
 Dim Parse() As String
 Dim name As String
 Dim Password As String
-Dim Sex As Long
-Dim ClassNum As Long
-Dim CharNum As Long
+Dim Sex As Byte
+Dim ClassNum As Byte
+Dim CharNum As Byte
 Dim Msg As String
-Dim IPMask As String
-Dim BanSlot As Long
-Dim MsgTo As Long
-Dim Dir As Long
-Dim InvNum As Long
-Dim Ammount As Long
+Dim Dir As Byte
+Dim InvNum As Byte
 Dim Damage As Long
-Dim PointType As Long
-Dim BanPlayer As Long
-Dim level As Long
-Dim i As Long, n As Long, x As Long, y As Long
-Dim ShopNum As Long, GiveItem As Long, GiveValue As Long, GetItem As Long, getValue As Long
-Dim z As Long
+Dim level As Integer
+Dim i As Integer, n As Long, x As Long, y As Long, z As Long
+Dim ShopNum As Integer, GiveItem As Integer, GiveValue As Integer, GetItem As Integer, getValue As Integer
 Dim Ending As String
 On Error Resume Next
 'On Error GoTo erreur:
@@ -138,7 +131,7 @@ On Error Resume Next
             frmMirage.picInv(i).Visible = True
         Next
         
-        frmMirage.Picture9.Height = frmMirage.picInv(i - 1).Top + 40
+        frmMirage.Picture9.height = frmMirage.picInv(i - 1).Top + 40
         
         For i = 1 To MAX_PLAYER_SPELLS - 1
             If Loading = False Then Load frmMirage.picspell(i)
@@ -315,13 +308,13 @@ On Error Resume Next
                 frmMainMenu.PicChar.Picture = LoadPNG(App.Path & "/GFX/Sprites/Sprites" & charSelect(charSelectNum).sprt & Ending)
             End If
         Next i
-        frmMainMenu.PicChar.Height = frmMainMenu.PicChar.Height / 4
+        frmMainMenu.PicChar.height = frmMainMenu.PicChar.height / 4
         frmMainMenu.PicChar.Width = frmMainMenu.PicChar.Width / 4
         If frmMainMenu.PicChar.Width > 960 Then
             frmMainMenu.PicChar.Width = 960
         End If
-        If frmMainMenu.PicChar.Height > 960 Then
-            frmMainMenu.PicChar.Height = 960
+        If frmMainMenu.PicChar.height > 960 Then
+            frmMainMenu.PicChar.height = 960
         End If
         If frmMainMenu.PicChar.Width > 480 Then
             frmMainMenu.PicChar.Left = 840 - frmMainMenu.PicChar.Width + 480
@@ -416,8 +409,8 @@ On Error Resume Next
             .lblDEF.Caption = STR$(Class(0).DEF)
             .lblSPEED.Caption = STR$(Class(0).speed)
             .lblMAGI.Caption = STR$(Class(0).MAGI)
-            .Picpic.Height = (PIC_Y + (PIC_Y / 2))
-            .Picture4.Height = (PIC_Y + (PIC_Y / 2)) + 4
+            .Picpic.height = (PIC_Y + (PIC_Y / 2))
+            .Picture4.height = (PIC_Y + (PIC_Y / 2)) + 4
         End With
         
         Exit Sub
@@ -1603,7 +1596,7 @@ mont:
                     
         frmTrade.shopType.Top = frmTrade.label(1).Top
         frmTrade.shopType.Left = frmTrade.label(1).Left
-        frmTrade.shopType.Height = frmTrade.label(1).Height
+        frmTrade.shopType.height = frmTrade.label(1).height
         frmTrade.shopType.Width = frmTrade.label(1).Width
         Trade(1).SelectedItem = 1
         
@@ -2130,7 +2123,7 @@ Function IsConnected() As Boolean
     If frmMirage.Socket.State = sckConnected Then IsConnected = True Else IsConnected = False
 End Function
 
-Function IsPlaying(ByVal Index As Long) As Boolean
+Function IsPlaying(ByVal Index As Byte) As Boolean
     If GetPlayerName(Index) <> vbNullString Then IsPlaying = True Else IsPlaying = False
 End Function
 
@@ -2160,14 +2153,14 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendAddChar(ByVal name As String, ByVal Sex As Long, ByVal ClassNum As Long, ByVal Slot As Long)
+Sub SendAddChar(ByVal name As String, ByVal Sex As Byte, ByVal ClassNum As Byte, ByVal Slot As Byte)
 Dim Packet As String
 
     Packet = "addachara" & SEP_CHAR & Trim$(name) & SEP_CHAR & Sex & SEP_CHAR & ClassNum & SEP_CHAR & Slot & END_CHAR
     Call SendData(Packet)
 End Sub
 
-Sub SendDelChar(ByVal Slot As Long)
+Sub SendDelChar(ByVal Slot As Byte)
 Dim Packet As String
     
     Packet = "delimbocharu" & SEP_CHAR & Slot & END_CHAR
@@ -2181,7 +2174,7 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendUseChar(ByVal CharSlot As Long)
+Sub SendUseChar(ByVal CharSlot As Byte)
 Dim Packet As String
 
     Packet = "usagakarim" & SEP_CHAR & CharSlot & END_CHAR
@@ -2281,7 +2274,7 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub WarpTo(ByVal MapNum As Long)
+Sub WarpTo(ByVal MapNum As Integer)
 Dim Packet As String
     
     OldMap = GetPlayerMap(MyIndex)
@@ -2296,7 +2289,7 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendSetSprite(ByVal SpriteNum As Long)
+Sub SendSetSprite(ByVal SpriteNum As Integer)
 Dim Packet As String
 
     Packet = "SETSPRITE" & SEP_CHAR & SpriteNum & END_CHAR
@@ -2359,7 +2352,7 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendUseItem(ByVal InvNum As Long)
+Sub SendUseItem(ByVal InvNum As Byte)
 Dim Packet As String
 
     Packet = "USEITEM" & SEP_CHAR & InvNum & END_CHAR
@@ -2463,14 +2456,14 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendSetPlayerstr(ByVal name As String, ByVal num As Long)
+Sub SendSetPlayerstr(ByVal name As String, ByVal num As Integer)
 Dim Packet As String
 
     Packet = "SETPLAYERSTR" & SEP_CHAR & name & SEP_CHAR & num & END_CHAR
     Call SendData(Packet)
 End Sub
 
-Sub SendSetPlayerDef(ByVal name As String, ByVal num As Long)
+Sub SendSetPlayerDef(ByVal name As String, ByVal num As Integer)
 Dim Packet As String
 
     Packet = "SETPLAYERDEF" & SEP_CHAR & name & SEP_CHAR & num & END_CHAR
@@ -2491,14 +2484,14 @@ Dim Packet As String
     Call SendData(Packet)
 End Sub
 
-Sub SendSetPlayerPk(ByVal name As String, ByVal num As Long)
+Sub SendSetPlayerPk(ByVal name As String, ByVal num As Byte)
 Dim Packet As String
 
     Packet = "SETPLAYERPK" & SEP_CHAR & name & SEP_CHAR & num & END_CHAR
     Call SendData(Packet)
 End Sub
 
-Sub SendSetPlayerNiveau(ByVal name As String, ByVal num As Long)
+Sub SendSetPlayerNiveau(ByVal name As String, ByVal num As Integer)
 Dim Packet As String
 
     Packet = "SETPLAYERNIVEAU" & SEP_CHAR & name & SEP_CHAR & num & END_CHAR
