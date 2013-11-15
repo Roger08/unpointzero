@@ -9,6 +9,7 @@
 20:59:56: test/test est en train de jouer à FRoG Creator.
 21:17:17: test s'est connecté depuis 127.0.0.1.
 21:17:18: test/test est en train de jouer à FRoG Creator.
+<<<<<<< HEAD
 20:39:53: test s'est connecté depuis 127.0.0.1.
 20:39:54: test/test est en train de jouer à FRoG Creator.
 20:40:34: test s'est connecté depuis 127.0.0.1.
@@ -21,3 +22,9 @@
 20:43:23: test/test est en train de jouer à FRoG Creator.
 20:45:56: test s'est connecté depuis 127.0.0.1.
 20:45:57: test/test est en train de jouer à FRoG Creator.
+=======
+13:45:07: test s'est connecté depuis 127.0.0.1.
+13:45:10: test/test est en train de jouer à FRoG Creator.
+20:02:26: test s'est connecté depuis 127.0.0.1.
+20:02:28: test/test est en train de jouer à FRoG Creator.
+>>>>>>> DÃ©but restructuration serveur
