@@ -308,7 +308,7 @@ End If
 End If
 PaperDollTimer(i) = GetTickCount
 End Sub
-Sub PreparePet(i As Integer)
+Sub PreparePet(ByVal i As Integer)
 If PetUsed(i) = False Then
 If FileExiste("\GFX\Pets\Pet" & i & ".png") Then
 DDSD_Pets(i).lFlags = DDSD_CAPS Or DDSD_HEIGHT Or DDSD_WIDTH

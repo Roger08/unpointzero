@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6BF52A50-394A-11D3-B153-00C04F79FAA6}#1.0#0"; "wmp.dll"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCN.OCX"
 Begin VB.Form frmMirage 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
@@ -29,20 +29,6 @@ Begin VB.Form frmMirage
    ScaleWidth      =   800
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.PictureBox pictHide 
-      Appearance      =   0  'Flat
-      BackColor       =   &H0000C000&
-      BorderStyle     =   0  'None
-      ForeColor       =   &H80000008&
-      Height          =   255
-      Left            =   3480
-      ScaleHeight     =   255
-      ScaleWidth      =   375
-      TabIndex        =   253
-      Top             =   8160
-      Visible         =   0   'False
-      Width           =   375
-   End
    Begin VB.PictureBox picOptions 
       Appearance      =   0  'Flat
       BackColor       =   &H00FFFFFF&
@@ -4966,7 +4952,7 @@ Dim Qq As Long
         If FileExiste(Rep_Theme & "\info" & Ending) Then frmMirage.Picture = LoadPNG(App.Path & Rep_Theme & "\info" & Ending)
         If FileExiste(Rep_Theme & "\Jeu\Info" & Ending) Then Image1.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\Info" & Ending)
         If FileExiste(Rep_Theme & "\Jeu\inventaire" & Ending) Then Image3.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\inventaire" & Ending)
-        If FileExiste(Rep_Theme & "\Jeu\Carte" & Ending) Then imgcarte.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\Carte" & Ending)
+        If FileExiste(Rep_Theme & "\Jeu\Carte" & Ending) Then imgCarte.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\Carte" & Ending)
         If FileExiste(Rep_Theme & "\Jeu\quitter" & Ending) Then PicMenuQuitter.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\quitter" & Ending)
         If FileExiste(Rep_Theme & "\Jeu\quete" & Ending) Then picquete.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\quete" & Ending)
         If FileExiste(Rep_Theme & "\Jeu\metier" & Ending) Then pictMetier.Picture = LoadPNG(App.Path & Rep_Theme & "\Jeu\metier" & Ending)
@@ -5534,9 +5520,9 @@ Dim tp As Long
         If GetPlayerY(MyIndex) - 1 > 0 And GetPlayerY(MyIndex) - 1 < MAX_MAPY Then
             With Map(GetPlayerMap(MyIndex)).Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex) - 1)
             If .Type = TILE_TYPE_SIGN And Player(MyIndex).Dir = DIR_UP Then
-                If Trim$(.String1) <> vbNullString Then Call QueteMsg(MyIndex, "Il est marqué: " & Trim$(.String1))
-                If Trim$(.String2) <> vbNullString Then Call QueteMsg(MyIndex, "Il est marqué: " & Trim$(.String2))
-                If Trim$(.String3) <> vbNullString Then Call QueteMsg(MyIndex, "Il est marqué: " & Trim$(.String3))
+                If Trim$(.String1) <> vbNullString Then Call QueteMsg("Il est marqué: " & Trim$(.String1))
+                If Trim$(.String2) <> vbNullString Then Call QueteMsg("Il est marqué: " & Trim$(.String2))
+                If Trim$(.String3) <> vbNullString Then Call QueteMsg("Il est marqué: " & Trim$(.String3))
                 Exit Sub
             End If
             End With

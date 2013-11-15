@@ -9,3 +9,15 @@
 20:59:56: test/test est en train de jouer à FRoG Creator.
 21:17:17: test s'est connecté depuis 127.0.0.1.
 21:17:18: test/test est en train de jouer à FRoG Creator.
+20:39:53: test s'est connecté depuis 127.0.0.1.
+20:39:54: test/test est en train de jouer à FRoG Creator.
+20:40:34: test s'est connecté depuis 127.0.0.1.
+20:40:35: test/test est en train de jouer à FRoG Creator.
+20:41:58: Carte #1 : test : test
+20:42:00: Carte #1 : test : oe
+20:43:12: test s'est connecté depuis 127.0.0.1.
+20:43:16: Un personnage a été suprimé du compte test.
+20:43:20: Le personnage test a été ajouté au compte de test.
+20:43:23: test/test est en train de jouer à FRoG Creator.
+20:45:56: test s'est connecté depuis 127.0.0.1.
+20:45:57: test/test est en train de jouer à FRoG Creator.

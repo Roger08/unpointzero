@@ -42,11 +42,11 @@ Public Const NewMapColor As Byte = Grey
 Public TexthDC As Long
 Public GameFont As Long
 
-Public Sub SetFont(ByVal Font As String, ByVal Size As Byte)
-    GameFont = CreateFont(Size, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, Font)
+Public Sub SetFont(ByVal Font As String, ByVal size As Byte)
+    GameFont = CreateFont(size, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, Font)
 End Sub
 
-Public Sub DrawText(ByVal hDC As Long, ByVal x, ByVal y, ByVal Text As String, Color As Byte)
+Public Sub DrawText(ByVal hDC As Long, ByVal x, ByVal y, ByVal Text As String, ByVal Color As Byte)
     Call SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, RGB(0, 0, 0))
@@ -57,7 +57,7 @@ Public Sub DrawText(ByVal hDC As Long, ByVal x, ByVal y, ByVal Text As String, C
     Call SetTextColor(hDC, Color)
     Call TextOut(hDC, x, y, Text, Len(Text))
 End Sub
-Public Sub DrawPlayerNameText(ByVal hDC As Long, ByVal x, ByVal y, ByVal Text As String, Color As Byte)
+Public Sub DrawPlayerNameText(ByVal hDC As Long, ByVal x, ByVal y, ByVal Text As String, ByVal Color As Byte)
     Call SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, RGB(0, 0, 0))

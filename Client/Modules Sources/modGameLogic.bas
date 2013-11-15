@@ -17,13 +17,13 @@ Public Const SRCAND As Long = &H8800C6
 Public Const SRCCOPY As Long = &HCC0020
 Public Const SRCPAINT As Long = &HEE0086
 
-Public Const VK_UP As Long = &H26
-Public Const VK_DOWN As Long = &H28
-Public Const VK_LEFT As Long = &H25
-Public Const VK_RIGHT As Long = &H27
-Public Const VK_SHIFT As Long = &H10
-Public Const VK_RETURN As Long = &HD
-Public Const VK_CONTROL As Long = &H11
+Public Const VK_UP As Byte = &H26
+Public Const VK_DOWN As Byte = &H28
+Public Const VK_LEFT As Byte = &H25
+Public Const VK_RIGHT As Byte = &H27
+Public Const VK_SHIFT As Byte = &H10
+Public Const VK_RETURN As Byte = &HD
+Public Const VK_CONTROL As Byte = &H11
 
 ' Menu states
 Public Const MENU_STATE_NEWACCOUNT As Byte = 0
@@ -59,7 +59,7 @@ Public CHECK_WAIT As Boolean
 Public MyText As String
 
 ' Index of actual player
-Public MyIndex As Long
+Public MyIndex As Byte
 
 ' Map animation #, used to keep track of what map animation is currently on
 Public MapAnim As Boolean
@@ -76,7 +76,7 @@ Public SaveMapItem() As MapItemRec
 Public SaveMapNpc(1 To MAX_MAP_NPCS) As MapNpcRec
 
 ' Game fps
-Public GameFPS As Long
+Public GameFPS As Integer
 
 'Loc of pointer
 Public CurX As Single '/case
@@ -85,9 +85,9 @@ Public PotX As Single 'réel
 Public PotY As Single 'réel
 
 ' Used for atmosphere
-Public GameWeather As Long
-Public GameTime As Long
-Public RainIntensity As Long
+Public GameWeather As Byte
+Public GameTime As Byte
+Public RainIntensity As Byte
 
 ' Scrolling Variables
 Public NewPlayerX As Long
@@ -117,10 +117,6 @@ Public sy As Long
 Public MouseDownX As Long
 Public MouseDownY As Long
 
-Public SpritePic As Long
-Public SpriteItem As Long
-Public SpritePrice As Long
-
 Public SoundFileName As String
 
 Public Connucted As Boolean
@@ -133,9 +129,9 @@ Public Accepter As Boolean
 
 'Pour les controlles
 Public ConOff As Boolean
-Public OldMap As Long
+Public OldMap As Integer
 Public Rep_Theme As String
-Public NumShop As Long
+Public NumShop As Integer
 
 'Pour le mouvement des fenetre
 Public drx As Long
@@ -323,7 +319,7 @@ On Error GoTo er:
         WriteINI "BARE", "B", 255, App.Path & "\Config\Ecriture.ini"
     End If
     
-    Dim R1 As Long, G1 As Long, B1 As Long
+    Dim R1 As Byte, G1 As Byte, B1 As Byte
     R1 = Val(ReadINI("CHATTEXTBOX", "R", App.Path & "\Config\Ecriture.ini"))
     G1 = Val(ReadINI("CHATTEXTBOX", "G", App.Path & "\Config\Ecriture.ini"))
     B1 = Val(ReadINI("CHATTEXTBOX", "B", App.Path & "\Config\Ecriture.ini"))
@@ -338,7 +334,6 @@ On Error GoTo er:
         .Picture11.BackColor = RGB(R1, G1, B1)
         .Picture13.BackColor = RGB(R1, G1, B1)
         .picInv3.BackColor = RGB(R1, G1, B1)
-        .pictHide.BackColor = RGB(R1, G1, B1)
         .itmDesc.BackColor = RGB(R1, G1, B1)
         .picWhosOnline.BackColor = RGB(R1, G1, B1)
         .picGuildAdmin.BackColor = RGB(R1, G1, B1)
@@ -515,7 +510,7 @@ Dim i As Integer, x As Integer
 End Sub
 
 Sub initRac()
-Dim i As Integer
+Dim i As Byte
     If LCase$(Dir$(App.Path & "\Config\Temps", vbDirectory)) <> "temps" Then Call MkDir$(App.Path & "\Config\Temps")
     For i = 0 To 13
         frmMirage.picRac(i).Picture = LoadPicture()
@@ -525,7 +520,7 @@ Dim i As Integer
     frmMirage.Timer2.Enabled = True
 End Sub
 Sub affrac()
-Dim i As Integer, Qq As Integer
+Dim i As Byte, Qq As Integer
     For i = 0 To 13
         If Val(rac(i, 0)) > 0 Then
             If Val(rac(i, 1)) = 1 Then
@@ -550,7 +545,7 @@ Dim i As Integer, Qq As Integer
 End Sub
 
 Sub saveRac()
-Dim i As Integer
+Dim i As Byte
     For i = 0 To 13
         Call WriteINI("RAC_" & GetPlayerName(MyIndex), "rac" & i, rac(i, 0), App.Path & "\Config\Temps\" & GetPlayerName(MyIndex) & ".ini")
         Call WriteINI("RAC_" & GetPlayerName(MyIndex), "type" & i, rac(i, 1), App.Path & "\Config\Temps\" & GetPlayerName(MyIndex) & ".ini")
@@ -594,16 +589,17 @@ Dim d As Byte
     End If
 End Sub
 
+'Début GameLoop
 Sub GameLoop()
 Dim Tick As Long
 Dim TickFPS As Byte
-Dim FPS As Long
+Dim FPS As Integer
 Dim TickMove As Long
 Dim x As Long
 Dim y As Long
 Dim i As Long
 Dim rec_back As RECT
-Dim Coulor As Long
+Dim Coulor As Byte
 Dim screen_xg As Integer 'Nb de cases a gauche du "milieu" de picscreen
 Dim screen_xd As Integer 'Nb de cases a droite du "milieu" de picscreen
 Dim screen_yh As Integer 'Nb de cases en haut du "milieu" de picscreen
@@ -637,8 +633,8 @@ Dim MinDrawMapY As Long 'Calcul du minimum a dessiner en Y
     'Initialisation des variables pour les limites de la "vue" du joueur
     screen_xg = (frmMirage.picScreen.Width \ 64) - 1
     screen_xd = (frmMirage.picScreen.Width \ 32) - screen_xg - 1
-    screen_yh = (frmMirage.picScreen.Height \ 64) - 1
-    screen_yb = (frmMirage.picScreen.Height \ 32) - screen_yh - 1
+    screen_yh = (frmMirage.picScreen.height \ 64) - 1
+    screen_yb = (frmMirage.picScreen.height \ 32) - screen_yh - 1
     
     Do While InGame
         Tick = GetTickCount
@@ -1253,7 +1249,7 @@ Dim ty As Long
     End If
 End Sub
 
-Sub BltItem(ByVal Itemnum As Long)
+Sub BltItem(ByVal Itemnum As Integer)
     ' Only used if ever want to switch to blt rather then bltfast
 '    With rec_pos
         '.Top = MapItem(ItemNum).y * PIC_Y
@@ -1413,7 +1409,7 @@ Dim ty As Long
     End If
 End Sub
 
-Sub BltPlayerPet(ByVal Index As Long)
+Sub BltPlayerPet(ByVal Index As Byte)
 Dim Anim As Byte
 Dim x As Long, y As Long, tx As Long, ty As Long
 Dim num As Long
@@ -1456,7 +1452,7 @@ If Map(Player(MyIndex).Map).petView = 1 Then Exit Sub
     Call DD_BackBuffer.BltFast(x - NewPlayerPOffsetX, y - NewPlayerPOffsetY, DD_PetsSurf(num), rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
 End Sub
 
-Sub BltPlayerOmbre(ByVal Index As Long)
+Sub BltPlayerOmbre(ByVal Index As Byte)
 Dim x As Long, y As Long
 
     If Index <= 0 And Index >= MAX_PLAYERS Then Exit Sub
@@ -1473,7 +1469,7 @@ Dim x As Long, y As Long
     Call DD_BackBuffer.BltFast(x - NewPlayerPOffsetX, y - NewPlayerPOffsetY, DD_OutilSurf, rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
 End Sub
 
-Sub BltPlayer(ByVal Index As Long)
+Sub BltPlayer(ByVal Index As Byte)
 Dim Anim As Byte
 Dim x As Long, y As Long
 Dim tx As Long, ty As Long
@@ -1616,7 +1612,7 @@ If Not IsPlaying(Index) Then Exit Sub
     'FIN PAPERDOLL
 End Sub
 
-Sub BltPlayerTop(ByVal Index As Long)
+Sub BltPlayerTop(ByVal Index As Byte)
 Dim Anim As Byte
 Dim x As Long, y As Long
 Dim tx As Long, ty As Long
@@ -1752,7 +1748,7 @@ Dim AttackSpeed As Long
     'FIN PAPERDOLL
 End Sub
 
-Sub BltMapNPCName(ByVal Index As Long)
+Sub BltMapNPCName(ByVal Index As Integer)
 Dim TextX As Long
 Dim TextY As Long
 
@@ -1892,7 +1888,7 @@ Dim tx As Long, ty As Long
     Call DD_BackBuffer.BltFast(x - NewPlayerPOffsetX, y - NewPlayerPOffsetY, DD_SpriteSurf(Npc(MapNpc(MapNpcNum).num).Sprite), rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
 End Sub
 
-Sub BltPlayerLevelUp(ByVal Index As Long)
+Sub BltPlayerLevelUp(ByVal Index As Byte)
 Dim x As Long
 Dim y As Long
     rec.Top = (32 \ TilesInSheets) * PIC_Y
@@ -1912,7 +1908,7 @@ Dim y As Long
     If Player(Index).LevelUp >= 3 Then Player(Index).LevelUp = Player(Index).LevelUp - 1 Else If Player(Index).LevelUp >= 1 Then Player(Index).LevelUp = Player(Index).LevelUp + 1
 End Sub
 
-Sub BltPlayerName(ByVal Index As Long)
+Sub BltPlayerName(ByVal Index As Byte)
 Dim TextX As Long
 Dim TextY As Long
 Dim Color As Long
@@ -1939,7 +1935,7 @@ Dim Color As Long
     Call DrawText(TexthDC, TextX - NewPlayerPOffsetX, TextY - NewPlayerPOffsetY, GetPlayerName(Index), Color)
 End Sub
 
-Sub BltPlayerGuildName(ByVal Index As Long)
+Sub BltPlayerGuildName(ByVal Index As Byte)
 Dim TextX As Long
 Dim TextY As Long
 Dim Color As Long
@@ -1963,7 +1959,7 @@ Dim Color As Long
     Call DrawText(TexthDC, TextX - NewPlayerPOffsetX, TextY - NewPlayerPOffsetY, GetPlayerGuild(Index), Color)
 End Sub
 
-Sub ProcessMovement(ByVal Index As Long)
+Sub ProcessMovement(ByVal Index As Byte)
 ' vérifier si le joueur(sprite) ne va pas trop loin
 If Player(Index).XOffset > PIC_X Or Player(Index).XOffset < PIC_X * -1 Then Player(Index).XOffset = 0: Player(Index).Moving = 0: Exit Sub
 If Player(Index).YOffset > PIC_Y Or Player(Index).YOffset < PIC_Y * -1 Then Player(Index).YOffset = 0: Player(Index).Moving = 0: Exit Sub
@@ -2146,7 +2142,7 @@ ElseIf Player(Index).Moving = MOVING_RUNNING Then
 End If
 End Sub
 
-Sub ProcessNpcMovement(ByVal MapNpcNum As Long)
+Sub ProcessNpcMovement(ByVal MapNpcNum As Byte)
     ' Check if npc is walking, and if so process moving them over
     If MapNpc(MapNpcNum).Moving = MOVING_WALKING Then
         Select Case MapNpc(MapNpcNum).Dir
@@ -2697,7 +2693,7 @@ End Sub
 
 Public Sub InitMirageVars()
     PicScWidth = frmMirage.picScreen.Width
-    PicScHeight = frmMirage.picScreen.Height
+    PicScHeight = frmMirage.picScreen.height
 End Sub
 
 Function IsTryingToMove() As Boolean
@@ -2734,10 +2730,10 @@ End If
 End Sub
 
 Function CanMove() As Boolean
-Dim i As Long, d As Long
-Dim x As Long, y As Long
-Dim PX As Long, PY As Long
-Dim Dire As Long
+Dim i As Byte, d As Byte
+Dim x As Byte, y As Byte
+Dim PX As Byte, PY As Byte
+Dim Dire As Byte
 
     CanMove = True
     
@@ -2914,7 +2910,7 @@ Dim Dire As Long
             Next i
 End Function
 
-Sub SuprTileToit(ByVal dy As Long, ByVal dX As Long)
+Sub SuprTileToit(ByVal dy As Byte, ByVal dX As Byte)
 ' verif atribut toit
 On Error Resume Next
                 
@@ -3633,7 +3629,7 @@ Sub CheckMovement()
     End If
 End Sub
 
-Function FindPlayer(ByVal name As String) As Long
+Function FindPlayer(ByVal name As String) As Byte
 Dim i As Long
 
     For i = 1 To MAX_PLAYERS
@@ -3651,7 +3647,7 @@ Dim i As Long
     FindPlayer = 0
 End Function
 
-Function FindOpenInvSlot(ByVal Itemnum As Long) As Long
+Function FindOpenInvSlot(ByVal Itemnum As Integer) As Byte
 Dim i As Long
     
     FindOpenInvSlot = 0
@@ -3696,8 +3692,8 @@ Next i
     frmPlayerTrade.PlayerInv1.ListIndex = 0
 End Sub
 
-Function ObjetPos(ByVal x As Long, ByVal y As Long) As Boolean
-Dim i As Long
+Function ObjetPos(ByVal x As Byte, ByVal y As Byte) As Boolean
+Dim i As Integer
 
 ObjetPos = False
 
@@ -3707,8 +3703,8 @@ Next i
 
 End Function
 
-Function ObjetNumPos(ByVal x As Long, ByVal y As Long) As Long
-Dim i As Long
+Function ObjetNumPos(ByVal x As Byte, ByVal y As Byte) As Integer
+Dim i As Integer
 
 ObjetNumPos = 0
 
@@ -3718,8 +3714,8 @@ Next i
 
 End Function
 
-Function ObjetValPos(ByVal x As Long, ByVal y As Long) As Long
-Dim i As Long
+Function ObjetValPos(ByVal x As Byte, ByVal y As Byte) As Integer
+Dim i As Integer
 
 ObjetValPos = 0
 
@@ -3750,7 +3746,7 @@ Sub BltTile2(ByVal x As Long, ByVal y As Long, ByVal Tile As Long)
     Call DD_BackBuffer.BltFast(x - NewPlayerPicX + sx - NewXOffset, y - NewPlayerPicY + sx - NewYOffset, DD_OutilSurf, rec, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
 End Sub
 
-Sub BltPlayerText(ByVal Index As Long)
+Sub BltPlayerText(ByVal Index As Byte)
 Dim TextX As Long
 Dim TextY As Long
 Dim intLoop As Integer
@@ -3837,7 +3833,7 @@ Dim strWords() As String
         End If
     Next intLoop
 End Sub
-Sub BltPlayerBar(ByVal Index As Integer)
+Sub BltPlayerBar(ByVal Index As Byte)
 Dim x As Long, y As Long, ty As Long
     
     If Player(Index).HP <> 0 Then
@@ -3863,7 +3859,7 @@ Dim x As Long, y As Long, ty As Long
         'End If
     End If
 End Sub
-Sub BltNpcBars(ByVal Index As Long)
+Sub BltNpcBars(ByVal Index As Integer)
 Dim x As Long, y As Long, ty As Long
 
 If MapNpc(Index).HP = 0 Or MapNpc(Index).MaxHp <= 0 Or MapNpc(Index).num < 1 Then Exit Sub
@@ -3907,7 +3903,7 @@ Dim Qq As Long
 End Sub
 
 Public Sub UpdateVisInv()
-Dim Index As Long
+Dim Index As Byte
 Dim d As Long
 
 frmMirage.ShieldImage.Picture = LoadPicture()
@@ -3969,7 +3965,7 @@ mont:
     Next d
     Call AffInv
 End Sub
-Public Sub QueteMsg(ByVal Index As Long, ByVal Msg As String)
+Public Sub QueteMsg(ByVal Msg As String)
 frmMirage.txtQ.Visible = True
 frmMirage.TxtQ2.Text = Msg
 End Sub
@@ -4029,7 +4025,7 @@ Packet = "GmTime" & SEP_CHAR & GameTime & END_CHAR
 Call SendData(Packet)
 End Sub
 
-Sub ItemSelected(ByVal Index As Long, ByVal Selected As Long)
+Sub ItemSelected(ByVal Index As Integer, ByVal Selected As Integer)
 Dim index2 As Long
 index2 = Trade(Selected).Items(Index).ItemGetNum
 
@@ -4102,13 +4098,13 @@ Dim dRECT As RECT
     PicBox.Picture = LoadPicture()
     With dRECT
         .Top = 0
-        .Bottom = PicBox.Height
+        .Bottom = PicBox.height
         .Left = 0
         .Right = PicBox.Width
     End With
     With sRECT
         .Top = y
-        .Bottom = .Top + PicBox.Height
+        .Bottom = .Top + PicBox.height
         .Left = x
         .Right = .Left + PicBox.Width
     End With
@@ -4139,8 +4135,8 @@ Dim Ending As String
     If netbook = True Then
         frmMirage.Interface.Width = 640
         frmMirage.picScreen.Width = 640
-        frmMirage.picScreen.Height = 416
-        frmMirage.Height = 7625
+        frmMirage.picScreen.height = 416
+        frmMirage.height = 7625
         frmMirage.Width = 9570
         For i = 0 To 8
             frmMirage.picRac(i).Visible = True
@@ -4166,19 +4162,12 @@ Dim Ending As String
         frmMirage.menu_who.Top = 616 - 188
         frmMirage.menu_opt.Top = 616 - 188
         frmMirage.menu_quit.Top = 616 - 188
-        
-        'Elios - bug du frmMirage
-        frmMirage.pictHide.Top = 408
-        frmMirage.pictHide.Left = 0
-        frmMirage.pictHide.Height = 8
-        frmMirage.pictHide.Width = 640
-        frmMirage.pictHide.Visible = True
     Else
     'Mode Normal
         frmMirage.Interface.Width = 800
         frmMirage.picScreen.Width = 800
-        frmMirage.picScreen.Height = 608
-        frmMirage.Height = 10500
+        frmMirage.picScreen.height = 608
+        frmMirage.height = 10500
         frmMirage.Width = 12075
         For i = 0 To 13
             frmMirage.picRac(i).Visible = True
@@ -4204,27 +4193,20 @@ Dim Ending As String
         frmMirage.menu_who.Top = 616
         frmMirage.menu_opt.Top = 616
         frmMirage.menu_quit.Top = 616
-        
-        'Elios - bug du frmMirage
-        frmMirage.pictHide.Top = 600
-        frmMirage.pictHide.Left = 0
-        frmMirage.pictHide.Height = 8
-        frmMirage.pictHide.Width = 800
-        frmMirage.pictHide.Visible = True
     End If
     
-    frmMirage.Interface.Top = frmMirage.picScreen.Height
-    frmMirage.txtQ.Top = frmMirage.picScreen.Height - frmMirage.txtQ.Height
-    frmMirage.Canal.Top = frmMirage.picScreen.Height - frmMirage.Canal.Height - 10
-    frmMirage.txtMyTextBox.Top = frmMirage.picScreen.Height - frmMirage.txtMyTextBox.Height - 10
-    frmMirage.picParty.Top = frmMirage.picScreen.Height - frmMirage.picParty.Height
-    frmMirage.fra_fenetre.Top = frmMirage.picScreen.Height - frmMirage.fra_fenetre.Height - 10
+    frmMirage.Interface.Top = frmMirage.picScreen.height
+    frmMirage.txtQ.Top = frmMirage.picScreen.height - frmMirage.txtQ.height
+    frmMirage.Canal.Top = frmMirage.picScreen.height - frmMirage.Canal.height - 10
+    frmMirage.txtMyTextBox.Top = frmMirage.picScreen.height - frmMirage.txtMyTextBox.height - 10
+    frmMirage.picParty.Top = frmMirage.picScreen.height - frmMirage.picParty.height
+    frmMirage.fra_fenetre.Top = frmMirage.picScreen.height - frmMirage.fra_fenetre.height - 10
     frmMirage.fra_fenetre.Left = frmMirage.picScreen.Width - frmMirage.fra_fenetre.Width - 30
     If netbook = True Then
         frmMirage.itmDesc.Left = frmMirage.fra_fenetre.Left - frmMirage.itmDesc.Width
-        frmMirage.itmDesc.Top = frmMirage.picScreen.Height - frmMirage.itmDesc.Height - 10
+        frmMirage.itmDesc.Top = frmMirage.picScreen.height - frmMirage.itmDesc.height - 10
     Else
         frmMirage.itmDesc.Left = frmMirage.picScreen.Width - frmMirage.itmDesc.Width - 30
-        frmMirage.itmDesc.Top = frmMirage.fra_fenetre.Top - frmMirage.itmDesc.Height
+        frmMirage.itmDesc.Top = frmMirage.fra_fenetre.Top - frmMirage.itmDesc.height
     End If
 End Sub
