@@ -1,11 +1,12 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL32.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL3N.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCN.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Begin VB.Form frmServer 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "FRoG Server"
-   ClientHeight    =   4800
+   ClientHeight    =   9405
    ClientLeft      =   45
    ClientTop       =   615
    ClientWidth     =   10245
@@ -21,10 +22,32 @@ Begin VB.Form frmServer
    Icon            =   "frmServer.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   320
+   ScaleHeight     =   627
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   683
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command15 
+      Caption         =   "Command15"
+      Height          =   1215
+      Left            =   8520
+      TabIndex        =   177
+      Top             =   5520
+      Width           =   1215
+   End
+   Begin RichTextLib.RichTextBox txtReturn 
+      Height          =   2775
+      Left            =   120
+      TabIndex        =   176
+      Top             =   5040
+      Width           =   7935
+      _ExtentX        =   13996
+      _ExtentY        =   4895
+      _Version        =   393217
+      Enabled         =   -1  'True
+      ScrollBars      =   2
+      Appearance      =   0
+      TextRTF         =   $"frmServer.frx":17D2A
+   End
    Begin TabDlg.SSTab SSTab1 
       Height          =   4800
       Left            =   0
@@ -35,7 +58,6 @@ Begin VB.Form frmServer
       _ExtentY        =   8467
       _Version        =   393216
       Tabs            =   4
-      Tab             =   2
       TabsPerRow      =   4
       TabHeight       =   370
       TabMaxWidth     =   3175
@@ -49,96 +71,105 @@ Begin VB.Form frmServer
          Strikethrough   =   0   'False
       EndProperty
       TabCaption(0)   =   "Discussions"
-      TabPicture(0)   =   "frmServer.frx":17D2A
-      Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "mesgSaveTimer"
-      Tab(0).Control(1)=   "tmrChatLogs"
-      Tab(0).Control(2)=   "picCMsg"
-      Tab(0).Control(3)=   "SSTab2"
-      Tab(0).Control(4)=   "Say(5)"
-      Tab(0).Control(5)=   "Say(4)"
-      Tab(0).Control(6)=   "Say(3)"
-      Tab(0).Control(7)=   "Say(2)"
-      Tab(0).Control(8)=   "Say(1)"
-      Tab(0).Control(9)=   "CustomMsg(5)"
-      Tab(0).Control(10)=   "CustomMsg(4)"
-      Tab(0).Control(11)=   "CustomMsg(3)"
-      Tab(0).Control(12)=   "CustomMsg(2)"
-      Tab(0).Control(13)=   "CustomMsg(1)"
-      Tab(0).Control(14)=   "Frame5"
-      Tab(0).Control(15)=   "Say(0)"
-      Tab(0).Control(16)=   "CustomMsg(0)"
-      Tab(0).Control(17)=   "mesgSave"
-      Tab(0).Control(18)=   "Image1"
-      Tab(0).Control(19)=   "Label6"
+      TabPicture(0)   =   "frmServer.frx":17DA7
+      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).Control(0)=   "Label6"
+      Tab(0).Control(0).Enabled=   0   'False
+      Tab(0).Control(1)=   "Image1"
+      Tab(0).Control(1).Enabled=   0   'False
+      Tab(0).Control(2)=   "mesgSave"
+      Tab(0).Control(2).Enabled=   0   'False
+      Tab(0).Control(3)=   "CustomMsg(0)"
+      Tab(0).Control(3).Enabled=   0   'False
+      Tab(0).Control(4)=   "Say(0)"
+      Tab(0).Control(4).Enabled=   0   'False
+      Tab(0).Control(5)=   "Frame5"
+      Tab(0).Control(5).Enabled=   0   'False
+      Tab(0).Control(6)=   "CustomMsg(1)"
+      Tab(0).Control(6).Enabled=   0   'False
+      Tab(0).Control(7)=   "CustomMsg(2)"
+      Tab(0).Control(7).Enabled=   0   'False
+      Tab(0).Control(8)=   "CustomMsg(3)"
+      Tab(0).Control(8).Enabled=   0   'False
+      Tab(0).Control(9)=   "CustomMsg(4)"
+      Tab(0).Control(9).Enabled=   0   'False
+      Tab(0).Control(10)=   "CustomMsg(5)"
+      Tab(0).Control(10).Enabled=   0   'False
+      Tab(0).Control(11)=   "Say(1)"
+      Tab(0).Control(11).Enabled=   0   'False
+      Tab(0).Control(12)=   "Say(2)"
+      Tab(0).Control(12).Enabled=   0   'False
+      Tab(0).Control(13)=   "Say(3)"
+      Tab(0).Control(13).Enabled=   0   'False
+      Tab(0).Control(14)=   "Say(4)"
+      Tab(0).Control(14).Enabled=   0   'False
+      Tab(0).Control(15)=   "Say(5)"
+      Tab(0).Control(15).Enabled=   0   'False
+      Tab(0).Control(16)=   "SSTab2"
+      Tab(0).Control(16).Enabled=   0   'False
+      Tab(0).Control(17)=   "picCMsg"
+      Tab(0).Control(17).Enabled=   0   'False
+      Tab(0).Control(18)=   "tmrChatLogs"
+      Tab(0).Control(18).Enabled=   0   'False
+      Tab(0).Control(19)=   "mesgSaveTimer"
+      Tab(0).Control(19).Enabled=   0   'False
       Tab(0).ControlCount=   20
       TabCaption(1)   =   "Joueur"
-      TabPicture(1)   =   "frmServer.frx":17D46
+      TabPicture(1)   =   "frmServer.frx":17DC3
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "TPO"
-      Tab(1).Control(1)=   "lvUsers"
-      Tab(1).Control(2)=   "Command66"
-      Tab(1).Control(3)=   "Check1"
-      Tab(1).Control(4)=   "Command14"
-      Tab(1).Control(5)=   "Command51"
-      Tab(1).Control(6)=   "picStats"
-      Tab(1).Control(7)=   "Picskint"
-      Tab(1).Control(8)=   "picReason"
-      Tab(1).Control(9)=   "Command9"
-      Tab(1).Control(10)=   "picWarp"
-      Tab(1).Control(11)=   "picJail"
-      Tab(1).Control(12)=   "picExp"
-      Tab(1).Control(13)=   "Command16"
-      Tab(1).Control(14)=   "Command18"
-      Tab(1).Control(15)=   "Command19"
-      Tab(1).Control(16)=   "Command21"
-      Tab(1).Control(17)=   "Command22"
-      Tab(1).Control(18)=   "Command23"
-      Tab(1).Control(19)=   "Command24"
-      Tab(1).Control(20)=   "Command31"
-      Tab(1).Control(21)=   "Command3"
-      Tab(1).Control(22)=   "Command12"
-      Tab(1).Control(23)=   "Command45"
-      Tab(1).Control(24)=   "Command32"
-      Tab(1).Control(25)=   "Command46"
-      Tab(1).Control(26)=   "Command33"
-      Tab(1).Control(27)=   "Command34"
+      Tab(1).Control(0)=   "Command34"
+      Tab(1).Control(1)=   "Command33"
+      Tab(1).Control(2)=   "Command46"
+      Tab(1).Control(3)=   "Command32"
+      Tab(1).Control(4)=   "Command45"
+      Tab(1).Control(5)=   "Command12"
+      Tab(1).Control(6)=   "Command3"
+      Tab(1).Control(7)=   "Command31"
+      Tab(1).Control(8)=   "Command24"
+      Tab(1).Control(9)=   "Command23"
+      Tab(1).Control(10)=   "Command22"
+      Tab(1).Control(11)=   "Command21"
+      Tab(1).Control(12)=   "Command19"
+      Tab(1).Control(13)=   "Command18"
+      Tab(1).Control(14)=   "Command16"
+      Tab(1).Control(15)=   "picExp"
+      Tab(1).Control(16)=   "picJail"
+      Tab(1).Control(17)=   "picWarp"
+      Tab(1).Control(18)=   "Command9"
+      Tab(1).Control(19)=   "picReason"
+      Tab(1).Control(20)=   "Picskint"
+      Tab(1).Control(21)=   "picStats"
+      Tab(1).Control(22)=   "Command51"
+      Tab(1).Control(23)=   "Command14"
+      Tab(1).Control(24)=   "Check1"
+      Tab(1).Control(25)=   "Command66"
+      Tab(1).Control(26)=   "lvUsers"
+      Tab(1).Control(27)=   "TPO"
       Tab(1).ControlCount=   28
       TabCaption(2)   =   "Panneau de Contrôle"
-      TabPicture(2)   =   "frmServer.frx":17D62
-      Tab(2).ControlEnabled=   -1  'True
-      Tab(2).Control(0)=   "lblPort"
-      Tab(2).Control(0).Enabled=   0   'False
-      Tab(2).Control(1)=   "lblIP"
-      Tab(2).Control(1).Enabled=   0   'False
-      Tab(2).Control(2)=   "lblgamename"
-      Tab(2).Control(2).Enabled=   0   'False
-      Tab(2).Control(3)=   "lbliplocal"
-      Tab(2).Control(3).Enabled=   0   'False
-      Tab(2).Control(4)=   "Frame2"
-      Tab(2).Control(4).Enabled=   0   'False
+      TabPicture(2)   =   "frmServer.frx":17DDF
+      Tab(2).ControlEnabled=   0   'False
+      Tab(2).Control(0)=   "picWeather"
+      Tab(2).Control(1)=   "Frame4"
+      Tab(2).Control(2)=   "Frame9"
+      Tab(2).Control(3)=   "Frame1"
+      Tab(2).Control(4)=   "Frame8"
       Tab(2).Control(5)=   "Frame3"
-      Tab(2).Control(5).Enabled=   0   'False
-      Tab(2).Control(6)=   "Frame8"
-      Tab(2).Control(6).Enabled=   0   'False
-      Tab(2).Control(7)=   "Frame1"
-      Tab(2).Control(7).Enabled=   0   'False
-      Tab(2).Control(8)=   "Frame9"
-      Tab(2).Control(8).Enabled=   0   'False
-      Tab(2).Control(9)=   "Frame4"
-      Tab(2).Control(9).Enabled=   0   'False
-      Tab(2).Control(10)=   "picWeather"
-      Tab(2).Control(10).Enabled=   0   'False
+      Tab(2).Control(6)=   "Frame2"
+      Tab(2).Control(7)=   "lbliplocal"
+      Tab(2).Control(8)=   "lblgamename"
+      Tab(2).Control(9)=   "lblIP"
+      Tab(2).Control(10)=   "lblPort"
       Tab(2).ControlCount=   11
       TabCaption(3)   =   "Aide"
-      TabPicture(3)   =   "frmServer.frx":17D7E
+      TabPicture(3)   =   "frmServer.frx":17DFB
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "CharInfo(21)"
-      Tab(3).Control(1)=   "CharInfo(22)"
-      Tab(3).Control(2)=   "CharInfo(23)"
-      Tab(3).Control(3)=   "lstTopics"
-      Tab(3).Control(4)=   "TopicTitle"
-      Tab(3).Control(5)=   "sync"
+      Tab(3).Control(0)=   "sync"
+      Tab(3).Control(1)=   "TopicTitle"
+      Tab(3).Control(2)=   "lstTopics"
+      Tab(3).Control(3)=   "CharInfo(23)"
+      Tab(3).Control(4)=   "CharInfo(22)"
+      Tab(3).Control(5)=   "CharInfo(21)"
       Tab(3).ControlCount=   6
       Begin VB.CommandButton Command34 
          Caption         =   "+1 Niveau (Tous)"
@@ -273,7 +304,7 @@ Begin VB.Form frmServer
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   2055
-         Left            =   4920
+         Left            =   -70080
          ScaleHeight     =   135
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   247
@@ -362,7 +393,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame4 
          Caption         =   "Ratio d'expérience"
          Height          =   1695
-         Left            =   2040
+         Left            =   -72960
          TabIndex        =   167
          Top             =   600
          Width           =   3015
@@ -415,7 +446,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame9 
          Caption         =   "Liste des Cartes"
          Height          =   1815
-         Left            =   5160
+         Left            =   -69840
          TabIndex        =   96
          Top             =   480
          Width           =   4935
@@ -446,7 +477,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame1 
          Caption         =   "Scripts"
          Height          =   1575
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   16
          Top             =   1920
          Width           =   1815
@@ -741,13 +772,13 @@ Begin VB.Form frmServer
       Begin VB.Timer mesgSaveTimer 
          Enabled         =   0   'False
          Interval        =   3000
-         Left            =   -68520
+         Left            =   6480
          Top             =   240
       End
       Begin VB.Frame Frame8 
          Caption         =   "Gestion du temps :"
          Height          =   2415
-         Left            =   5160
+         Left            =   -69840
          TabIndex        =   129
          Top             =   2280
          Width           =   4935
@@ -1282,7 +1313,7 @@ Begin VB.Form frmServer
       End
       Begin VB.Timer tmrChatLogs 
          Interval        =   1000
-         Left            =   -65160
+         Left            =   9840
          Top             =   360
       End
       Begin VB.PictureBox picCMsg 
@@ -1298,7 +1329,7 @@ Begin VB.Form frmServer
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   1935
-         Left            =   -70680
+         Left            =   4320
          ScaleHeight     =   1905
          ScaleWidth      =   3345
          TabIndex        =   44
@@ -1377,7 +1408,7 @@ Begin VB.Form frmServer
       End
       Begin TabDlg.SSTab SSTab2 
          Height          =   3015
-         Left            =   -74880
+         Left            =   120
          TabIndex        =   101
          Top             =   360
          Width           =   8415
@@ -1398,7 +1429,7 @@ Begin VB.Form frmServer
             Strikethrough   =   0   'False
          EndProperty
          TabCaption(0)   =   "Général"
-         TabPicture(0)   =   "frmServer.frx":17D9A
+         TabPicture(0)   =   "frmServer.frx":17E17
          Tab(0).ControlEnabled=   -1  'True
          Tab(0).Control(0)=   "txtChat"
          Tab(0).Control(0).Enabled=   0   'False
@@ -1406,32 +1437,32 @@ Begin VB.Form frmServer
          Tab(0).Control(1).Enabled=   0   'False
          Tab(0).ControlCount=   2
          TabCaption(1)   =   "Émission"
-         TabPicture(1)   =   "frmServer.frx":17DB6
+         TabPicture(1)   =   "frmServer.frx":17E33
          Tab(1).ControlEnabled=   0   'False
          Tab(1).Control(0)=   "txtText(1)"
          Tab(1).ControlCount=   1
          TabCaption(2)   =   "Globale"
-         TabPicture(2)   =   "frmServer.frx":17DD2
+         TabPicture(2)   =   "frmServer.frx":17E4F
          Tab(2).ControlEnabled=   0   'False
          Tab(2).Control(0)=   "txtText(2)"
          Tab(2).ControlCount=   1
          TabCaption(3)   =   "Carte"
-         TabPicture(3)   =   "frmServer.frx":17DEE
+         TabPicture(3)   =   "frmServer.frx":17E6B
          Tab(3).ControlEnabled=   0   'False
          Tab(3).Control(0)=   "txtText(3)"
          Tab(3).ControlCount=   1
          TabCaption(4)   =   "Privé"
-         TabPicture(4)   =   "frmServer.frx":17E0A
+         TabPicture(4)   =   "frmServer.frx":17E87
          Tab(4).ControlEnabled=   0   'False
          Tab(4).Control(0)=   "txtText(4)"
          Tab(4).ControlCount=   1
          TabCaption(5)   =   "Administrateur"
-         TabPicture(5)   =   "frmServer.frx":17E26
+         TabPicture(5)   =   "frmServer.frx":17EA3
          Tab(5).ControlEnabled=   0   'False
          Tab(5).Control(0)=   "txtText(5)"
          Tab(5).ControlCount=   1
          TabCaption(6)   =   "Emote"
-         TabPicture(6)   =   "frmServer.frx":17E42
+         TabPicture(6)   =   "frmServer.frx":17EBF
          Tab(6).ControlEnabled=   0   'False
          Tab(6).Control(0)=   "txtText(6)"
          Tab(6).ControlCount=   1
@@ -1605,9 +1636,9 @@ Begin VB.Form frmServer
       End
       Begin VB.ListBox lstTopics 
          Height          =   2760
-         ItemData        =   "frmServer.frx":17E5E
+         ItemData        =   "frmServer.frx":17EDB
          Left            =   -74760
-         List            =   "frmServer.frx":17E60
+         List            =   "frmServer.frx":17EDD
          TabIndex        =   88
          Top             =   600
          Width           =   2175
@@ -1616,7 +1647,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   5
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   43
          Top             =   3840
          Width           =   1455
@@ -1625,7 +1656,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   4
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   42
          Top             =   3240
          Width           =   1455
@@ -1634,7 +1665,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   3
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   41
          Top             =   2640
          Width           =   1455
@@ -1643,7 +1674,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   2
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   40
          Top             =   2040
          Width           =   1455
@@ -1652,7 +1683,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   1
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   39
          Top             =   1440
          Width           =   1455
@@ -1661,7 +1692,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   5
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   38
          Top             =   3600
          Width           =   1455
@@ -1670,7 +1701,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   4
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   37
          Top             =   3000
          Width           =   1455
@@ -1679,7 +1710,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   3
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   36
          Top             =   2400
          Width           =   1455
@@ -1688,7 +1719,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   2
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   35
          Top             =   1800
          Width           =   1455
@@ -1697,7 +1728,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   1
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   34
          Top             =   1200
          Width           =   1455
@@ -1705,7 +1736,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame5 
          Caption         =   "Configuration des discussions :"
          Height          =   615
-         Left            =   -74880
+         Left            =   120
          TabIndex        =   28
          Top             =   3600
          Width           =   6855
@@ -1786,7 +1817,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame3 
          Caption         =   "Classes"
          Height          =   1095
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   21
          Top             =   3600
          Width           =   1815
@@ -1810,7 +1841,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame2 
          Caption         =   "Serveur"
          Height          =   2415
-         Left            =   2040
+         Left            =   -72960
          TabIndex        =   20
          Top             =   2280
          Width           =   3015
@@ -1916,7 +1947,7 @@ Begin VB.Form frmServer
          Caption         =   "Dire"
          Height          =   255
          Index           =   0
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   2
          Top             =   840
          Width           =   1455
@@ -1925,7 +1956,7 @@ Begin VB.Form frmServer
          Caption         =   "Editer msg"
          Height          =   255
          Index           =   0
-         Left            =   -66360
+         Left            =   8640
          TabIndex        =   1
          Top             =   600
          Width           =   1455
@@ -2003,7 +2034,7 @@ Begin VB.Form frmServer
          BackStyle       =   0  'Transparent
          Caption         =   "Local :"
          Height          =   225
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   175
          Top             =   600
          Width           =   510
@@ -2011,7 +2042,7 @@ Begin VB.Form frmServer
       Begin VB.Label lblgamename 
          Caption         =   "Nom du jeu : "
          Height          =   255
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   173
          Top             =   1080
          Width           =   1815
@@ -2019,15 +2050,15 @@ Begin VB.Form frmServer
       Begin VB.Label mesgSave 
          ForeColor       =   &H0000FF00&
          Height          =   255
-         Left            =   -67800
+         Left            =   7200
          TabIndex        =   138
          Top             =   3840
          Width           =   1095
       End
       Begin VB.Image Image1 
          Height          =   240
-         Left            =   -74400
-         Picture         =   "frmServer.frx":17E62
+         Left            =   600
+         Picture         =   "frmServer.frx":17EDF
          Top             =   600
          Visible         =   0   'False
          Width           =   240
@@ -2046,7 +2077,7 @@ Begin VB.Form frmServer
             Strikethrough   =   0   'False
          EndProperty
          Height          =   165
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   118
          Top             =   4320
          Width           =   1170
@@ -2100,7 +2131,7 @@ Begin VB.Form frmServer
          BackStyle       =   0  'Transparent
          Caption         =   "Adresse IP:"
          Height          =   195
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   7
          Top             =   360
          Width           =   4920
@@ -2110,7 +2141,7 @@ Begin VB.Form frmServer
          BackStyle       =   0  'Transparent
          Caption         =   "Port:"
          Height          =   195
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   6
          Top             =   840
          Width           =   360
@@ -2320,6 +2351,12 @@ Dim i As Long
         Call ShowPLR(i)
     Next i
     
+End Sub
+
+Private Sub Command15_Click()
+Call DispMessage(txtChat.text)
+Call DispErreur("Ceci est une erreur !")
+Call DispInfo("Ceci est une information concernant le serveur...")
 End Sub
 
 Private Sub Command16_Click()
