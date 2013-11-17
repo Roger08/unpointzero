@@ -42,6 +42,7 @@ Form=Forms Sources\frmAbout.frm
 Module=modConsole; Modules Sources\modConsole.bas
 Object={3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0; Richtx32.ocx
 Module=modVariables; Modules Sources\modVariables.bas
+Module=modConstantes; Modules Sources\modConstantes.bas
 IconForm="frmServer"
 Startup="frmLoad"
 HelpFile=""

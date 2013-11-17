@@ -31,6 +31,8 @@ Public RATE_MAX As Long
 Public MAX_PETS As Long
 Public MAX_METIER As Long
 Public MAX_RECETTE As Long
+Public MAX_MAPX As Long
+Public MAX_MAPY As Long
 
 ' -- Couleurs des messages (client) --
 Public SayColor As Long
