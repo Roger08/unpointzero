@@ -7,6 +7,8 @@ Attribute VB_Name = "modVariables"
 
 ' -- Réseau --
 Public GAME_PORT As Long
+Public SEP_CHAR As String * 1
+Public END_CHAR As String * 1
 
 '  -- Configuration du jeu --
 Public GAME_NAME As String
@@ -33,6 +35,44 @@ Public MAX_METIER As Long
 Public MAX_RECETTE As Long
 Public MAX_MAPX As Long
 Public MAX_MAPY As Long
+Public MAX_CLASSES As Byte
+
+' -- Variables d'objets --
+Public quete() As QueteRec
+Public Party As clsParty
+Public Map() As MapRec
+Public TempTile() As TempTileRec
+Public PlayersOnMap() As Long
+Public Player() As AccountRec
+Public Classe() As ClassRec
+Public Class2() As ClassRec
+Public Class3() As ClassRec
+Public item() As ItemRec
+Public Npc() As NpcRec
+Public MapItem() As MapItemRec
+Public MapNpc() As MapNpcRec
+Public Shop() As ShopRec
+Public Spell() As SpellRec
+Public Guild() As GuildRec
+Public Emoticons() As EmoRec
+Public experience() As Long
+Public CMessages(1 To 6) As CMRec
+Public PnjMove() As Boolean
+Public bouclier() As Boolean
+Public BouclierT() As Long
+Public Para() As Boolean
+Public ParaT() As Long
+Public ParaN() As Boolean
+Public ParaNT() As Long
+Public Point() As Long
+Public PointT() As Long
+Public Pets() As PetsRec
+Public metier() As MetierRec
+Public recette() As RecetteRec
+Public Arrows(1 To MAX_ARROWS) As ArrowRec
+Public AddHP As StatRec
+Public AddMP As StatRec
+Public AddSP As StatRec
 
 ' -- Couleurs des messages (client) --
 Public SayColor As Long

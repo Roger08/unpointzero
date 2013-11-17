@@ -2,20 +2,20 @@ Attribute VB_Name = "modTypes"
 Option Explicit
 Global PlayerI As Byte
 
-Type IndRec
+Public Type IndRec
     data1 As Long
     data2 As Long
     data3 As Long
     String1 As String
 End Type
 
-Type PlayerInvRec
+Public Type PlayerInvRec
     Num As Long
     value As Long
     Dur As Long
 End Type
 
-Type PlayerQueteRec
+Public Type PlayerQueteRec
     temps As Long
     data1 As Long
     data2 As Long
@@ -24,13 +24,13 @@ Type PlayerQueteRec
     indexe(1 To 15) As IndRec
 End Type
 
-Type PetPosRec
+Public Type PetPosRec
     X As Integer
     Y As Integer
     Dir As Byte
 End Type
 
-Type PlayerRec
+Public Type PlayerRec
     ' General
     Name As String * NAME_LENGTH
     Guild As String
@@ -95,13 +95,13 @@ Type PlayerRec
     LastY As Integer
 End Type
 
-Type PlayerTradeRec
+Public Type PlayerTradeRec
     InvNum As Long
     InvName As String
     InvVal As Long
 End Type
     
-Type AccountRec
+Public Type AccountRec
     ' Account
     Login As String * NAME_LENGTH
     Password As String
@@ -150,7 +150,7 @@ Type AccountRec
     sync As Boolean
 End Type
 
-Type TileRec
+Public Type TileRec
     Ground As Long
     Mask As Long
     Anim As Long
@@ -164,7 +164,7 @@ Type TileRec
     F2Anim As Long
     Fringe3 As Long '<--
     F3Anim As Long '<--
-    type As Byte
+    Type As Byte
     data1 As Long
     data2 As Long
     data3 As Long
@@ -187,7 +187,7 @@ Type TileRec
     F3AnimSet As Byte '<--
 End Type
 
-Type NpcMap
+Public Type NpcMap
     X As Byte
     Y As Byte
     x1 As Byte
@@ -211,7 +211,7 @@ Type NpcMap
     Axy2 As Boolean
 End Type
 
-Type MapRec
+Public Type MapRec
     Name As String * 40
     Revision As Long
     Moral As Byte
@@ -241,7 +241,7 @@ Type MapRec
     frequenceMeteo As Byte
 End Type
 
-Type RecompRec
+Public Type RecompRec
     Exp As Long
     objn1 As Long
     objn2 As Long
@@ -251,9 +251,9 @@ Type RecompRec
     objq3 As Long
 End Type
 
-Type QueteRec
+Public Type QueteRec
     nom As String * 40
-    type As Long
+    Type As Long
     Description As String
     reponse As String
     temps As Long
@@ -266,12 +266,12 @@ Type QueteRec
     Case As Long
 End Type
 
-Type ClassRec
+Public Type ClassRec
     Name As String * NAME_LENGTH
     
     AdvanceFrom As Long
     LevelReq As Long
-    type As Long
+    Type As Long
     Locked As Long
     
     MaleSprite As Long
@@ -287,12 +287,12 @@ Type ClassRec
     Y As Byte
 End Type
 
-Type ItemRec
+Public Type ItemRec
     Name As String * NAME_LENGTH
     desc As String * 150
     
     Pic As Long
-    type As Byte
+    Type As Byte
     data1 As Long
     data2 As Long
     data3 As Long
@@ -324,7 +324,7 @@ Type ItemRec
     tArme As Long
 End Type
 
-Type MapItemRec
+Public Type MapItemRec
     Num As Long
     value As Long
     Dur As Long
@@ -333,13 +333,13 @@ Type MapItemRec
     Y As Byte
 End Type
 
-Type NPCEditorRec
+Public Type NPCEditorRec
     ItemNum As Long
     ItemValue As Long
     chance As Long
 End Type
 
-Type NpcRec
+Public Type NpcRec
     Name As String * NAME_LENGTH
     AttackSay As String
     
@@ -363,12 +363,12 @@ Type NpcRec
     Spell(1 To MAX_NPC_SPELLS) As Integer
 End Type
 
-Type AmelioRec
+Public Type AmelioRec
     Power As Integer
     Timer As Long
 End Type
 
-Type MapNpcRec
+Public Type MapNpcRec
     Num As Long
     
     Target As Long
@@ -391,18 +391,18 @@ Type MapNpcRec
     AttackTimer As Long
 End Type
 
-Type TradeItemRec
+Public Type TradeItemRec
     GiveItem As Long
     GiveValue As Long
     GetItem As Long
     GetValue As Long
 End Type
 
-Type TradeItemsRec
+Public Type TradeItemsRec
     value(1 To MAX_TRADES) As TradeItemRec
 End Type
 
-Type ShopRec
+Public Type ShopRec
     Name As String * NAME_LENGTH
     JoinSay As String * 100
     LeaveSay As String * 100
@@ -411,13 +411,13 @@ Type ShopRec
     FixObjet As Long
 End Type
     
-Type SpellRec
+Public Type SpellRec
     Name As String * NAME_LENGTH
     ClassReq As Long
     LevelReq As Long
     MPCost As Long
     Sound As Long
-    type As Long
+    Type As Long
     data1 As Long
     data2 As Long
     data3 As Long
@@ -434,104 +434,61 @@ Type SpellRec
     AE As Long
 End Type
 
-Type TempTileRec
+ Public Type TempTileRec
     DoorOpen()  As Byte
     DoorTimer As Long
 End Type
 
-Type GuildRec
+Public Type GuildRec
     Name As String * NAME_LENGTH
     Founder As String * NAME_LENGTH
     Member() As String * NAME_LENGTH
 End Type
 
-Type EmoRec
+Public Type EmoRec
     Pic As Long
     Command As String
 End Type
 
-Type CMRec
+Public Type CMRec
     Title As String
     message As String
 End Type
 
-Type PetsRec
+Public Type PetsRec
     nom As String
     sprite As Long
     addForce As Byte
     addDefence As Byte
 End Type
 
-Type MetierRec
+Public Type MetierRec
     nom As String
-    type As Byte
+    Type As Byte
     desc As String
     
     data(0 To MAX_DATA_METIER, 0 To 1) As Integer
 End Type
 
-Type RecetteRec
+Public Type RecetteRec
     nom As String
     InCraft(0 To 9, 0 To 1) As Integer
     craft(0 To 1) As Integer
 End Type
 
-' Used for parsing
-Public SEP_CHAR As String * 1
-Public END_CHAR As String * 1
-
-' Maximum classes
-Public Max_Classes As Byte
-Public quete() As QueteRec
-Public Party As clsParty
-Public Map() As MapRec
-Public TempTile() As TempTileRec
-Public PlayersOnMap() As Long
-Public Player() As AccountRec
-Public Classe() As ClassRec
-Public Class2() As ClassRec
-Public Class3() As ClassRec
-Public item() As ItemRec
-Public Npc() As NpcRec
-Public MapItem() As MapItemRec
-Public MapNpc() As MapNpcRec
-Public Shop() As ShopRec
-Public Spell() As SpellRec
-Public Guild() As GuildRec
-Public Emoticons() As EmoRec
-Public experience() As Long
-Public CMessages(1 To 6) As CMRec
-Public PnjMove() As Boolean
-Public bouclier() As Boolean
-Public BouclierT() As Long
-Public Para() As Boolean
-Public ParaT() As Long
-Public ParaN() As Boolean
-Public ParaNT() As Long
-Public Point() As Long
-Public PointT() As Long
-Public Pets() As PetsRec
-Public metier() As MetierRec
-Public recette() As RecetteRec
-
-Type ArrowRec
+Public Type ArrowRec
     Name As String
     Pic As Long
     Range As Byte
 End Type
 
-Public Arrows(1 To MAX_ARROWS) As ArrowRec
-
-Type StatRec
+Public Type StatRec
     Level As Long
     STR As Long
     def As Long
     magi As Long
     Speed As Long
 End Type
-Public AddHP As StatRec
-Public AddMP As StatRec
-Public AddSP As StatRec
 
 'use for game ai
 Public Axy1 As Boolean
@@ -577,7 +534,7 @@ End Sub
 Sub ClearClasses()
 Dim i As Long
 
-    For i = 0 To Max_Classes
+    For i = 0 To MAX_CLASSES
        Call ZeroMemory(ByVal VarPtr(Classe(i)), LenB(Classe(i)))
     Next i
 End Sub
@@ -761,7 +718,7 @@ With item(Index)
     .Name = vbNullString
     .desc = vbNullString
     
-    .type = 0
+    .Type = 0
     .data1 = 0
     .data2 = 0
     .data3 = 0
@@ -859,7 +816,7 @@ Sub ClearMetier(ByVal Index As Long)
 Dim i As Long
 With metier(Index)
     .nom = ""
-    .type = 0
+    .Type = 0
     .desc = ""
     For i = 0 To MAX_DATA_METIER
         .data(i, 0) = 0
@@ -977,7 +934,7 @@ With Map(MapNum)
             .Tile(X, Y).FAnim = 0
             .Tile(X, Y).Fringe2 = 0
             .Tile(X, Y).F2Anim = 0
-            .Tile(X, Y).type = 0
+            .Tile(X, Y).Type = 0
             .Tile(X, Y).data1 = 0
             .Tile(X, Y).data2 = 0
             .Tile(X, Y).data3 = 0
@@ -1045,7 +1002,7 @@ With quete(Index)
     .reponse = vbNullString
     .String1 = vbNullString
     .temps = 0
-    .type = 0
+    .Type = 0
     
     For i = 1 To 15
         .indexe(i).data1 = 1
@@ -1132,7 +1089,7 @@ With Spell(Index)
     .Name = vbNullString
     .ClassReq = 0
     .LevelReq = 0
-    .type = 0
+    .Type = 0
     .data1 = 0
     .data2 = 0
     .data3 = 0
@@ -1241,7 +1198,7 @@ End Function
 Sub SetPlayerExp(ByVal Index As Long, ByVal Exp As Long)
 Dim Queten As Long
 Queten = Val(Player(Index).Char(Player(Index).CharNum).QueteEnCour)
-    If Queten > 0 Then If quete(Queten).type = QUETE_TYPE_GAGNE_XP Then Call PlayerQueteTypeXp(Index, Queten, Exp)
+    If Queten > 0 Then If quete(Queten).Type = QUETE_TYPE_GAGNE_XP Then Call PlayerQueteTypeXp(Index, Queten, Exp)
     Player(Index).Char(Player(Index).CharNum).Exp = Exp
 End Sub
 

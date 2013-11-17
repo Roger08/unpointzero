@@ -357,3 +357,12 @@
 13:44:33: Compte test a ï¿½tï¿½ crï¿½ï¿½.
 13:46:07: test s'est connectï¿½ depuis 127.0.0.1.
 13:46:09: test/Test est en train de jouer ï¿½ FRoG Creator.
+18:20:48: test s'est connecté depuis 127.0.0.1.
+18:20:49: test/Test est en train de jouer é FRoG Creator.
+18:51:56: test s'est connecté depuis 127.0.0.1.
+18:51:57: test/Test est en train de jouer é FRoG Creator.
+18:53:03: Carte #1 : Test : test
+18:53:05: Carte #1 : Test : test
+18:53:07: Carte #1 : Test : test
+18:53:08: Carte #1 : Test : test
+18:53:10: Carte #1 : Test : test

@@ -32,4 +32,5 @@ Static NumLines As Long
     If NumLines >= MAX_LINES Then Txt.text = vbNullString: NumLines = 0
     
     Txt.SelStart = Len(Txt.text)
+    
 End Sub
