@@ -366,3 +366,5 @@
 18:53:07: Carte #1 : Test : test
 18:53:08: Carte #1 : Test : test
 18:53:10: Carte #1 : Test : test
+19:09:36: test s'est connecté depuis 127.0.0.1.
+19:09:38: test/Test est en train de jouer é FRoG Creator.

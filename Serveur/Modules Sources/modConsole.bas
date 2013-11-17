@@ -39,4 +39,16 @@ Public Sub DispInfo(ByVal msg As String)
     End With
 End Sub
 
+Public Sub DispOK(ByVal msg As String)
+    With frmServer.txtReturn
+        .SelStart = Len(.text)
+        .SelColor = QBColor(Black)
+        .SelText = (vbNewLine & "> ")
+        .SelStart = Len(.text)
+        .SelColor = QBColor(Green)
+        .SelText = (msg)
+        .SelStart = Len(.text) - 1
+    End With
+End Sub
+
 ' -- Traitement des commandes --

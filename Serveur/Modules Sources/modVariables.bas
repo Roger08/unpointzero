@@ -99,6 +99,7 @@ Public InDestroy As Boolean
 
 ' -- Configuration du serveur --
 Public KeyTimer As Long
+Public StartedTime As Long
 Public GiveHPTimer As Long
 Public GiveNPCHPTimer As Long
 Public ServerLog As Boolean

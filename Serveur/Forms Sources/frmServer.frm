@@ -2559,7 +2559,7 @@ Private Sub Command30_Click()
 Dim z As String
 Dim O As Long
     z = InputBox("Numéros de la classe?", "Modifier les classes")
-    If Val(z) < 0 Or Val(z) > Max_Classes Or Not IsNumeric(z) Then Exit Sub
+    If Val(z) < 0 Or Val(z) > MAX_CLASSES Or Not IsNumeric(z) Then Exit Sub
     O = Val(z)
     frmclasseseditor.nom.text = ReadINI("CLASS", "Name", App.Path & "\Classes\Class" & O & ".ini")
     frmclasseseditor.scrlhom.value = Val(ReadINI("CLASS", "MaleSprite", App.Path & "\Classes\Class" & O & ".ini"))
@@ -3043,7 +3043,11 @@ Private Sub CustomMsg_Click(Index As Integer)
 End Sub
 
 Private Sub Form_Load()
-Random = 1
+    Me.Show
+    NewDoEvents
+    StartedTime = GetTickCount
+    If InDestroy = False Then Call InitServer
+    Random = 1
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)

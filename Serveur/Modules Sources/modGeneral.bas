@@ -96,7 +96,6 @@ Dim f As Long
     If LCase$(Dir(App.Path & "\Pets", vbDirectory)) <> "pets" Then Call MkDir(App.Path & "\Pets")
     If LCase$(Dir(App.Path & "\Recettes", vbDirectory)) <> "recettes" Then Call MkDir(App.Path & "\Recettes")
 
-    loading (5)
     SEP_CHAR = Chr$(0)
     END_CHAR = Chr$(237)
     
@@ -187,9 +186,8 @@ Dim f As Long
         PutVar App.Path & "\Data.ini", "RATIO", "RATE_MAX", "100"
     End If
     
-    loading (10)
     
-    Call SetStatus("Chargement des paramètres...")
+    Call DispMessage("Chargement : Paramètres")
     
     AddHP.Level = Val(GetVar(App.Path & "\Stats.ini", "HP", "AddPerLevel"))
     AddHP.STR = Val(GetVar(App.Path & "\Stats.ini", "HP", "AddPerStr"))
@@ -259,7 +257,7 @@ Dim f As Long
         MAX_MAPX = 30
         MAX_MAPY = 30
     End If
-    loading (10)
+
     ReDim quete(1 To MAX_QUETES) As QueteRec
     ReDim Map(1 To MAX_MAPS) As MapRec
     ReDim TempTile(1 To MAX_MAPS) As TempTileRec
@@ -322,7 +320,6 @@ Dim f As Long
     PIC_NPC1 = 2
     PIC_NPC2 = 32
     
-    loading (10)
     'couleurs des accès
     If Trim$(GetVar(App.Path & "\Data.ini", "COULEURS", "AccAdmin")) <> vbNullString Then AccAdmin = Val(GetVar(App.Path & "\Data.ini", "COULEURS", "AccAdmin"))
     If Trim$(GetVar(App.Path & "\Data.ini", "COULEURS", "AccDevelopeur")) <> vbNullString Then AccDevelopeur = Val(GetVar(App.Path & "\Data.ini", "COULEURS", "AccDevelopeur"))
@@ -352,7 +349,7 @@ Dim f As Long
     
     'Scripting
     If Scripting = 1 Then
-        Call SetStatus("Chargement des scripts...")
+        Call DispMessage("Chargement : Scripts")
         If FileExist("\Scripts\Main.txt") = False Then
             Call MsgBox("Le Main.txt est introuvable")
             Call DestroyServer
@@ -370,16 +367,11 @@ Dim f As Long
         
     ' Init all the player sockets
     For i = 1 To MAX_PLAYERS
-        Call SetStatus("Initialisation des joueurs...")
         Call ClearPlayer(i)
         
         Load frmServer.Socket(i)
         Call ShowPLR(i)
     Next i
-    loading (15)
-    'For i = 1 To MAX_PLAYERS
-    '    Call ShowPLR(i)
-    'Next i
     
     If Not FileExist("CMessages.ini") Then
         For i = 1 To 6
@@ -410,56 +402,43 @@ Dim f As Long
     frmServer.lstTopics.AddItem "Nouveautés"
     frmServer.lstTopics.Selected(0) = True
     
-    Call SetStatus("Nettoyage des tile temporaire...")
     Call ClearTempTile
-    Call SetStatus("Nettoyage des objets des cartes...")
     Call ClearMapItems
-    Call SetStatus("Nettoyage des PNJ des cartes...")
     Call ClearMapNpcs
-    Call SetStatus("Nettoyage des PNJ...")
     Call ClearNpcs
-    Call SetStatus("Nettoyage des objets...")
     Call ClearItems
-    Call SetStatus("Nettoyage des magasins...")
     Call ClearShops
-    Call SetStatus("Nettoyage des sorts...")
     Call ClearSpells
-    Call SetStatus("Nettoyage de l'éxpérience...")
     Call ClearExps
-    loading (20)
-    Call SetStatus("Chargement des émoticons...")
+    Call DispMessage("Chargement : Emoticones")
     Call LoadEmos
-    Call SetStatus("Chargement des flêches...")
+    Call DispMessage("Chargement : Flèches")
     Call LoadArrows
-    Call SetStatus("Chargement des émticons...")
+    Call DispMessage("Chargement : Expérience")
     Call LoadExps
-    Call SetStatus("Chargement des classes...")
+    Call DispMessage("Chargement : Classes")
     Call LoadClasses
-    Call SetStatus("Chargement des Familliers...")
+    Call DispMessage("Chargement : Familiers")
     Call LoadPets
-    Call SetStatus("Chargement des Metiers...")
+    Call DispMessage("Chargement : Métiers")
     Call LoadMetiers
-    Call SetStatus("Chargement des Recettes...")
+    Call DispMessage("Chargement : Recettes")
     Call Loadrecettes
-    Call SetStatus("Chargement des cartes...")
+    Call DispMessage("Chargement : Maps")
     Call LoadMaps
-    Call SetStatus("Chargement des objets...")
+    Call DispMessage("Chargement : Objets")
     Call LoadItems
-    Call SetStatus("Chargement des PNJ...")
+    Call DispMessage("Chargement : PNJs")
     Call LoadNpcs
-    Call SetStatus("Chargement des magasins...")
+    Call DispMessage("Chargement : Magasins")
     Call LoadShops
-    Call SetStatus("Chargement des sorts...")
+    Call DispMessage("Chargement : Sorts")
     Call LoadSpells
-    Call SetStatus("Chargement des quêtes...")
+    Call DispMessage("Chargement : Quêtes")
     Call LoadQuetes
-    Call SetStatus("Placement des objets sur les cartes...")
+    Call DispMessage("Ouverture du serveur...")
     Call SpawnAllMapsItems
-    Call SetStatus("Placement des PNJ sur les cartes...")
     Call SpawnAllMapNpcs
-    loading (10)
-    
-    Call SetStatus("Chargement de l'interface...")
     
     frmServer.MapList.Clear
         
@@ -491,13 +470,8 @@ Dim f As Long
     
     Call UpdateCaption
     
-    frmLoad.Visible = False
-    frmServer.Show
-    
     SpawnSeconds = 0
     frmServer.tmrGameAI.Enabled = True
-    
-    loading (10)
     
     Dim Repon As String
     If FileExist("\logs\admin.txt") Then
@@ -532,6 +506,7 @@ Dim f As Long
     Call IBMsg("Serveur chargé")
     End If
 
+    Call DispOK("Serveur chargé en " & GetTickCount - StartedTime & " ms.")
 Exit Sub
 er:
 MsgBox "Erreur pendant l'initialisation du serveur, vérifiez que le port n'est pas déjà utilisé par une autre application ou que le serveur ne soit pas déjà lancé . (Détails :" & Err.Number & " " & Err.Description & ")"
@@ -543,41 +518,36 @@ Dim i As Long
     
     Close
     
-    Call SetStatus("Fermeture en cours...")
-    frmLoad.Visible = True
-    frmServer.Visible = False
+    Call DispInfo("Fermeture du serveur...")
     NewDoEvents
     
-    Call SetStatus("Sauvegarde des joueurs en ligne...")
+    Call DispMessage("Sauvegarde : Joueurs")
     Call SaveAllPlayersOnline
     
     'Call SetStatus("Création d'un cache...")
     'Call CacheCreate
-    Call SetStatus("Nettoyage des cartes...")
+    Call DispMessage("Sauvegarde : Maps")
     Call ClearMaps
-    Call SetStatus("Nettoyage des objets sur les cartes...")
     Call ClearMapItems
-    Call SetStatus("Nettoyage des PNJ sur les cartes...")
     Call ClearMapNpcs
-    Call SetStatus("Nettoyage des NPCs...")
+    Call DispMessage("Sauvegarde : PNJs")
     Call ClearNpcs
-    Call SetStatus("Nettoyage des Objets...")
+    Call DispMessage("Sauvegarde : Objets")
     Call ClearItems
-    Call SetStatus("Nettoyage des magasins...")
+    Call DispMessage("Sauvegarde : Magasins")
     Call ClearShops
-    Call SetStatus("Fermeture du protocole TCP...")
+    Call DispMessage("Fermeture du protocole TCP...")
     frmServer.tmrGameAI.Enabled = False
     
     On Error GoTo sock:
     For i = 1 To MAX_PLAYERS
-        Call SetStatus("Fermeture du protocole TCP " & i & "/" & MAX_PLAYERS)
         NewDoEvents
         Unload frmServer.Socket(i)
     Next i
 sock:
     
     If frmServer.chkChat.value = Checked Then
-        Call SetStatus("Sauvegarde des logs de tchat...")
+        Call DispMessage("Sauvegarde : Logs")
         Call SaveLogs
     End If
     InDestroy = True
@@ -587,7 +557,6 @@ sock:
 
     Call Unload(frmAbout)
     Call Unload(frmInfosMap)
-    Call Unload(frmLoad)
     Call Unload(frmServer)
     Call Unload(frmOptCoul)
     Call Unload(frmOptInfoBulle)
@@ -595,19 +564,18 @@ sock:
     Call Unload(frmEnvFTP)
     Call Unload(frmclasseseditor)
     Call Unload(frmCoFTP)
-    Call Unload(frmLoad)
 End Sub
-Public Sub loading(ByVal value As Byte)
-Dim i As Byte
-If value > 100 Then Exit Sub
-For i = frmLoad.chrg.value To value
-frmLoad.chrg.value = i
-Next
-End Sub
-Sub SetStatus(ByVal Status As String)
-    frmLoad.lblStatus.Caption = Status
-    NewDoEvents
-End Sub
+'Public Sub loading(ByVal value As Byte)
+'Dim i As Byte
+'If value > 100 Then Exit Sub
+'For i = frmLoad.chrg.value To value
+'frmLoad.chrg.value = i
+'Next
+'End Sub
+'Sub SetStatus(ByVal Status As String)
+'    frmLoad.lblStatus.Caption = Status
+'    NewDoEvents
+'End Sub
 
 Sub ServerLogic()
 Dim i As Long
@@ -691,12 +659,12 @@ Dim SpellSlot As Byte
             If TickCount > TempTile(Y).DoorTimer + 5000 Then
                 For y1 = 0 To MAX_MAPY
                     For x1 = 0 To MAX_MAPX
-                        If Map(Y).Tile(x1, y1).type = TILE_TYPE_KEY And TempTile(Y).DoorOpen(x1, y1) = YES Then
+                        If Map(Y).Tile(x1, y1).Type = TILE_TYPE_KEY And TempTile(Y).DoorOpen(x1, y1) = YES Then
                             TempTile(Y).DoorOpen(x1, y1) = NO
                             Call SendDataToMap(Y, "MAPKEY" & SEP_CHAR & x1 & SEP_CHAR & y1 & SEP_CHAR & 0 & END_CHAR)
                         End If
                         
-                        If Map(Y).Tile(x1, y1).type = TILE_TYPE_DOOR Or Map(Y).Tile(x1, y1).type = TILE_TYPE_COFFRE Or Map(Y).Tile(x1, y1).type = TILE_TYPE_PORTE_CODE And TempTile(Y).DoorOpen(x1, y1) = YES Then
+                        If Map(Y).Tile(x1, y1).Type = TILE_TYPE_DOOR Or Map(Y).Tile(x1, y1).Type = TILE_TYPE_COFFRE Or Map(Y).Tile(x1, y1).Type = TILE_TYPE_PORTE_CODE And TempTile(Y).DoorOpen(x1, y1) = YES Then
                             TempTile(Y).DoorOpen(x1, y1) = NO
                             Call SendDataToMap(Y, "MAPKEY" & SEP_CHAR & x1 & SEP_CHAR & y1 & SEP_CHAR & 0 & END_CHAR)
                         End If
@@ -952,7 +920,7 @@ For i = 1 To MAX_PLAYERS
     If bouclier(i) And GetTickCount >= BouclierT(i) Then bouclier(i) = False: BouclierT(i) = 0
     If Para(i) And GetTickCount >= ParaT(i) Then Call ContrOnOff(i): Para(i) = False: ParaT(i) = 0
     If Point(i) > 0 And Point(i) < MAX_SPELLS Then
-    If Spell(Point(i)).type = SPELL_TYPE_AMELIO And GetTickCount >= PointT(i) Then
+    If Spell(Point(i)).Type = SPELL_TYPE_AMELIO And GetTickCount >= PointT(i) Then
         Player(i).Char(Player(i).CharNum).def = Player(i).Char(Player(i).CharNum).def - Val(Spell(Point(i)).data3)
         Player(i).Char(Player(i).CharNum).magi = Player(i).Char(Player(i).CharNum).magi - Val(Spell(Point(i)).data3)
         Player(i).Char(Player(i).CharNum).STR = Player(i).Char(Player(i).CharNum).STR - Val(Spell(Point(i)).data3)
@@ -960,7 +928,7 @@ For i = 1 To MAX_PLAYERS
         Call SendStats(i)
         Point(i) = 0
         PointT(i) = 0
-    ElseIf Spell(Point(i)).type = SPELL_TYPE_DECONC And GetTickCount >= PointT(i) Then
+    ElseIf Spell(Point(i)).Type = SPELL_TYPE_DECONC And GetTickCount >= PointT(i) Then
         Player(i).Char(Player(i).CharNum).def = Player(i).Char(Player(i).CharNum).def + Val(Spell(Point(i)).data3)
         Player(i).Char(Player(i).CharNum).magi = Player(i).Char(Player(i).CharNum).magi + Val(Spell(Point(i)).data3)
         Player(i).Char(Player(i).CharNum).STR = Player(i).Char(Player(i).CharNum).STR + Val(Spell(Point(i)).data3)
