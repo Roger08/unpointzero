@@ -2,33 +2,6 @@ Attribute VB_Name = "modTypes"
 Option Explicit
 Global PlayerI As Byte
 
-' Winsock globals
-Public GAME_PORT As Long
-
-' General constants
-Public GAME_NAME As String
-Public MAX_PLAYERS As Long
-Public MAX_SPELLS As Long
-Public MAX_MAPS As Long
-Public MAX_SHOPS As Long
-Public MAX_ITEMS As Long
-Public MAX_NPCS As Long
-Public MAX_MAP_ITEMS As Long
-Public MAX_GUILDS As Long
-Public MAX_GUILD_MEMBERS As Long
-Public MAX_EMOTICONS As Long
-Public MAX_LEVEL As Long
-Public MAX_QUETES As Long
-Public Scripting As Byte
-Public NOOB_LEVEL As Long
-Public PK_LEVEL As Long
-Public RATE_EXP As Long
-Public RATE_QUETE As Long
-Public RATE_MAX As Long
-Public MAX_PETS As Long
-Public MAX_METIER As Long
-Public MAX_RECETTE As Long
-
 Public Const MAX_PARTY_MEMBERS As Byte = 20
 Public Const MAX_PARTYS As Byte = 20
 Public Const MAX_HDV_TRADES As Byte = 5
@@ -233,8 +206,8 @@ Type PlayerQueteRec
 End Type
 
 Type PetPosRec
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     Dir As Byte
 End Type
 
@@ -278,8 +251,8 @@ Type PlayerRec
     
     ' Position
     Map As Long
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     Dir As Byte
     
     QueteEnCour As Integer
@@ -396,8 +369,8 @@ Type TileRec
 End Type
 
 Type NpcMap
-    x As Byte
-    y As Byte
+    X As Byte
+    Y As Byte
     x1 As Byte
     y1 As Byte
     x2 As Byte
@@ -491,8 +464,8 @@ Type ClassRec
     magi As Long
     
     Map As Long
-    x As Byte
-    y As Byte
+    X As Byte
+    Y As Byte
 End Type
 
 Type ItemRec
@@ -537,8 +510,8 @@ Type MapItemRec
     value As Long
     Dur As Long
     
-    x As Byte
-    y As Byte
+    X As Byte
+    Y As Byte
 End Type
 
 Type NPCEditorRec
@@ -586,8 +559,8 @@ Type MapNpcRec
     MP As Long
     SP As Long
         
-    x As Byte
-    y As Byte
+    X As Byte
+    Y As Byte
     Dir As Integer
     
     Amelio As AmelioRec
@@ -757,16 +730,16 @@ Public AccAdmin As Long
 
 Public HotelDeVente As clsHdV
 Sub ClearTempTile()
-Dim i As Long, y As Long, x As Long
+Dim i As Long, Y As Long, X As Long
 
     For i = 1 To MAX_MAPS
         TempTile(i).DoorTimer = 0
         
-        For y = 0 To MAX_MAPY
-            For x = 0 To MAX_MAPX
-                TempTile(i).DoorOpen(x, y) = NO
-            Next x
-        Next y
+        For Y = 0 To MAX_MAPY
+            For X = 0 To MAX_MAPX
+                TempTile(i).DoorOpen(X, Y) = NO
+            Next X
+        Next Y
     Next i
 End Sub
 
@@ -834,13 +807,13 @@ With Player(Index)
         .Char(i).PetSlot = 0
         
         .Char(i).Map = 0
-        .Char(i).x = 0
-        .Char(i).y = 0
+        .Char(i).X = 0
+        .Char(i).Y = 0
         .Char(i).Dir = 0
         
         .Char(i).pet.Dir = 0
-        .Char(i).pet.x = 0
-        .Char(i).pet.y = 0
+        .Char(i).pet.X = 0
+        .Char(i).pet.Y = 0
         
         .Char(i).vendeur = 0
         
@@ -954,13 +927,13 @@ With Player(Index)
     .Char(CharNum).PetSlot = 0
     
     .Char(CharNum).Map = 0
-    .Char(CharNum).x = 0
-    .Char(CharNum).y = 0
+    .Char(CharNum).X = 0
+    .Char(CharNum).Y = 0
     .Char(CharNum).Dir = 0
     
     .Char(CharNum).pet.Dir = 0
-    .Char(CharNum).pet.x = 0
-    .Char(CharNum).pet.y = 0
+    .Char(CharNum).pet.X = 0
+    .Char(CharNum).pet.Y = 0
 End With
 End Sub
     
@@ -1110,19 +1083,19 @@ Sub ClearMapItem(ByVal Index As Long, ByVal MapNum As Long)
     MapItem(MapNum, Index).Num = 0
     MapItem(MapNum, Index).value = 0
     MapItem(MapNum, Index).Dur = 0
-    MapItem(MapNum, Index).x = 0
-    MapItem(MapNum, Index).y = 0
+    MapItem(MapNum, Index).X = 0
+    MapItem(MapNum, Index).Y = 0
 End Sub
 
 Sub ClearMapItems()
-Dim x As Long
-Dim y As Long
+Dim X As Long
+Dim Y As Long
 
-    For y = 1 To MAX_MAPS
-        For x = 1 To MAX_MAP_ITEMS
-            Call ClearMapItem(x, y)
-        Next x
-    Next y
+    For Y = 1 To MAX_MAPS
+        For X = 1 To MAX_MAP_ITEMS
+            Call ClearMapItem(X, Y)
+        Next X
+    Next Y
 End Sub
 
 Sub ClearMapNpc(ByVal Index As Long, ByVal MapNum As Long)
@@ -1137,8 +1110,8 @@ With MapNpc(MapNum, Index)
     .HP = 0
     .MP = 0
     .SP = 0
-    .x = 0
-    .y = 0
+    .X = 0
+    .Y = 0
     .Dir = 0
     PnjMove(Index, MapNum) = True
     
@@ -1149,19 +1122,19 @@ End With
 End Sub
 
 Sub ClearMapNpcs()
-Dim x As Long
-Dim y As Long
+Dim X As Long
+Dim Y As Long
 
-    For y = 1 To MAX_MAPS
-        For x = 1 To MAX_MAP_NPCS
-            Call ClearMapNpc(x, y)
-        Next x
-    Next y
+    For Y = 1 To MAX_MAPS
+        For X = 1 To MAX_MAP_NPCS
+            Call ClearMapNpc(X, Y)
+        Next X
+    Next Y
 End Sub
 Sub ClearMap(ByVal MapNum As Long)
 Dim i As Long
-Dim x As Long
-Dim y As Long
+Dim X As Long
+Dim Y As Long
 
 With Map(MapNum)
     .Name = vbNullString
@@ -1174,36 +1147,36 @@ With Map(MapNum)
     .Indoors = 0
     .meteo = 0
         
-    For y = 0 To MAX_MAPY
-        For x = 0 To MAX_MAPX
-            .Tile(x, y).Ground = 0
-            .Tile(x, y).Mask = 0
-            .Tile(x, y).Anim = 0
-            .Tile(x, y).Mask2 = 0
-            .Tile(x, y).M2Anim = 0
-            .Tile(x, y).Fringe = 0
-            .Tile(x, y).FAnim = 0
-            .Tile(x, y).Fringe2 = 0
-            .Tile(x, y).F2Anim = 0
-            .Tile(x, y).type = 0
-            .Tile(x, y).data1 = 0
-            .Tile(x, y).data2 = 0
-            .Tile(x, y).data3 = 0
-            .Tile(x, y).String1 = vbNullString
-            .Tile(x, y).String2 = vbNullString
-            .Tile(x, y).String3 = vbNullString
-            .Tile(x, y).Light = 0
-            .Tile(x, y).GroundSet = 0
-            .Tile(x, y).MaskSet = 0
-            .Tile(x, y).AnimSet = 0
-            .Tile(x, y).Mask2Set = 0
-            .Tile(x, y).M2AnimSet = 0
-            .Tile(x, y).FringeSet = 0
-            .Tile(x, y).FAnimSet = 0
-            .Tile(x, y).Fringe2Set = 0
-            .Tile(x, y).F2AnimSet = 0
-        Next x
-    Next y
+    For Y = 0 To MAX_MAPY
+        For X = 0 To MAX_MAPX
+            .Tile(X, Y).Ground = 0
+            .Tile(X, Y).Mask = 0
+            .Tile(X, Y).Anim = 0
+            .Tile(X, Y).Mask2 = 0
+            .Tile(X, Y).M2Anim = 0
+            .Tile(X, Y).Fringe = 0
+            .Tile(X, Y).FAnim = 0
+            .Tile(X, Y).Fringe2 = 0
+            .Tile(X, Y).F2Anim = 0
+            .Tile(X, Y).type = 0
+            .Tile(X, Y).data1 = 0
+            .Tile(X, Y).data2 = 0
+            .Tile(X, Y).data3 = 0
+            .Tile(X, Y).String1 = vbNullString
+            .Tile(X, Y).String2 = vbNullString
+            .Tile(X, Y).String3 = vbNullString
+            .Tile(X, Y).Light = 0
+            .Tile(X, Y).GroundSet = 0
+            .Tile(X, Y).MaskSet = 0
+            .Tile(X, Y).AnimSet = 0
+            .Tile(X, Y).Mask2Set = 0
+            .Tile(X, Y).M2AnimSet = 0
+            .Tile(X, Y).FringeSet = 0
+            .Tile(X, Y).FAnimSet = 0
+            .Tile(X, Y).Fringe2Set = 0
+            .Tile(X, Y).F2AnimSet = 0
+        Next X
+    Next Y
     
     For i = 1 To MAX_MAP_NPCS
     .Npc(i) = 0
@@ -1214,14 +1187,14 @@ With Map(MapNum)
     .Npcs(i).Hasardm = 1
     .Npcs(i).Hasardp = 1
     .Npcs(i).Imobile = 0
-    .Npcs(i).x = 0
+    .Npcs(i).X = 0
     .Npcs(i).x1 = 0
     .Npcs(i).x2 = 0
     .Npcs(i).x3 = 0
     .Npcs(i).x4 = 0
     .Npcs(i).x5 = 0
     .Npcs(i).x6 = 0
-    .Npcs(i).y = 0
+    .Npcs(i).Y = 0
     .Npcs(i).y2 = 0
     .Npcs(i).y3 = 0
     .Npcs(i).y4 = 0
@@ -1655,19 +1628,19 @@ Sub SetPlayerMap(ByVal Index As Long, ByVal MapNum As Long)
 End Sub
 
 Function GetPlayerX(ByVal Index As Long) As Long
-    GetPlayerX = Player(Index).Char(Player(Index).CharNum).x
+    GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
 End Function
 
-Sub SetPlayerX(ByVal Index As Long, ByVal x As Long)
-    Player(Index).Char(Player(Index).CharNum).x = x
+Sub SetPlayerX(ByVal Index As Long, ByVal X As Long)
+    Player(Index).Char(Player(Index).CharNum).X = X
 End Sub
 
 Function GetPlayerY(ByVal Index As Long) As Long
-    GetPlayerY = Player(Index).Char(Player(Index).CharNum).y
+    GetPlayerY = Player(Index).Char(Player(Index).CharNum).Y
 End Function
 
-Sub SetPlayerY(ByVal Index As Long, ByVal y As Long)
-    Player(Index).Char(Player(Index).CharNum).y = y
+Sub SetPlayerY(ByVal Index As Long, ByVal Y As Long)
+    Player(Index).Char(Player(Index).CharNum).Y = Y
 End Sub
 
 Function GetPlayerSex(ByVal Index As Long) As Byte
@@ -1762,8 +1735,8 @@ Sub SetPlayerPetSlot(ByVal Index As Long, InvNum As Long)
     Player(Index).Char(Player(Index).CharNum).PetSlot = InvNum
 End Sub
 
-Sub BattleMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long, ByVal Side As Byte)
-    Call SendDataTo(Index, "damagedisplay" & SEP_CHAR & Side & SEP_CHAR & Msg & SEP_CHAR & Color & SEP_CHAR & END_CHAR)
+Sub BattleMsg(ByVal Index As Long, ByVal msg As String, ByVal Color As Long, ByVal Side As Byte)
+    Call SendDataTo(Index, "damagedisplay" & SEP_CHAR & Side & SEP_CHAR & msg & SEP_CHAR & Color & SEP_CHAR & END_CHAR)
 End Sub
 
 Public Sub Attendre(ByVal temps As Long)

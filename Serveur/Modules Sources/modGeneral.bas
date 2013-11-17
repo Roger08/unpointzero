@@ -11,49 +11,18 @@ Public Const CLIENT_MAJOR As String * 1 = "0"
 Public Const CLIENT_MINOR As String * 1 = "6"
 Public Const CLIENT_REVISION As String * 1 = "2"
 
-'SCRIPTING
-'Our dll cls
-Global MyScript As clsSadScript
-'Our hardcoded commands
-Public clsScriptCommands As clsCommands
-Public DetectScriptErr As Boolean
-
-' Used for respawning items
-Public SpawnSeconds As Long
-
-' Used for weather effects
-Public GameWeather As Long
-Public WeatherSeconds As Long
-Public GameTime As Long
-Public TimeSeconds As Long
-Public RainIntensity As Long
-Public InDestroy As Boolean
-
-' Used for closing key doors again
-Public KeyTimer As Long
-
-' Used for gradually giving back players and npcs hp
-Public GiveHPTimer As Long
-Public GiveNPCHPTimer As Long
-
-' Used for logging
-Public ServerLog As Boolean
-
-'utiliser pour les cartes par FTP
-Public CarteFTP As Boolean
-
 Public Const nLng As Long = (&H80 Or &H1 Or &H4 Or &H20) + (&H8 Or &H40)
 Private Declare Function GetQueueStatus Lib "user32" (ByVal fuFlags As Long) As Long
-Public Declare Function PeekMessage Lib "user32" Alias "PeekMessageA" (lpMsg As Msg, ByVal hwnd As Long, ByVal wMsgFilterMin As Long, ByVal wMsgFilterMax As Long, ByVal wRemoveMsg As Long) As Long
-Public Declare Function TranslateMessage Lib "user32" (lpMsg As Msg) As Long
-Public Declare Function DispatchMessage Lib "user32" Alias "DispatchMessageA" (lpMsg As Msg) As Long
+Public Declare Function PeekMessage Lib "user32" Alias "PeekMessageA" (lpMsg As msg, ByVal hwnd As Long, ByVal wMsgFilterMin As Long, ByVal wMsgFilterMax As Long, ByVal wRemoveMsg As Long) As Long
+Public Declare Function TranslateMessage Lib "user32" (lpMsg As msg) As Long
+Public Declare Function DispatchMessage Lib "user32" Alias "DispatchMessageA" (lpMsg As msg) As Long
 
 Public Type POINTAPI
         X As Long
         Y As Long
 End Type
 
-Public Type Msg
+Public Type msg
     hwnd As Long
     message As Long
     wParam As Long
@@ -62,7 +31,7 @@ Public Type Msg
     pt As POINTAPI
 End Type
 
-Dim msg_ As Msg
+Dim msg_ As msg
 Public Const PM_REMOVE = &H1
 
 Public Sub NewDoEvents()

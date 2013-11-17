@@ -22,24 +22,11 @@ Public Const Pink = 13
 Public Const Yellow = 14
 Public Const White = 15
 
-Public SayColor As Long
-Public CouleurDesGuilde As Long
-Public GlobalColor As Long
-Public BroadcastColor As Long
-Public TellColor As Long
-Public EmoteColor As Long
-Public AdminColor As Long
-Public HelpColor As Long
-Public WhoColor As Long
-Public JoinLeftColor As Long
-Public NpcColor As Long
-Public AlertColor As Long
-Public NewMapColor As Long
 
-Public Sub TextAdd(ByVal Txt As TextBox, Msg As String, NewLine As Boolean)
+Public Sub TextAdd(ByVal Txt As TextBox, msg As String, NewLine As Boolean)
 Static NumLines As Long
 
-    If NewLine Then Txt.text = Txt.text & vbCrLf & Msg Else Txt.text = Txt.text & Msg
+    If NewLine Then Txt.text = Txt.text & vbCrLf & msg Else Txt.text = Txt.text & msg
         
     NumLines = NumLines + 1
     If NumLines >= MAX_LINES Then Txt.text = vbNullString: NumLines = 0
