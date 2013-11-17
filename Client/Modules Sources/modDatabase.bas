@@ -18,7 +18,7 @@ Public Function FileExiste(ByVal FileName As String, Optional RAW As Boolean = F
         If LenB(Dir$(FileName)) = 0 Then FileExiste = False
     End If
 End Function
-Sub SaveLocalMap(ByVal MapNum As Integer)
+Sub SaveLocalMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
 
@@ -30,7 +30,7 @@ Dim f As Long
     Close #f
 End Sub
 
-Sub LoadMap(ByVal MapNum As Integer)
+Sub LoadMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
 
@@ -43,7 +43,7 @@ Dim f As Long
     Close #f
 End Sub
 
-Function GetMapRevision(ByVal MapNum As Integer) As Integer
+Function GetMapRevision(ByVal MapNum As Long) As Long
     GetMapRevision = Map(MapNum).Revision
 End Function
 

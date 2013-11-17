@@ -36,10 +36,10 @@ GoAttackPlayer = 7
 GoAttackNpc = 8
 End Enum
 
-Function SummonNpc(ByVal MapNum As Integer, ByVal npcnum As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal Dir As Byte) As Integer
+Function SummonNpc(ByVal MapNum As Integer, ByVal npcnum As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Dir As Byte) As Integer
 Dim Packet As String, i As Long
     ' Check for subscript out of range
-    If MapNum <= 0 Or MapNum > MAX_MAPS Or npcnum <= 0 Or npcnum > MAX_NPCS Or X < 0 Or Y < 0 Or X > MAX_MAPX Or Y > MAX_MAPY Then SummonNpc = -1: Exit Function
+    If MapNum <= 0 Or MapNum > MAX_MAPS Or npcnum <= 0 Or npcnum > MAX_NPCS Or x < 0 Or y < 0 Or x > MAX_MAPX Or y > MAX_MAPY Then SummonNpc = -1: Exit Function
     
         If GameTime = TIME_NIGHT Then
             If Npc(npcnum).SpawnTime = 1 Then SummonNpc = -2: Exit Function
@@ -47,7 +47,7 @@ Dim Packet As String, i As Long
             If Npc(npcnum).SpawnTime = 2 Then SummonNpc = -2: Exit Function
         End If
         
-        If Map(MapNum).Tile(X, Y).type <> TILE_TYPE_WALKABLE Then SummonNpc = -3: Exit Function
+        If Map(MapNum).Tile(x, y).type <> TILE_TYPE_WALKABLE Then SummonNpc = -3: Exit Function
         
         For i = 1 To MAX_MAP_NPCS
             If Map(MapNum).Npc(i) <= 0 And MapNpc(MapNum, i).Num <= 0 Then Exit For
@@ -59,14 +59,14 @@ Dim Packet As String, i As Long
         MapNpc(MapNum, i).TargetType = 0
         
         MapNpc(MapNum, i).HP = GetNpcMaxHP(npcnum)
-        MapNpc(MapNum, i).MP = GetNpcMaxMP(npcnum) + IIf(MapNpc(Y, X).Amelio.Timer >= GetTickCount, MapNpc(Y, X).Amelio.Power * 2, 0)
+        MapNpc(MapNum, i).MP = GetNpcMaxMP(npcnum) + IIf(MapNpc(y, x).Amelio.Timer >= GetTickCount, MapNpc(y, x).Amelio.Power * 2, 0)
         MapNpc(MapNum, i).SP = GetNpcMaxSP(npcnum)
         
-        MapNpc(MapNum, i).X = X
-        MapNpc(MapNum, i).Y = Y
+        MapNpc(MapNum, i).x = x
+        MapNpc(MapNum, i).y = y
         MapNpc(MapNum, i).Dir = Dir
         
-        Packet = "SPAWNNPC" & SEP_CHAR & i & SEP_CHAR & npcnum & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & Dir & END_CHAR
+        Packet = "SPAWNNPC" & SEP_CHAR & i & SEP_CHAR & npcnum & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & Dir & END_CHAR
         Call SendDataToMap(MapNum, Packet)
         
         ' Renvoi le MapNpcNum (Nécéssaire pour un NpcOrder)
@@ -123,9 +123,9 @@ Public Sub SetPlayerQuete(ByVal Index As Integer, ByVal QuestNum As Integer, Opt
 End Sub
 
 'Code by Cryo
-Public Function PlayerInMap(ByVal MapNum As Integer) As Byte
-    Dim i As Byte
-    Dim Player As Byte
+Public Function PlayerInMap(ByVal MapNum As Integer) As Integer
+    Dim i As Integer
+    Dim Player As Integer
     Player = 0
     For i = 1 To MAX_PLAYERS
         If GetPlayerMap(i) = MapNum Then Player = Player + 1
@@ -172,7 +172,7 @@ Dim i As Long
     Next i
 End Sub
 
-Public Sub PlayerMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Long)
+Public Sub PlayerMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long)
 Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub
@@ -182,7 +182,7 @@ Dim Packet As String
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub GuildeMsg(ByVal Index As Byte, ByVal Msg As String)
+Sub GuildeMsg(ByVal Index As Long, ByVal Msg As String)
     Dim i As Long
     Dim s As String
     
@@ -198,7 +198,7 @@ Sub GuildeMsg(ByVal Index As Byte, ByVal Msg As String)
     Next i
 End Sub
 
-Public Sub QueteMsg(ByVal Index As Byte, ByVal Msg As String)
+Public Sub QueteMsg(ByVal Index As Long, ByVal Msg As String)
 Dim Packet As String
 
 If Mid(Msg, 1, 3) = "**" Then Msg = Mid(Msg, InStr(1, Msg, ":"))
@@ -216,7 +216,7 @@ Dim text As String
     Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Public Sub AlertMsg(ByVal Index As Byte, ByVal Msg As String)
+Public Sub AlertMsg(ByVal Index As Long, ByVal Msg As String)
 Dim Packet As String
 
     Packet = "ALERTMSG" & SEP_CHAR & Msg & END_CHAR
@@ -228,90 +228,90 @@ End Sub
 ' :::::::::::::::::::::::::::::::::::::::::::
 ' :: Functions/Subs Available To The Owner ::
 ' :::::::::::::::::::::::::::::::::::::::::::
-Function GetPlayerLogin(ByVal Index As Byte) As String
+Function GetPlayerLogin(ByVal Index As Long) As String
     GetPlayerLogin = Trim$(Player(Index).Login)
 End Function
 
-Function GetPlayerName(ByVal Index As Byte) As String
+Function GetPlayerName(ByVal Index As Long) As String
     GetPlayerName = Trim$(Player(Index).Char(Player(Index).CharNum).Name)
 End Function
 
-Function GetPlayerGuild(ByVal Index As Byte) As String
+Function GetPlayerGuild(ByVal Index As Long) As String
     GetPlayerGuild = Trim$(Player(Index).Char(Player(Index).CharNum).Guild)
 End Function
 
-Function GetPlayerGuildAccess(ByVal Index As Byte) As Long
+Function GetPlayerGuildAccess(ByVal Index As Long) As Long
     GetPlayerGuildAccess = Player(Index).Char(Player(Index).CharNum).Guildaccess
 End Function
 
-Sub SetPlayerGuildAccess(ByVal Index As Byte, ByVal Guildaccess As Byte)
+Sub SetPlayerGuildAccess(ByVal Index As Long, ByVal Guildaccess As Long)
     Player(Index).Char(Player(Index).CharNum).Guildaccess = Guildaccess
 End Sub
 
-Function GetPlayerClass(ByVal Index As Byte) As Byte
+Function GetPlayerClass(ByVal Index As Long) As Long
     GetPlayerClass = Player(Index).Char(Player(Index).CharNum).Class
 End Function
 
-Sub SetPlayerClass(ByVal Index As Byte, ByVal ClassNum As Byte)
+Sub SetPlayerClass(ByVal Index As Long, ByVal ClassNum As Long)
     Player(Index).Char(Player(Index).CharNum).Class = ClassNum
 End Sub
 
-Function GetPlayerClassName(ByVal Index As Byte) As String
+Function GetPlayerClassName(ByVal Index As Long) As String
     GetPlayerClassName = GetVar("Classes\Class" & GetPlayerClass(Index) & ".ini", "CLASS", "Name")
 End Function
 
-Function GetPlayerSprite(ByVal Index As Byte) As Integer
+Function GetPlayerSprite(ByVal Index As Long) As Long
     GetPlayerSprite = Player(Index).Char(Player(Index).CharNum).sprite
 End Function
 
-Sub SetPlayerSprite(ByVal Index As Byte, ByVal sprite As Integer)
+Sub SetPlayerSprite(ByVal Index As Long, ByVal sprite As Long)
     Player(Index).Char(Player(Index).CharNum).sprite = sprite
 End Sub
 
-Function GetPlayerLevel(ByVal Index As Byte) As Integer
+Function GetPlayerLevel(ByVal Index As Long) As Long
     GetPlayerLevel = Player(Index).Char(Player(Index).CharNum).Level
 End Function
 
-Sub SetPlayerLevel(ByVal Index As Byte, ByVal Level As Integer)
+Sub SetPlayerLevel(ByVal Index As Long, ByVal Level As Long)
     If GetPlayerLevel(Index) > MAX_LEVEL Then Exit Sub
     Player(Index).Char(Player(Index).CharNum).Level = Level
 End Sub
 
-Function GetPlayerNextLevel(ByVal Index As Byte) As Integer
+Function GetPlayerNextLevel(ByVal Index As Long) As Long
     If GetPlayerLevel(Index) > MAX_LEVEL Then Exit Function
     GetPlayerNextLevel = experience(GetPlayerLevel(Index))
 End Function
 
-Function GetPlayerExp(ByVal Index As Byte) As Long
+Function GetPlayerExp(ByVal Index As Long) As Long
     GetPlayerExp = Player(Index).Char(Player(Index).CharNum).Exp
 End Function
 
-Sub SetPlayerExp(ByVal Index As Byte, ByVal Exp As Long)
+Sub SetPlayerExp(ByVal Index As Long, ByVal Exp As Long)
     If Player(Index).Char(Player(Index).CharNum).QueteEnCour > 0 Then If quete(Player(Index).Char(Player(Index).CharNum).QueteEnCour).type = QUETE_TYPE_GAGNE_XP Then Call PlayerQueteTypeXp(Index, Player(Index).Char(Player(Index).CharNum).QueteEnCour, Exp)
     Player(Index).Char(Player(Index).CharNum).Exp = Exp
 End Sub
 
-Function GetPlayerAccess(ByVal Index As Byte) As Byte
+Function GetPlayerAccess(ByVal Index As Long) As Long
     GetPlayerAccess = Player(Index).Char(Player(Index).CharNum).Access
 End Function
 
-Sub SetPlayerAccess(ByVal Index As Byte, ByVal Access As Byte)
+Sub SetPlayerAccess(ByVal Index As Long, ByVal Access As Long)
     Player(Index).Char(Player(Index).CharNum).Access = Access
 End Sub
 
-Function GetPlayerPK(ByVal Index As Byte) As Byte
+Function GetPlayerPK(ByVal Index As Long) As Long
     GetPlayerPK = Player(Index).Char(Player(Index).CharNum).PK
 End Function
 
-Sub SetPlayerPK(ByVal Index As Byte, ByVal PK As Byte)
+Sub SetPlayerPK(ByVal Index As Long, ByVal PK As Long)
     Player(Index).Char(Player(Index).CharNum).PK = PK
 End Sub
 
-Function GetPlayerHP(ByVal Index As Byte) As Long
+Function GetPlayerHP(ByVal Index As Long) As Long
     GetPlayerHP = Player(Index).Char(Player(Index).CharNum).HP
 End Function
 
-Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Long)
+Sub SetPlayerHP(ByVal Index As Long, ByVal HP As Long)
     Player(Index).Char(Player(Index).CharNum).HP = HP
     
     If GetPlayerHP(Index) > GetPlayerMaxHP(Index) Then Player(Index).Char(Player(Index).CharNum).HP = GetPlayerMaxHP(Index)
@@ -319,29 +319,29 @@ Sub SetPlayerHP(ByVal Index As Byte, ByVal HP As Long)
     Call SendStats(Index)
 End Sub
 
-Function GetPlayerMP(ByVal Index As Byte) As Long
+Function GetPlayerMP(ByVal Index As Long) As Long
     GetPlayerMP = Player(Index).Char(Player(Index).CharNum).MP
 End Function
 
-Sub SetPlayerMP(ByVal Index As Byte, ByVal MP As Long)
+Sub SetPlayerMP(ByVal Index As Long, ByVal MP As Long)
     Player(Index).Char(Player(Index).CharNum).MP = MP
 
     If GetPlayerMP(Index) > GetPlayerMaxMP(Index) Then Player(Index).Char(Player(Index).CharNum).MP = GetPlayerMaxMP(Index)
     If GetPlayerMP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).MP = 0
 End Sub
 
-Function GetPlayerSP(ByVal Index As Byte) As Long
+Function GetPlayerSP(ByVal Index As Long) As Long
     GetPlayerSP = Player(Index).Char(Player(Index).CharNum).SP
 End Function
 
-Sub SetPlayerSP(ByVal Index As Byte, ByVal SP As Long)
+Sub SetPlayerSP(ByVal Index As Long, ByVal SP As Long)
     Player(Index).Char(Player(Index).CharNum).SP = SP
 
     If GetPlayerSP(Index) > GetPlayerMaxSP(Index) Then Player(Index).Char(Player(Index).CharNum).SP = GetPlayerMaxSP(Index)
     If GetPlayerSP(Index) < 0 Then Player(Index).Char(Player(Index).CharNum).SP = 0
 End Sub
 
-Function GetPlayerMaxHP(ByVal Index As Byte) As Long
+Function GetPlayerMaxHP(ByVal Index As Long) As Long
 Dim CharNum As Long
 Dim i As Long
 Dim add As Long
@@ -356,7 +356,7 @@ add = 0
     GetPlayerMaxHP = (GetPlayerLevel(Index) * AddHP.Level) + (GetPlayerStr(Index) * AddHP.STR) + (GetPlayerDEF(Index) * AddHP.def) + (GetPlayerMAGI(Index) * AddHP.magi) + (GetPlayerSPEED(Index) * AddHP.Speed) + add
 End Function
 
-Function GetPlayerMaxMP(ByVal Index As Byte) As Long
+Function GetPlayerMaxMP(ByVal Index As Long) As Long
 Dim CharNum As Long
 Dim add As Long
 add = 0
@@ -370,7 +370,7 @@ add = 0
     GetPlayerMaxMP = (GetPlayerLevel(Index) * AddMP.Level) + (GetPlayerStr(Index) * AddMP.STR) + (GetPlayerDEF(Index) * AddMP.def) + (GetPlayerMAGI(Index) * AddMP.magi) + (GetPlayerSPEED(Index) * AddMP.Speed) + add
 End Function
 
-Function GetPlayerMaxSP(ByVal Index As Byte) As Long
+Function GetPlayerMaxSP(ByVal Index As Long) As Long
 Dim CharNum As Long
 Dim add As Long
 add = 0
@@ -396,175 +396,175 @@ Function GetClassMaxSP(ByVal ClassNum As Long) As Long
     GetClassMaxSP = (1 + Int(Classe(ClassNum).Speed / 2) + Classe(ClassNum).Speed) * 2
 End Function
 
-Function GetClassStr(ByVal ClassNum As Long) As Integer
+Function GetClassStr(ByVal ClassNum As Long) As Long
     GetClassStr = Classe(ClassNum).STR
 End Function
 
-Function GetClassDEF(ByVal ClassNum As Long) As Integer
+Function GetClassDEF(ByVal ClassNum As Long) As Long
     GetClassDEF = Classe(ClassNum).def
 End Function
 
-Function GetClassSPEED(ByVal ClassNum As Long) As Integer
+Function GetClassSPEED(ByVal ClassNum As Long) As Long
     GetClassSPEED = Classe(ClassNum).Speed
 End Function
 
-Function GetClassMAGI(ByVal ClassNum As Long) As Integer
+Function GetClassMAGI(ByVal ClassNum As Long) As Long
     GetClassMAGI = Classe(ClassNum).magi
 End Function
 
-Function GetPlayerStr(ByVal Index As Byte) As Integer
+Function GetPlayerStr(ByVal Index As Long) As Long
     GetPlayerStr = Player(Index).Char(Player(Index).CharNum).STR
 End Function
 
-Sub SetPlayerStr(ByVal Index As Byte, ByVal STR As Integer)
+Sub SetPlayerStr(ByVal Index As Long, ByVal STR As Long)
     Player(Index).Char(Player(Index).CharNum).STR = STR
 End Sub
 
-Function GetPlayerDEF(ByVal Index As Byte) As Integer
+Function GetPlayerDEF(ByVal Index As Long) As Long
     GetPlayerDEF = Player(Index).Char(Player(Index).CharNum).def
 End Function
 
-Sub SetPlayerDEF(ByVal Index As Byte, ByVal def As Integer)
+Sub SetPlayerDEF(ByVal Index As Long, ByVal def As Long)
     Player(Index).Char(Player(Index).CharNum).def = def
 End Sub
 
-Function GetPlayerSPEED(ByVal Index As Byte) As Integer
+Function GetPlayerSPEED(ByVal Index As Long) As Long
     GetPlayerSPEED = Player(Index).Char(Player(Index).CharNum).Speed
 End Function
 
-Sub SetPlayerSPEED(ByVal Index As Byte, ByVal Speed As Integer)
+Sub SetPlayerSPEED(ByVal Index As Long, ByVal Speed As Long)
     Player(Index).Char(Player(Index).CharNum).Speed = Speed
 End Sub
 
-Function GetPlayerMAGI(ByVal Index As Byte) As Integer
+Function GetPlayerMAGI(ByVal Index As Long) As Long
     GetPlayerMAGI = Player(Index).Char(Player(Index).CharNum).magi
 End Function
 
-Sub SetPlayerMAGI(ByVal Index As Byte, ByVal magi As Integer)
+Sub SetPlayerMAGI(ByVal Index As Long, ByVal magi As Long)
     Player(Index).Char(Player(Index).CharNum).magi = magi
 End Sub
 
-Function GetPlayerPOINTS(ByVal Index As Byte) As Integer
+Function GetPlayerPOINTS(ByVal Index As Long) As Long
     GetPlayerPOINTS = Player(Index).Char(Player(Index).CharNum).POINTS
 End Function
 
-Sub SetPlayerPOINTS(ByVal Index As Byte, ByVal POINTS As Integer)
+Sub SetPlayerPOINTS(ByVal Index As Long, ByVal POINTS As Long)
     Player(Index).Char(Player(Index).CharNum).POINTS = POINTS
 End Sub
 
-Function GetPlayerMap(ByVal Index As Byte) As Integer
+Function GetPlayerMap(ByVal Index As Long) As Long
     GetPlayerMap = Player(Index).Char(Player(Index).CharNum).Map
 End Function
 
-Sub SetPlayerMap(ByVal Index As Byte, ByVal MapNum As Integer)
+Sub SetPlayerMap(ByVal Index As Long, ByVal MapNum As Long)
     If MapNum > 0 And MapNum <= MAX_MAPS Then Player(Index).Char(Player(Index).CharNum).Map = MapNum
 End Sub
 
-Function GetPlayerX(ByVal Index As Byte) As Byte
-    GetPlayerX = Player(Index).Char(Player(Index).CharNum).X
+Function GetPlayerX(ByVal Index As Long) As Long
+    GetPlayerX = Player(Index).Char(Player(Index).CharNum).x
 End Function
 
-Sub SetPlayerX(ByVal Index As Byte, ByVal X As Byte)
-    Player(Index).Char(Player(Index).CharNum).X = X
+Sub SetPlayerX(ByVal Index As Long, ByVal x As Long)
+    Player(Index).Char(Player(Index).CharNum).x = x
 End Sub
 
-Function GetPlayerY(ByVal Index As Byte) As Byte
-    GetPlayerY = Player(Index).Char(Player(Index).CharNum).Y
+Function GetPlayerY(ByVal Index As Long) As Long
+    GetPlayerY = Player(Index).Char(Player(Index).CharNum).y
 End Function
 
-Sub SetPlayerY(ByVal Index As Byte, ByVal Y As Byte)
-    Player(Index).Char(Player(Index).CharNum).Y = Y
+Sub SetPlayerY(ByVal Index As Long, ByVal y As Long)
+    Player(Index).Char(Player(Index).CharNum).y = y
 End Sub
 
-Function GetPlayerSex(ByVal Index As Byte) As Byte
+Function GetPlayerSex(ByVal Index As Long) As Byte
     GetPlayerSex = Player(Index).Char(Player(Index).CharNum).Sex
 End Function
 
-Sub SetPlayerSex(ByVal Index As Byte, ByVal Sex As Byte)
+Sub SetPlayerSex(ByVal Index As Long, ByVal Sex As Byte)
     Player(Index).Char(Player(Index).CharNum).Sex = Sex
 End Sub
 
-Function GetPlayerDir(ByVal Index As Byte) As Byte
+Function GetPlayerDir(ByVal Index As Long) As Long
     GetPlayerDir = Player(Index).Char(Player(Index).CharNum).Dir
 End Function
 
-Sub SetPlayerDir(ByVal Index As Byte, ByVal Dir As Byte)
+Sub SetPlayerDir(ByVal Index As Long, ByVal Dir As Long)
     Player(Index).Char(Player(Index).CharNum).Dir = Dir
 End Sub
 
-Function GetPlayerIP(ByVal Index As Byte) As String
+Function GetPlayerIP(ByVal Index As Long) As String
     GetPlayerIP = frmServer.Socket(Index).RemoteHostIP
 End Function
 
-Function GetPlayerInvItemNum(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
+Function GetPlayerInvItemNum(ByVal Index As Long, ByVal InvSlot As Long) As Long
     GetPlayerInvItemNum = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Num
 End Function
 
-Sub SetPlayerInvItemNum(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemNum As Integer)
+Sub SetPlayerInvItemNum(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemNum As Long)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Num = ItemNum
 End Sub
 
-Function GetPlayerInvItemValue(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
+Function GetPlayerInvItemValue(ByVal Index As Long, ByVal InvSlot As Long) As Long
     GetPlayerInvItemValue = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).value
 End Function
 
-Sub SetPlayerInvItemValue(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemValue As Integer)
+Sub SetPlayerInvItemValue(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemValue As Long)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).value = ItemValue
 End Sub
 
-Function GetPlayerInvItemDur(ByVal Index As Byte, ByVal InvSlot As Byte) As Integer
+Function GetPlayerInvItemDur(ByVal Index As Long, ByVal InvSlot As Long) As Long
     GetPlayerInvItemDur = Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Dur
 End Function
 
-Sub SetPlayerInvItemDur(ByVal Index As Byte, ByVal InvSlot As Byte, ByVal ItemDur As Integer)
+Sub SetPlayerInvItemDur(ByVal Index As Long, ByVal InvSlot As Long, ByVal ItemDur As Long)
     Player(Index).Char(Player(Index).CharNum).Inv(InvSlot).Dur = ItemDur
 End Sub
 
-Function GetPlayerSpell(ByVal Index As Byte, ByVal SpellSlot As Byte) As Integer
+Function GetPlayerSpell(ByVal Index As Long, ByVal SpellSlot As Long) As Long
     GetPlayerSpell = Player(Index).Char(Player(Index).CharNum).Spell(SpellSlot)
 End Function
 
-Sub SetPlayerSpell(ByVal Index As Byte, ByVal SpellSlot As Byte, ByVal SpellNum As Integer)
+Sub SetPlayerSpell(ByVal Index As Long, ByVal SpellSlot As Long, ByVal SpellNum As Long)
     Player(Index).Char(Player(Index).CharNum).Spell(SpellSlot) = SpellNum
 End Sub
 
-Function GetPlayerArmorSlot(ByVal Index As Byte) As Byte
+Function GetPlayerArmorSlot(ByVal Index As Long) As Long
     GetPlayerArmorSlot = Player(Index).Char(Player(Index).CharNum).ArmorSlot
 End Function
 
-Sub SetPlayerArmorSlot(ByVal Index As Byte, ByVal InvNum As Byte)
+Sub SetPlayerArmorSlot(ByVal Index As Long, InvNum As Long)
     Player(Index).Char(Player(Index).CharNum).ArmorSlot = InvNum
 End Sub
 
-Function GetPlayerWeaponSlot(ByVal Index As Byte) As Byte
+Function GetPlayerWeaponSlot(ByVal Index As Long) As Long
     GetPlayerWeaponSlot = Player(Index).Char(Player(Index).CharNum).WeaponSlot
 End Function
 
-Sub SetPlayerWeaponSlot(ByVal Index As Byte, ByVal InvNum As Byte)
+Sub SetPlayerWeaponSlot(ByVal Index As Long, InvNum As Long)
     Player(Index).Char(Player(Index).CharNum).WeaponSlot = InvNum
 End Sub
 
-Function GetPlayerHelmetSlot(ByVal Index As Byte) As Byte
+Function GetPlayerHelmetSlot(ByVal Index As Long) As Long
     GetPlayerHelmetSlot = Player(Index).Char(Player(Index).CharNum).HelmetSlot
 End Function
 
-Sub SetPlayerHelmetSlot(ByVal Index As Byte, ByVal InvNum As Byte)
+Sub SetPlayerHelmetSlot(ByVal Index As Long, InvNum As Long)
     Player(Index).Char(Player(Index).CharNum).HelmetSlot = InvNum
 End Sub
 
-Function GetPlayerShieldSlot(ByVal Index As Byte) As Byte
+Function GetPlayerShieldSlot(ByVal Index As Long) As Long
     GetPlayerShieldSlot = Player(Index).Char(Player(Index).CharNum).ShieldSlot
 End Function
 
-Sub SetPlayerShieldSlot(ByVal Index As Byte, ByVal InvNum As Byte)
+Sub SetPlayerShieldSlot(ByVal Index As Long, InvNum As Long)
     Player(Index).Char(Player(Index).CharNum).ShieldSlot = InvNum
 End Sub
 
-Function GetBootMap(ByVal Index As Byte) As Integer
+Function GetBootMap(ByVal Index As Long) As Long
     GetBootMap = Map(GetPlayerMap(Index)).BootMap
 End Function
 
-Sub PlayerMapDropItem(ByVal Index As Byte, ByVal InvNum As Integer, ByVal Amount As Integer)
+Sub PlayerMapDropItem(ByVal Index As Long, ByVal InvNum As Long, ByVal Amount As Long)
 Dim i As Long
 
     ' Check for subscript out of range
@@ -596,8 +596,8 @@ Dim i As Long
             End Select
                                 
             MapItem(GetPlayerMap(Index), i).Num = GetPlayerInvItemNum(Index, InvNum)
-            MapItem(GetPlayerMap(Index), i).X = GetPlayerX(Index)
-            MapItem(GetPlayerMap(Index), i).Y = GetPlayerY(Index)
+            MapItem(GetPlayerMap(Index), i).x = GetPlayerX(Index)
+            MapItem(GetPlayerMap(Index), i).y = GetPlayerY(Index)
                         
             If item(GetPlayerInvItemNum(Index, InvNum)).type = ITEM_TYPE_CURRENCY Then
                 ' Check if its more then they have and if so drop it all
@@ -640,9 +640,9 @@ Dim i As Long
     End If
 End Sub
 
-Sub SpawnItemSlot(ByVal MapItemSlot As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal ItemDur As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
+Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal ItemDur As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
     
     ' Check for subscript out of range
     If MapItemSlot <= 0 Or MapItemSlot > MAX_MAP_ITEMS Or ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -663,24 +663,24 @@ Dim i As Byte
             MapItem(MapNum, i).Dur = 0
         End If
         
-        MapItem(MapNum, i).X = X
-        MapItem(MapNum, i).Y = Y
+        MapItem(MapNum, i).x = x
+        MapItem(MapNum, i).y = y
             
-        Packet = "SPAWNITEM" & SEP_CHAR & i & SEP_CHAR & ItemNum & SEP_CHAR & ItemVal & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & X & SEP_CHAR & Y & END_CHAR
+        Packet = "SPAWNITEM" & SEP_CHAR & i & SEP_CHAR & ItemNum & SEP_CHAR & ItemVal & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & x & SEP_CHAR & y & END_CHAR
         Call SendDataToMap(MapNum, Packet)
     End If
 End Sub
 
-Function IsConnected(ByVal Index As Byte) As Boolean
+Function IsConnected(ByVal Index As Long) As Boolean
     If frmServer.Socket(Index).State = sckConnected Then IsConnected = True Else IsConnected = False
 End Function
 
-Function IsPlaying(ByVal Index As Byte) As Boolean
+Function IsPlaying(ByVal Index As Long) As Boolean
     If Index < 1 Or Index > MAX_PLAYERS Then IsPlaying = False: Exit Function
     If IsConnected(Index) And Player(Index).InGame Then IsPlaying = True Else IsPlaying = False
 End Function
 
-Sub SendInventory(ByVal Index As Byte)
+Sub SendInventory(ByVal Index As Long)
 Dim Packet As String
 Dim i As Long
 
@@ -693,14 +693,14 @@ Dim i As Long
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendInventoryUpdate(ByVal Index As Byte, ByVal InvSlot As Byte)
+Sub SendInventoryUpdate(ByVal Index As Long, ByVal InvSlot As Long)
 Dim Packet As String
     
     Packet = "PLAYERINVUPDATE" & SEP_CHAR & InvSlot & SEP_CHAR & Index & SEP_CHAR & GetPlayerInvItemNum(Index, InvSlot) & SEP_CHAR & GetPlayerInvItemValue(Index, InvSlot) & SEP_CHAR & GetPlayerInvItemDur(Index, InvSlot) & SEP_CHAR & Index & END_CHAR
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendWornEquipment(ByVal Index As Byte)
+Sub SendWornEquipment(ByVal Index As Long)
 Dim Packet As String
     If IsPlaying(Index) Then
     'CODE ORIGINAL:
@@ -711,52 +711,56 @@ Dim Packet As String
     End If
 End Sub
 
-Sub SendHP(ByVal Index As Byte)
-Dim Packet As String, X As Byte
+Sub SendHP(ByVal Index As Long)
+Dim Packet As String, x As Byte
 
     Packet = "PLAYERHP" & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & GetPlayerHP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
     
     If Player(Index).InParty > 0 Then
-        For X = 1 To Party.MemberCount(Player(Index).InParty)
-            If Player(Index).PartyPlayer <> X Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, X), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
-        Next X
+        For x = 1 To Party.MemberCount(Player(Index).InParty)
+            If Player(Index).PartyPlayer <> x Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, x), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
+        Next x
     End If
     
     Packet = "PLAYERPOINTS" & SEP_CHAR & GetPlayerPOINTS(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMP(ByVal Index As Byte)
+Sub SendMP(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "PLAYERMP" & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & GetPlayerMP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendSP(ByVal Index As Byte)
+Sub SendSP(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "PLAYERSP" & SEP_CHAR & GetPlayerMaxSP(Index) & SEP_CHAR & GetPlayerSP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendStats(ByVal Index As Byte)
+Sub SendStats(ByVal Index As Long)
 Dim Packet As String
     
     Packet = "PLAYERSTATSPACKET" & SEP_CHAR & GetPlayerStr(Index) & SEP_CHAR & GetPlayerDEF(Index) & SEP_CHAR & GetPlayerSPEED(Index) & SEP_CHAR & GetPlayerMAGI(Index) & SEP_CHAR & GetPlayerNextLevel(Index) & SEP_CHAR & GetPlayerExp(Index) & SEP_CHAR & GetPlayerLevel(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub Prompt(ByVal Index As Byte, ByVal question As String, ByVal value As Long)
+Sub Flash(ByVal Index As Long, ByVal flashfile As String)
+    Call SendDataTo(Index, "flashevent" & SEP_CHAR & flashfile & END_CHAR)
+End Sub
+
+Sub Prompt(ByVal Index As Long, ByVal question As String, ByVal value As Long)
     Call SendDataTo(Index, "prompt" & SEP_CHAR & question & SEP_CHAR & value & END_CHAR)
 End Sub
 
-Sub PlaySound(ByVal Index As Byte, ByVal Sound As String)
+Sub PlaySound(ByVal Index As Long, ByVal Sound As String)
     Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "soundattribute" & SEP_CHAR & Sound & END_CHAR)
 End Sub
 
-Sub SendPlayerData(ByVal Index As Byte)
+Sub SendPlayerData(ByVal Index As Long)
 Dim Packet As String
 
     ' Send index's player data to everyone including himself on th emap
@@ -779,7 +783,7 @@ Dim Packet As String
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendPlayerQuete(ByVal Index As Byte)
+Sub SendPlayerQuete(ByVal Index As Long)
 Dim Packet As String
 Dim i As Long
 Packet = "PLAYERQUETE" & SEP_CHAR
@@ -799,7 +803,7 @@ Packet = Packet & END_CHAR
 Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendPlayerMetier(ByVal Index As Byte)
+Sub SendPlayerMetier(ByVal Index As Long)
 Dim Packet As String
 
     ' Send index's player data to everyone including himself on th emap
@@ -812,7 +816,7 @@ Dim Packet As String
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendDataTo(ByVal Index As Byte, ByVal data As String)
+Sub SendDataTo(ByVal Index As Long, ByVal data As String)
 Dim i As Long, n As Long, startc As Long
     If IsConnected(Index) Then frmServer.Socket(Index).SendData data: NewDoEvents
 End Sub
@@ -825,7 +829,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub SendDataToAllBut(ByVal Index As Byte, ByVal data As String)
+Sub SendDataToAllBut(ByVal Index As Long, ByVal data As String)
 Dim i As Long
 
     For i = 1 To MAX_PLAYERS
@@ -841,7 +845,7 @@ Dim i As Long
     Next i
 End Sub
 
-Sub SendDataToMapBut(ByVal Index As Byte, ByVal MapNum As Long, ByVal data As String)
+Sub SendDataToMapBut(ByVal Index As Long, ByVal MapNum As Long, ByVal data As String)
 Dim i As Long
 
     For i = 1 To MAX_PLAYERS
@@ -849,11 +853,11 @@ Dim i As Long
     Next i
 End Sub
 
-Sub SetPlayerName(ByVal Index As Byte, ByVal Name As String)
+Sub SetPlayerName(ByVal Index As Long, ByVal Name As String)
     Player(Index).Char(Player(Index).CharNum).Name = Name
 End Sub
 
-Function GetPlayerCharNum(ByVal Index As Byte) As Long
+Function GetPlayerCharNum(ByVal Index As Long) As Long
     GetPlayerCharNum = Player(Index).CharNum
 End Function
 
@@ -869,7 +873,7 @@ Sub SuppressionFTP(ByVal FTPURL As String, ByVal UTILISATEUR As String, ByVal md
     Call Supprimer(FTPURL, UTILISATEUR, mdp, FICHIERDISTANT, CHEMINDISTANT)
 End Sub
 
-Function FindPlayer(ByVal Name As String) As Byte
+Function FindPlayer(ByVal Name As String) As Long
 Dim i As Long
 
     For i = 1 To MAX_PLAYERS
@@ -882,7 +886,7 @@ Dim i As Long
     FindPlayer = 0
 End Function
 
-Function FindOpenInvSlot(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
+Function FindOpenInvSlot(ByVal Index As Long, ByVal ItemNum As Long) As Long
 Dim i As Long
     
     FindOpenInvSlot = 0
@@ -909,7 +913,7 @@ Dim i As Long
     Next i
 End Function
 
-Function FindOpenMapItemSlot(ByVal MapNum As Integer) As Byte
+Function FindOpenMapItemSlot(ByVal MapNum As Long) As Long
 Dim i As Long
 
     FindOpenMapItemSlot = 0
@@ -922,7 +926,7 @@ Dim i As Long
     Next i
 End Function
 
-Sub PlayerWarp(ByVal Index As Byte, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
+Sub PlayerWarp(ByVal Index As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
 Dim Packet As String
 Dim OldMap As Long
 
@@ -934,11 +938,11 @@ Dim OldMap As Long
     Call SendLeaveMap(Index, OldMap)
     
     Call SetPlayerMap(Index, MapNum)
-    Call SetPlayerX(Index, X)
-    Call SetPlayerY(Index, Y)
+    Call SetPlayerX(Index, x)
+    Call SetPlayerY(Index, y)
                 
     ' Now we check if there were any players left on the map the player just left, and if not stop processing npcs
-    If PlayerInMap(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
+    If GetTotalMapPlayers(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
         
     ' Sets it so we know to process npcs on the map
     PlayersOnMap(MapNum) = YES
@@ -1000,7 +1004,7 @@ Dim f As Long
     End If
 End Sub
 
-Sub HackingAttempt(ByVal Index As Byte, ByVal Reason As String)
+Sub HackingAttempt(ByVal Index As Long, ByVal Reason As String)
     If Index > 0 Then
         If IsPlaying(Index) Then Call GlobalMsg(GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " a été déconnecté pour : (" & Reason & ")", White)
         Call AlertMsg(Index, "Tu as perdu ta connexion avec " & GAME_NAME & "." & Reason)
@@ -1008,11 +1012,11 @@ Sub HackingAttempt(ByVal Index As Byte, ByVal Reason As String)
     End If
 End Sub
 
-Sub BattleMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Long, ByVal Side As Long)
+Sub BattleMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long, ByVal Side As Long)
     Call SendDataTo(Index, "damagedisplay" & SEP_CHAR & Side & SEP_CHAR & Msg & SEP_CHAR & Color & END_CHAR)
 End Sub
 
-Public Sub ContrOnOff(ByVal Index As Byte)
+Public Sub ContrOnOff(ByVal Index As Long)
 Dim Packet As String
 
 Packet = "CONOFF" & END_CHAR
@@ -1029,7 +1033,7 @@ Do Until Rand >= Low
 Loop
 End Function
 
-Sub SetPlayerGuild(ByVal Index As Byte, ByVal Guild As String)
+Sub SetPlayerGuild(ByVal Index As Long, ByVal Guild As String)
 Player(Index).Char(Player(Index).CharNum).Guild = Guild
 End Sub
 
@@ -1043,7 +1047,7 @@ Public Sub Attendre(ByVal temps As Long)
      Loop
 End Sub
 
-Sub KillPlayer(ByVal Index As Byte)
+Sub KillPlayer(ByVal Index As Long)
     Player(Index).Char(Player(Index).CharNum).HP = 0
     
     If GetPlayerHP(Index) > GetPlayerMaxHP(Index) Then Player(Index).Char(Player(Index).CharNum).HP = GetPlayerMaxHP(Index)
@@ -1094,7 +1098,7 @@ Public Sub NetObjsCartes()
     Call ClearMapItems
 End Sub
 
-Sub Lancer(ByVal Index As Byte, ByVal lien As String)
+Sub Lancer(ByVal Index As Long, ByVal lien As String)
 Dim Packet As String
     Packet = "LANCE" & SEP_CHAR & lien & END_CHAR
     Call SendDataTo(Index, Packet)
@@ -1126,7 +1130,7 @@ Do
 Loop Until n > 24
 End Sub
 
-Public Function GetPlayerQueteEtat(ByVal PIndex As Byte, ByVal qindex As Integer) As Boolean
+Public Function GetPlayerQueteEtat(ByVal PIndex As Long, ByVal qindex As Long) As Boolean
     GetPlayerQueteEtat = False
 
     If Player(PIndex).Char(Player(PIndex).CharNum).QueteStatut(qindex) = 2 Then
@@ -1136,7 +1140,7 @@ Public Function GetPlayerQueteEtat(ByVal PIndex As Byte, ByVal qindex As Integer
     End If
 End Function
 
-Function GetPlayerHPRegen(ByVal Index As Byte)
+Function GetPlayerHPRegen(ByVal Index As Long)
 Dim i As Long
     
     GetPlayerHPRegen = 0
@@ -1152,7 +1156,7 @@ Dim i As Long
     End If
 End Function
 
-Function GetPlayerMPRegen(ByVal Index As Byte)
+Function GetPlayerMPRegen(ByVal Index As Long)
 Dim i As Long
     
     GetPlayerMPRegen = 0
@@ -1168,7 +1172,7 @@ Dim i As Long
     End If
 End Function
 
-Function GetPlayerSPRegen(ByVal Index As Byte)
+Function GetPlayerSPRegen(ByVal Index As Long)
 Dim i As Long
     
     GetPlayerSPRegen = 0
@@ -1184,7 +1188,7 @@ Dim i As Long
     End If
 End Function
 
-Sub SuprObjet(ByVal Index As Byte, ByVal ItemNum As Integer)
+Sub SuprObjet(ByVal Index As Long, ByVal ItemNum As Long)
 Dim i As Long
 
 For i = 1 To MAX_INV
@@ -1202,7 +1206,7 @@ Next i
 
 End Sub
 
-Sub AjoutObjet(ByVal Index As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer)
+Sub AjoutObjet(ByVal Index As Long, ByVal ItemNum As Long, ByVal ItemVal As Long)
 Dim i As Long
 
 i = FindOpenInvSlot(Index, ItemNum)
@@ -1213,7 +1217,7 @@ If (item(ItemNum).type >= ITEM_TYPE_WEAPON) And (item(ItemNum).type <= ITEM_TYPE
 Call SendInventory(Index)
 End Sub
 
-Sub ChangeClasse(ByVal Index As Byte, ByVal Classes As Byte)
+Sub ChangeClasse(ByVal Index As Long, ByVal Classes As Long)
 
 If Val(Classes) < 0 Or Val(Classes) > Max_Classes Then Exit Sub
 
@@ -1249,20 +1253,20 @@ Call SendSP(Index)
 Call SendDataToMap(GetPlayerMap(Index), "checksprite" & SEP_CHAR & Index & SEP_CHAR & GetPlayerSprite(Index) & END_CHAR)
 End Sub
 
-Sub SauvJoueur(ByVal Index As Byte)
+Sub SauvJoueur(ByVal Index As Long)
     Call SavePlayer(Index)
 End Sub
 
-Function CibleJoueur(ByVal Index As Byte) As Byte
+Function CibleJoueur(ByVal Index As Long) As Long
 CibleJoueur = Player(Index).Target
 End Function
 
-Function TypeCibleJoueur(ByVal Index As Byte) As Byte
+Function TypeCibleJoueur(ByVal Index As Long) As Byte
 TypeCibleJoueur = Player(Index).TargetType
 End Function
 
-Function ASort(ByVal Index As Byte, ByVal SpellNum As Integer) As Integer
-Dim i As Integer
+Function ASort(ByVal Index As Long, ByVal SpellNum As Long) As Long
+Dim i As Long
 
     ASort = 0
     
@@ -1271,8 +1275,8 @@ Dim i As Integer
     Next i
 End Function
 
-Function AObjet(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
-Dim i As Byte
+Function AObjet(ByVal Index As Long, ByVal ItemNum As Long) As Long
+Dim i As Long
     
     AObjet = 0
     
@@ -1288,8 +1292,8 @@ Dim i As Byte
     Next i
 End Function
 
-Sub AppObjet(ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
-Dim i As Integer
+Sub AppObjet(ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
+Dim i As Long
 
     ' Check for subscript out of range
     If ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -1297,10 +1301,10 @@ Dim i As Integer
     ' Find open map item slot
     i = FindOpenMapItemSlot(MapNum)
     
-    Call SpawnItemSlot(i, ItemNum, ItemVal, item(ItemNum).data1, MapNum, X, Y)
+    Call SpawnItemSlot(i, ItemNum, ItemVal, item(ItemNum).data1, MapNum, x, y)
 End Sub
 
-Sub Bloque(ByVal Index As Byte)
+Sub Bloque(ByVal Index As Long)
 If GetPlayerDir(Index) = DIR_UP Then
     Call SetPlayerY(Index, GetPlayerY(Index) + 1)
 ElseIf GetPlayerDir(Index) = DIR_DOWN Then
@@ -1346,16 +1350,16 @@ Function GetTime() As Byte
     GetTime = GameTime
 End Function
 
-Function GetCaseBloque(ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte) As Boolean
+Function GetCaseBloque(ByVal M As Long, ByVal x As Long, ByVal y As Long) As Boolean
     GetCaseBloque = False
     
-    If Map(MapNum).Tile(X, Y).type = TILE_TYPE_CBLOCK Then
+    If Map(M).Tile(x, y).type = TILE_TYPE_CBLOCK Then
         GetCaseBloque = True
     End If
     
 End Function
 
-Public Sub PlayerAnimStart(ByVal Index As Byte, ByVal Anim As Long)
+Public Sub PlayerAnimStart(ByVal Index As Long, ByVal Anim As Long)
 Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub
@@ -1365,7 +1369,7 @@ Dim Packet As String
     Call SendDataToAll(Packet)
 End Sub
 
-Public Sub PlayerAnimStop(ByVal Index As Byte)
+Public Sub PlayerAnimStop(ByVal Index As Long)
 Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub
@@ -1375,7 +1379,7 @@ Dim Packet As String
     Call SendDataToAll(Packet)
 End Sub
 
-Public Sub PlayerAnim(ByVal Index As Byte, ByVal Anim As Long, ByVal ms As Long)
+Public Sub PlayerAnim(ByVal Index As Long, ByVal Anim As Long, ByVal ms As Long)
 Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub
@@ -1385,7 +1389,7 @@ Dim Packet As String
     Call SendDataToAll(Packet)
 End Sub
 
-Public Sub PlayerAnimRetour(ByVal Index As Byte, ByVal Anim As Long, ByVal ms As Long, ByVal script As Long)
+Public Sub PlayerAnimRetour(ByVal Index As Long, ByVal Anim As Long, ByVal ms As Long, ByVal script As Long)
 Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub

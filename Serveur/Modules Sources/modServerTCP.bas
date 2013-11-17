@@ -2,9 +2,25 @@ Attribute VB_Name = "modServerTCP"
 Option Explicit
 'Affichage de petits détails
 Sub UpdateCaption()
+
+Dim ReturnedHTML As String, sIp As Long, sStop As Long, affIP As String
+    ReturnedHTML = SendAPIRequest("http://checkip.dyndns.org/")
+    sIp = InStr(ReturnedHTML, "Address: ") + 9
+    If InStr(sIp, ReturnedHTML, ",") > 0 Then
+        sStop = InStr(sIp, ReturnedHTML, ",")
+    Else
+        sStop = InStr(sIp, ReturnedHTML, "<")
+    End If
+    If sStop > 0 Then
+        affIP = Mid(ReturnedHTML, sIp, sStop - sIp)
+    Else
+        affIP = "0.0.0.0"
+    End If
+    
 With frmServer
     .Caption = GAME_NAME & " - FRoG Serveur 0.6.3"
-    .lblIP.Caption = "Adresse IP : " & SendAPIRequest("http://www.frogcreator.fr/update/getIP.php")
+    .lblIP.Caption = "Adresse IP : " & affIP
+    '.lblIP.Caption = frmServer.lblIP & " (Local : " & frmServer.Socket(0).LocalIP & ")"
     .lblPort.Caption = "Port : " & STR$(frmServer.Socket(0).LocalPort)
     .TPO.Caption = "Nombre de joueurs en ligne : " & TotalOnlinePlayers
     .lblgamename.Caption = "Jeu : " & GAME_NAME
@@ -19,7 +35,7 @@ With frmServer
 End With
 End Sub
 
-Function IsConnected(ByVal Index As Byte) As Boolean
+Function IsConnected(ByVal Index As Long) As Boolean
     On Error GoTo er:
     If frmServer.Socket(Index).State = sckConnected Then IsConnected = True Else IsConnected = False
     Exit Function
@@ -27,17 +43,17 @@ er:
     IsConnected = False
 End Function
 
-Function IsPlaying(ByVal Index As Byte) As Boolean
+Function IsPlaying(ByVal Index As Long) As Boolean
     If Index <= 0 Or Index > MAX_PLAYERS Then IsPlaying = False: Exit Function
     If IsConnected(Index) And Player(Index).InGame = True Then IsPlaying = True Else IsPlaying = False
 End Function
 
-Function IsLoggedIn(ByVal Index As Byte) As Boolean
+Function IsLoggedIn(ByVal Index As Long) As Boolean
     If IsConnected(Index) And Trim$(Player(Index).Login) <> vbNullString Then IsLoggedIn = True Else IsLoggedIn = False
 End Function
 'Multicompte
 Function IsMultiAccounts(ByVal Login As String) As Boolean
-Dim i As Byte
+Dim i As Long
 
     IsMultiAccounts = False
     For i = 1 To MAX_PLAYERS
@@ -49,8 +65,8 @@ Dim i As Byte
 End Function
 'IP multiples
 Function IsMultiIPOnline(ByVal IP As String) As Boolean
-Dim i As Byte
-Dim n As Byte
+Dim i As Long
+Dim n As Long
 
     n = 0
     IsMultiIPOnline = False
@@ -99,59 +115,60 @@ On Error Resume Next
     Close #f
 End Function
 
-Sub SendDataTo(ByVal Index As Byte, ByVal data As String)
-    On Error Resume Next
+Sub SendDataTo(ByVal Index As Long, ByVal data As String)
+Dim i As Long, n As Long, startc As Long
+On Error Resume Next
+
     If IsConnected(Index) Then frmServer.Socket(Index).SendData data: NewDoEvents
 End Sub
 
 Sub SendDataToAll(ByVal data As String)
-    Dim i As Byte
-    On Error Resume Next
+Dim i As Long
+On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then Call SendDataTo(i, data)
     Next i
 End Sub
 
-Sub SendDataToAllBut(ByVal Index As Byte, ByVal data As String)
-    Dim i As Byte
-    On Error Resume Next
+Sub SendDataToAllBut(ByVal Index As Long, ByVal data As String)
+Dim i As Long
+On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) And i <> Index Then Call SendDataTo(i, data)
     Next i
 End Sub
 
-Sub SendDataToMap(ByVal MapNum As Integer, ByVal data As String)
-    Dim i As Byte
-    On Error Resume Next
+Sub SendDataToMap(ByVal MapNum As Long, ByVal data As String)
+Dim i As Long
+On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then If GetPlayerMap(i) = MapNum Then Call SendDataTo(i, data)
     Next i
 End Sub
 
-Sub SendDataToMapBut(ByVal Index As Byte, ByVal MapNum As Integer, ByVal data As String)
-    Dim i As Byte
-    On Error Resume Next
+Sub SendDataToMapBut(ByVal Index As Long, ByVal MapNum As Long, ByVal data As String)
+Dim i As Long
+On Error Resume Next
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then If GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, data)
     Next i
 End Sub
-
 'Message global
-Sub GlobalMsg(ByVal Msg As String, ByVal Color As Byte)
-    Dim Packet As String
+Sub GlobalMsg(ByVal Msg As String, ByVal Color As Long)
+Dim Packet As String
 
     Packet = "GLOBALMSG" & SEP_CHAR & Msg & SEP_CHAR & Color & END_CHAR
     
     Call SendDataToAll(Packet)
 End Sub
 'Message admin
-Sub AdminMsg(ByVal Msg As String, ByVal Color As Byte)
-    Dim Packet As String
-    Dim i As Byte
+Sub AdminMsg(ByVal Msg As String, ByVal Color As Long)
+Dim Packet As String
+Dim i As Long
 
     Packet = "ADMINMSG" & SEP_CHAR & Msg & SEP_CHAR & Color & END_CHAR
     For i = 1 To MAX_PLAYERS
@@ -159,8 +176,8 @@ Sub AdminMsg(ByVal Msg As String, ByVal Color As Byte)
     Next i
 End Sub
 'Message privé
-Sub PlayerMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Byte)
-    Dim Packet As String
+Sub PlayerMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long)
+Dim Packet As String
 
     If Not IsPlaying(Index) Then Exit Sub
 
@@ -169,7 +186,7 @@ Sub PlayerMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Color As Byte)
     Call SendDataTo(Index, Packet)
 End Sub
 'Message de guilde
-Sub GuildeMsg(ByVal Index As Byte, ByVal Msg As String)
+Sub GuildeMsg(ByVal Index As Long, ByVal Msg As String)
     Dim i As Long
     Dim s As String
     
@@ -184,27 +201,27 @@ Sub GuildeMsg(ByVal Index As Byte, ByVal Msg As String)
         If GetPlayerGuild(Index) = GetPlayerGuild(i) Then Call PlayerMsg(i, s, CouleurDesGuilde)
     Next i
 End Sub
-'Message de quête
-Public Sub QueteMsg(ByVal Index As Byte, ByVal Msg As String)
-    Dim Packet As String
 
-    If Mid(Msg, 1, 2) = "**" Then Msg = Mid(Msg, InStr(1, Msg, ":"))
-    Packet = "QMSG" & SEP_CHAR & Msg & END_CHAR
+Public Sub QueteMsg(ByVal Index As Long, ByVal Msg As String)
+Dim Packet As String
 
-    Call SendDataTo(Index, Packet)
+If Mid(Msg, 1, 2) = "**" Then Msg = Mid(Msg, InStr(1, Msg, ":"))
+Packet = "QMSG" & SEP_CHAR & Msg & END_CHAR
+
+Call SendDataTo(Index, Packet)
 End Sub
-'Message sur une map
-Sub MapMsg(ByVal MapNum As Integer, ByVal Msg As String, ByVal Color As Byte)
-    Dim Packet As String
-    Dim text As String
+
+Sub MapMsg(ByVal MapNum As Long, ByVal Msg As String, ByVal Color As Long)
+Dim Packet As String
+Dim text As String
 
     Packet = "MAPMSG" & SEP_CHAR & Msg & SEP_CHAR & Color & END_CHAR
     
     Call SendDataToMap(MapNum, Packet)
 End Sub
-'Message d'alerte
-Sub AlertMsg(ByVal Index As Byte, ByVal Msg As String)
-    Dim Packet As String
+'Message d'alertes
+Sub AlertMsg(ByVal Index As Long, ByVal Msg As String)
+Dim Packet As String
 
     Packet = "ALERTMSG" & SEP_CHAR & Msg & END_CHAR
     
@@ -217,7 +234,7 @@ Sub AlertMsg(ByVal Index As Byte, ByVal Msg As String)
     End If
 End Sub
 
-Sub PlainMsg(ByVal Index As Byte, ByVal Msg As String, ByVal Num As Byte)
+Sub PlainMsg(ByVal Index As Long, ByVal Msg As String, ByVal Num As Long)
 Dim Packet As String
 
     Packet = "PLAINMSG" & SEP_CHAR & Msg & SEP_CHAR & Num & END_CHAR
@@ -225,7 +242,7 @@ Dim Packet As String
     Call SendDataTo(Index, Packet)
 End Sub
 ' En cas de hack
-Sub HackingAttempt(ByVal Index As Byte, ByVal Reason As String)
+Sub HackingAttempt(ByVal Index As Long, ByVal Reason As String)
     On Error Resume Next
     If Index > 0 And Index < MAX_PLAYERS Then
         If IsPlaying(Index) Then
@@ -238,9 +255,9 @@ Sub HackingAttempt(ByVal Index As Byte, ByVal Reason As String)
     Exit Sub
 End Sub
 
-Sub AcceptConnection(ByVal Index As Byte, ByVal SocketId As Long)
-    Dim i As Byte
-    On Error Resume Next
+Sub AcceptConnection(ByVal Index As Long, ByVal SocketId As Long)
+Dim i As Long
+On Error Resume Next
     If (Index = 0) Then
         i = FindOpenPlayerSlot
         
@@ -252,7 +269,7 @@ Sub AcceptConnection(ByVal Index As Byte, ByVal SocketId As Long)
     End If
 End Sub
 
-Sub SocketConnected(ByVal Index As Byte)
+Sub SocketConnected(ByVal Index As Long)
     On Error Resume Next
     If Index <> 0 Then
         ' Tentative de connexion multiple ?
@@ -269,7 +286,7 @@ Sub SocketConnected(ByVal Index As Byte)
     End If
 End Sub
 
-Sub IncomingData(ByVal Index As Byte, ByVal DataLength As Long)
+Sub IncomingData(ByVal Index As Long, ByVal DataLength As Long)
 Dim Buffer As String
 Dim Packet As String
 Dim Top As String * 3
@@ -294,15 +311,16 @@ Dim Start As Long
             Start = InStr(Player(Index).Buffer, END_CHAR)
             If Len(Packet) > 0 Then
                 If Not IsPlaying(Index) Then
-                    ' Traitement des paquets d'un joueur hors du jeu (ex : connexion)
+                    ' Parse's Without Being Online
                     Call HandleLoginData(Index, Packet)
                 Else
-                    ' Traitement des paquets d'un joueur dans le jeu (ex : déplacement)
+                    ' Parse's With Being Online And Playing
                     Call HandleData(Index, Packet)
                 End If
             End If
         Loop
                 
+        ' Not useful
         ' Check if elapsed time has passed
         Player(Index).DataBytes = Player(Index).DataBytes + DataLength
         If GetTickCount >= Player(Index).DataTimer + 1000 Then
@@ -326,14 +344,14 @@ Dim Start As Long
     End If
 End Sub
 
-Sub HandleLoginData(ByVal Index As Byte, ByVal data As String)
+Sub HandleLoginData(ByVal Index As Long, ByVal data As String)
 Dim Parse() As String
 Dim Name As String
 Dim Password As String
-Dim Sex As Byte
-Dim Class As Byte
-Dim CharNum As Byte
-Dim i As Byte, n As Integer, f As Integer
+Dim Sex As Long
+Dim Class As Long
+Dim CharNum As Long
+Dim i As Integer, n As Integer, f As Integer
     On Error GoTo er:
     
     Player(Index).sync = True
@@ -410,7 +428,7 @@ Dim i As Byte, n As Integer, f As Integer
     
         Case "usagakarim"
                 
-                If Not FileExist("\Comptes\" & Trim$(Player(Index).Login) & ".ini") Then
+                If Not FileExist("\accounts\" & Trim$(Player(Index).Login) & ".ini") Then
                 Call HackingAttempt(Index, "Erreur : Vous avez tenté de surcharger le serveur")
                 Exit Sub
                 End If
@@ -441,7 +459,7 @@ Dim i As Byte, n As Integer, f As Integer
                     Call UpdateCaption
                     If Not FindChar(GetPlayerName(Index)) Then
                         f = FreeFile
-                        Open App.Path & "\Comptes\charlist.txt" For Append As #f
+                        Open App.Path & "\accounts\charlist.txt" For Append As #f
                             Print #f, GetPlayerName(Index)
                         Close #f
                     End If
@@ -464,7 +482,7 @@ Dim i As Byte, n As Integer, f As Integer
                     End If
                 Next i
                 
-                If Not FileExist("\Comptes\" & Trim$(Player(Index).Login) & ".ini") Then
+                If Not FileExist("\accounts\" & Trim$(Player(Index).Login) & ".ini") Then
                 Call HackingAttempt(Index, "Erreur : Vous avez tenté de surcharger le serveur")
                 Exit Sub
                 End If
@@ -541,7 +559,7 @@ Dim i As Byte, n As Integer, f As Integer
                 Next i
                 Call ClearPlayer(Index)
                 
-                Call Kill(App.Path & "\Comptes\" & Trim$(Name) & ".ini")
+                Call Kill(App.Path & "\accounts\" & Trim$(Name) & ".ini")
                 Call AddLog("Account " & Trim$(Name) & " a été effacé.", PLAYER_LOG)
                 Call PlainMsg(Index, "Votre compte a été effacé.", 2)
                 If IBJoueur Then Call IBMsg("Un joueur a éffacé son compte nommé " & Name, IBCJoueur)
@@ -580,37 +598,41 @@ If IBErr Then Call IBMsg("Un erreur s'est produite dans la réception du serveur.
 If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoi, merci de relancer le jeu.", 3)
 End Sub
 
-Sub HandleData(ByVal Index As Byte, ByVal data As String)
+Sub HandleData(ByVal Index As Long, ByVal data As String)
 Dim Parse() As String
 Dim Packs As String
 Dim Name As String
-Dim CharNum As Byte
+Dim CharNum As Integer
 Dim Msg As String
 Dim IPMask As String
+Dim BanSlot As Long
 Dim MsgTo As Long
-Dim Dir As Byte
-Dim InvNum As Byte
-Dim Amount As Integer
-Dim Damage As Integer
-Dim PointType As Integer
-Dim Movement As Byte
-Dim i As Byte, n As Integer, X As Byte, Y As Byte, f As Long
-Dim MapNum As Integer
+Dim Dir As Long
+Dim InvNum As Long
+Dim Amount As Long
+Dim Damage As Long
+Dim PointType As Long
+Dim BanPlayer As Long
+Dim Movement As Long
+Dim i As Long, n As Long, x As Long, y As Long, f As Long
+Dim MapNum As Long
 Dim s As String
-Dim ShopNum As Integer, ItemNum As Integer
-Dim DurNeeded As Integer, GoldNeeded As Integer
+Dim tMapStart As Long, tMapEnd As Long
+Dim ShopNum As Long, ItemNum As Long
+Dim DurNeeded As Long, GoldNeeded As Long
 Dim z As Long
 Dim Packet As String
-Dim SlotC As Byte
-Dim Islot As Byte
-Dim Cnum As Integer
-Dim Cval As Integer
-Dim Cdur As Integer
-Dim SlotI As Byte
-Dim Cslot As Byte
-Dim INum As Integer
-Dim IVal As Integer
-Dim IDur As Integer
+Dim BX As Long, BY As Long
+Dim SlotC As Long
+Dim Islot As Long
+Dim Cnum As Long
+Dim Cval As Long
+Dim Cdur As Long
+Dim SlotI As Long
+Dim Cslot As Long
+Dim INum As Long
+Dim IVal As Long
+Dim IDur As Long
 Dim PChar As String * 1
 
 On Error GoTo er:
@@ -646,9 +668,9 @@ Player(Index).sync = True
                     Packet = "DATACOFR"
                     
                     For cof = 1 To 30
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & cof)
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & cof)
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & cof)
                     Next cof
                     
                     Packet = Packet & END_CHAR
@@ -667,7 +689,7 @@ Player(Index).sync = True
                     End If
                     Exit Sub
                     
-                Case "checkarrows"
+                                Case "checkarrows"
                     n = Arrows(Val(Parse(1))).Pic
                     Call SendDataToMap(GetPlayerMap(Index), "checkarrows" & SEP_CHAR & Index & SEP_CHAR & n & END_CHAR)
                     Exit Sub
@@ -866,8 +888,8 @@ Player(Index).sync = True
                             Call PlayerMsg(Index, "Niveau : " & GetPlayerLevel(i) & "  Exp : " & GetPlayerExp(i) & "/" & GetPlayerNextLevel(i), BrightGreen)
                             Call PlayerMsg(Index, "PV : " & GetPlayerHP(i) & "/" & GetPlayerMaxHP(i) & "  PM : " & GetPlayerMP(i) & "/" & GetPlayerMaxMP(i) & "  SP : " & GetPlayerSP(i) & "/" & GetPlayerMaxSP(i), BrightGreen)
                             Call PlayerMsg(Index, "FOR : " & GetPlayerStr(i) & "  DEF : " & GetPlayerDEF(i) & "  MAGIE : " & GetPlayerMAGI(i) & "  VIT : " & GetPlayerSPEED(i), BrightGreen)
-                            n = ((GetPlayerStr(i) + GetPlayerLevel(i)) \ 2)
-                            i = ((GetPlayerDEF(i) + GetPlayerLevel(i)) \ 2)
+                            n = (GetPlayerStr(i) \ 2) + (GetPlayerLevel(i) \ 2)
+                            i = (GetPlayerDEF(i) \ 2) + (GetPlayerLevel(i) \ 2)
                             z = Int(GetPlayerSPEED(Index) * 0.576)
                             If n > 100 Then n = 100
                             If i > 100 Then i = 100
@@ -962,8 +984,8 @@ Player(Index).sync = True
                     ' The player was able, from a 3rd party program, to send a packet arrowhit and kill peaple without a bow
                     n = Val(Parse(1))
                     z = Val(Parse(2))
-                    X = Val(Parse(3))
-                    Y = Val(Parse(4))
+                    x = Val(Parse(3))
+                    y = Val(Parse(4))
                     
                     If GetPlayerWeaponSlot(Index) <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'équipé", BrightRed): Exit Sub
                     If item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).data3 <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'équipé", BrightRed): Exit Sub
@@ -1159,7 +1181,7 @@ Player(Index).sync = True
                     If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     ' Clear out it all
                     For i = 1 To MAX_MAP_ITEMS
-                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
+                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
                         Call ClearMapItem(i, GetPlayerMap(Index))
                     Next i
                     ' Respawn
@@ -1218,71 +1240,71 @@ Player(Index).sync = True
                      Map(MapNum).Indoors = Val(Parse(n + 12))
                      n = n + 13
                      
-                     For Y = 0 To MAX_MAPY
-                         For X = 0 To MAX_MAPX
-                             Map(MapNum).Tile(X, Y).Ground = Val(Parse(n))
-                             Map(MapNum).Tile(X, Y).Mask = Val(Parse(n + 1))
-                             Map(MapNum).Tile(X, Y).Anim = Val(Parse(n + 2))
-                             Map(MapNum).Tile(X, Y).Mask2 = Val(Parse(n + 3))
-                             Map(MapNum).Tile(X, Y).M2Anim = Val(Parse(n + 4))
-                             Map(MapNum).Tile(X, Y).Mask3 = Val(Parse(n + 32)) '<--
-                             Map(MapNum).Tile(X, Y).M3Anim = Val(Parse(n + 30)) '<--
-                             Map(MapNum).Tile(X, Y).Fringe = Val(Parse(n + 5))
-                             Map(MapNum).Tile(X, Y).FAnim = Val(Parse(n + 6))
-                             Map(MapNum).Tile(X, Y).Fringe2 = Val(Parse(n + 7))
-                             Map(MapNum).Tile(X, Y).F2Anim = Val(Parse(n + 8))
-                             Map(MapNum).Tile(X, Y).Fringe3 = Val(Parse(n + 26)) '<--
-                             Map(MapNum).Tile(X, Y).F3Anim = Val(Parse(n + 27)) '<--
-                             Map(MapNum).Tile(X, Y).type = Val(Parse(n + 9))
-                             Map(MapNum).Tile(X, Y).data1 = Val(Parse(n + 10))
-                             Map(MapNum).Tile(X, Y).data2 = Val(Parse(n + 11))
-                             Map(MapNum).Tile(X, Y).data3 = Val(Parse(n + 12))
-                             Map(MapNum).Tile(X, Y).String1 = Parse(n + 13)
-                             Map(MapNum).Tile(X, Y).String2 = Parse(n + 14)
-                             Map(MapNum).Tile(X, Y).String3 = Parse(n + 15)
-                             Map(MapNum).Tile(X, Y).Light = Val(Parse(n + 16))
-                             Map(MapNum).Tile(X, Y).GroundSet = Val(Parse(n + 17))
-                             Map(MapNum).Tile(X, Y).MaskSet = Val(Parse(n + 18))
-                             Map(MapNum).Tile(X, Y).AnimSet = Val(Parse(n + 19))
-                             Map(MapNum).Tile(X, Y).Mask2Set = Val(Parse(n + 20))
-                             Map(MapNum).Tile(X, Y).M2AnimSet = Val(Parse(n + 21))
-                             Map(MapNum).Tile(X, Y).Mask3Set = Val(Parse(n + 33)) '<--
-                             Map(MapNum).Tile(X, Y).M3AnimSet = Val(Parse(n + 31)) '<--
-                             Map(MapNum).Tile(X, Y).FringeSet = Val(Parse(n + 22))
-                             Map(MapNum).Tile(X, Y).FAnimSet = Val(Parse(n + 23))
-                             Map(MapNum).Tile(X, Y).Fringe2Set = Val(Parse(n + 24))
-                             Map(MapNum).Tile(X, Y).F2AnimSet = Val(Parse(n + 25))
-                             Map(MapNum).Tile(X, Y).Fringe3Set = Val(Parse(n + 28)) '<--
-                             Map(MapNum).Tile(X, Y).F3AnimSet = Val(Parse(n + 29)) '<--
+                     For y = 0 To MAX_MAPY
+                         For x = 0 To MAX_MAPX
+                             Map(MapNum).Tile(x, y).Ground = Val(Parse(n))
+                             Map(MapNum).Tile(x, y).Mask = Val(Parse(n + 1))
+                             Map(MapNum).Tile(x, y).Anim = Val(Parse(n + 2))
+                             Map(MapNum).Tile(x, y).Mask2 = Val(Parse(n + 3))
+                             Map(MapNum).Tile(x, y).M2Anim = Val(Parse(n + 4))
+                             Map(MapNum).Tile(x, y).Mask3 = Val(Parse(n + 32)) '<--
+                             Map(MapNum).Tile(x, y).M3Anim = Val(Parse(n + 30)) '<--
+                             Map(MapNum).Tile(x, y).Fringe = Val(Parse(n + 5))
+                             Map(MapNum).Tile(x, y).FAnim = Val(Parse(n + 6))
+                             Map(MapNum).Tile(x, y).Fringe2 = Val(Parse(n + 7))
+                             Map(MapNum).Tile(x, y).F2Anim = Val(Parse(n + 8))
+                             Map(MapNum).Tile(x, y).Fringe3 = Val(Parse(n + 26)) '<--
+                             Map(MapNum).Tile(x, y).F3Anim = Val(Parse(n + 27)) '<--
+                             Map(MapNum).Tile(x, y).type = Val(Parse(n + 9))
+                             Map(MapNum).Tile(x, y).data1 = Val(Parse(n + 10))
+                             Map(MapNum).Tile(x, y).data2 = Val(Parse(n + 11))
+                             Map(MapNum).Tile(x, y).data3 = Val(Parse(n + 12))
+                             Map(MapNum).Tile(x, y).String1 = Parse(n + 13)
+                             Map(MapNum).Tile(x, y).String2 = Parse(n + 14)
+                             Map(MapNum).Tile(x, y).String3 = Parse(n + 15)
+                             Map(MapNum).Tile(x, y).Light = Val(Parse(n + 16))
+                             Map(MapNum).Tile(x, y).GroundSet = Val(Parse(n + 17))
+                             Map(MapNum).Tile(x, y).MaskSet = Val(Parse(n + 18))
+                             Map(MapNum).Tile(x, y).AnimSet = Val(Parse(n + 19))
+                             Map(MapNum).Tile(x, y).Mask2Set = Val(Parse(n + 20))
+                             Map(MapNum).Tile(x, y).M2AnimSet = Val(Parse(n + 21))
+                             Map(MapNum).Tile(x, y).Mask3Set = Val(Parse(n + 33)) '<--
+                             Map(MapNum).Tile(x, y).M3AnimSet = Val(Parse(n + 31)) '<--
+                             Map(MapNum).Tile(x, y).FringeSet = Val(Parse(n + 22))
+                             Map(MapNum).Tile(x, y).FAnimSet = Val(Parse(n + 23))
+                             Map(MapNum).Tile(x, y).Fringe2Set = Val(Parse(n + 24))
+                             Map(MapNum).Tile(x, y).F2AnimSet = Val(Parse(n + 25))
+                             Map(MapNum).Tile(x, y).Fringe3Set = Val(Parse(n + 28)) '<--
+                             Map(MapNum).Tile(x, y).F3AnimSet = Val(Parse(n + 29)) '<--
                              n = n + 34
-                         Next X
-                     Next Y
+                         Next x
+                     Next y
                     
-                     For X = 1 To MAX_MAP_NPCS
-                         Map(MapNum).Npc(X) = Val(Parse(n))
+                     For x = 1 To MAX_MAP_NPCS
+                         Map(MapNum).Npc(x) = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).X = Val(Parse(n))
+                         Map(MapNum).Npcs(x).x = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).Y = Val(Parse(n))
+                         Map(MapNum).Npcs(x).y = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).x1 = Val(Parse(n))
+                         Map(MapNum).Npcs(x).x1 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).y1 = Val(Parse(n))
+                         Map(MapNum).Npcs(x).y1 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).x2 = Val(Parse(n))
+                         Map(MapNum).Npcs(x).x2 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).y2 = Val(Parse(n))
+                         Map(MapNum).Npcs(x).y2 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).Hasardm = Val(Parse(n))
+                         Map(MapNum).Npcs(x).Hasardm = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).Hasardp = Val(Parse(n))
+                         Map(MapNum).Npcs(x).Hasardp = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).boucle = Val(Parse(n))
+                         Map(MapNum).Npcs(x).boucle = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(X).Imobile = Val(Parse(n))
+                         Map(MapNum).Npcs(x).Imobile = Val(Parse(n))
                          n = n + 1
-                         Call ClearMapNpc(X, MapNum)
-                     Next X
+                         Call ClearMapNpc(x, MapNum)
+                     Next x
                      Map(MapNum).PanoInf = Parse(n)
                      Map(MapNum).TranInf = Val(Parse(n + 1))
                      Map(MapNum).PanoSup = Parse(n + 2)
@@ -1296,7 +1318,7 @@ Player(Index).sync = True
                      
                      ' Clear out it all
                      For i = 1 To MAX_MAP_ITEMS
-                         Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
+                         Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
                          Call ClearMapItem(i, GetPlayerMap(Index))
                      Next i
                      
@@ -1346,7 +1368,7 @@ Player(Index).sync = True
                     
                     ' Clear out it all
                     For i = 1 To MAX_MAP_ITEMS
-                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
+                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
                         Call ClearMapItem(i, GetPlayerMap(Index))
                     Next i
                     
@@ -1404,13 +1426,13 @@ Player(Index).sync = True
                     If (Islot > 24 Or Islot < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (SlotC > 30 Or SlotC < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
                     If Cnum < 0 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC)) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC)) < Cval And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC)) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC)) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC)) < Cval And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC)) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                             
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
                     Exit Sub
                     
                 Case "mapreport"
@@ -1437,7 +1459,7 @@ Player(Index).sync = True
                     Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                     If AvMonture(Index) And Map(GetPlayerMap(Index)).Indoors >= 1 Then
                         Call SetPlayerArmorSlot(Index, 0)
-                        s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+                        s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
                         Call SetPlayerSprite(Index, s)
                         Call SendPlayerData(Index)
                         Call SendInventory(Index)
@@ -1464,16 +1486,16 @@ Player(Index).sync = True
                     Heur = Val(Hour(Dmod))
                     s = vbNullString
                                     
-                    If Val(Year(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) > Anne Then
+                    If Val(Year(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) > Anne Then
                         s = "yes"
-                    ElseIf Val(Year(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) = Anne Then
-                        If Val(Month(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) > Mois Then
+                    ElseIf Val(Year(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) = Anne Then
+                        If Val(Month(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) > Mois Then
                             s = "yes"
-                        ElseIf Val(Month(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) = Mois Then
-                            If Val(Day(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) > Jour Then
+                        ElseIf Val(Month(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) = Mois Then
+                            If Val(Day(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) > Jour Then
                                 s = "yes"
-                            ElseIf Val(Day(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) = Jour Then
-                                If Val(Hour(FileDateTime(App.Path & "\Maps\Map" & GetPlayerMap(Index) & ".fcc"))) > Heur Then
+                            ElseIf Val(Day(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) = Jour Then
+                                If Val(Hour(FileDateTime(App.Path & "\maps\map" & GetPlayerMap(Index) & ".fcc"))) > Heur Then
                                     s = "yes"
                                 Else
                                     s = vbNullString
@@ -1491,7 +1513,7 @@ Player(Index).sync = True
                     Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                     If AvMonture(Index) And Map(GetPlayerMap(Index)).Indoors >= 1 Then
                         Call SetPlayerArmorSlot(Index, 0)
-                        s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+                        s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
                         Call SetPlayerSprite(Index, s)
                         Call SendPlayerData(Index)
                         Call SendInventory(Index)
@@ -1509,7 +1531,7 @@ Player(Index).sync = True
                     If InvNum < 1 Or InvNum > MAX_INV Then Call HackingAttempt(Index, "Invalide InvNum"): Exit Sub
                             
                     ' Prevent hacking
-                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéro de personnage invalide."): Exit Sub
+                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéros de personnage invalide."): Exit Sub
                             
                     If (GetPlayerInvItemNum(Index, InvNum) > 0) And (GetPlayerInvItemNum(Index, InvNum) <= MAX_ITEMS) Then
                         n = item(GetPlayerInvItemNum(Index, InvNum)).data2
@@ -1575,7 +1597,7 @@ Player(Index).sync = True
                                         Exit Sub
                                     End If
                                     Call SetPlayerArmorSlot(Index, InvNum)
-                                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture", GetPlayerSprite(Index))
+                                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture", GetPlayerSprite(Index))
                                     n = item(GetPlayerInvItemNum(Index, InvNum)).data1
                                     Call SetPlayerSprite(Index, n)
                                     Call MyScript.ExecuteStatement("Scripts\Main.txt", "OnMontureUse " & Index & "," & GetPlayerInvItemNum(Index, InvNum))
@@ -1750,23 +1772,23 @@ Player(Index).sync = True
                                 End If
                                 Select Case GetPlayerDir(Index)
                                     Case DIR_UP
-                                        If GetPlayerY(Index) > 0 Then X = GetPlayerX(Index): Y = GetPlayerY(Index) - 1 Else Exit Sub
+                                        If GetPlayerY(Index) > 0 Then x = GetPlayerX(Index): y = GetPlayerY(Index) - 1 Else Exit Sub
                                     Case DIR_DOWN
-                                        If GetPlayerY(Index) < MAX_MAPY Then X = GetPlayerX(Index): Y = GetPlayerY(Index) + 1 Else Exit Sub
+                                        If GetPlayerY(Index) < MAX_MAPY Then x = GetPlayerX(Index): y = GetPlayerY(Index) + 1 Else Exit Sub
                                     Case DIR_LEFT
-                                        If GetPlayerX(Index) > 0 Then X = GetPlayerX(Index) - 1: Y = GetPlayerY(Index) Else Exit Sub
+                                        If GetPlayerX(Index) > 0 Then x = GetPlayerX(Index) - 1: y = GetPlayerY(Index) Else Exit Sub
                                     Case DIR_RIGHT
-                                        If GetPlayerX(Index) < MAX_MAPY Then X = GetPlayerX(Index) + 1: Y = GetPlayerY(Index) Else Exit Sub
+                                        If GetPlayerX(Index) < MAX_MAPY Then x = GetPlayerX(Index) + 1: y = GetPlayerY(Index) Else Exit Sub
                                 End Select
                                 
                                 ' Check if a key exists
-                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_KEY Then
+                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_KEY Then
                                     ' Check if the key they are using matches the map key
-                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(X, Y).data1 Then
-                                        TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(x, y).data1 Then
+                                        TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                                         TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                         
-                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                                         If Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1) = vbNullString Then
                                             Call MapMsg(GetPlayerMap(Index), "La porte a été ouverte.", White)
                                         Else
@@ -1775,7 +1797,7 @@ Player(Index).sync = True
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                         
                                         ' Check if we are supposed to take away the item
-                                        If Map(GetPlayerMap(Index)).Tile(X, Y).data2 = 1 Then
+                                        If Map(GetPlayerMap(Index)).Tile(x, y).data2 = 1 Then
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
                                             Call PlayerMsg(Index, "La clé se dissous.", Yellow)
                                         End If
@@ -1783,13 +1805,13 @@ Player(Index).sync = True
                                 End If
                                 
                                 ' Check if a key exists
-                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_COFFRE Then
+                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_COFFRE Then
                                     ' Check if the key they are using matches the map key
-                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(X, Y).data1 Then
-                                        TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(x, y).data1 Then
+                                        TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                                         TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                         
-                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                                         If Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1) = vbNullString Then
                                             Call MapMsg(GetPlayerMap(Index), "Le coffre a été ouvert.", White)
                                         Else
@@ -1798,20 +1820,20 @@ Player(Index).sync = True
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                         
                                         ' Check if we are supposed to take away the item
-                                        If Map(GetPlayerMap(Index)).Tile(X, Y).data2 = 1 Or Map(GetPlayerMap(Index)).Tile(X, Y).data2 = "1" Then
+                                        If Map(GetPlayerMap(Index)).Tile(x, y).data2 = 1 Or Map(GetPlayerMap(Index)).Tile(x, y).data2 = "1" Then
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
                                             Call PlayerMsg(Index, "La clé se dissous.", Yellow)
                                         End If
                                         
-                                        Call GiveItem(Index, Val(Map(GetPlayerMap(Index)).Tile(X, Y).data3), 1)
+                                        Call GiveItem(Index, Val(Map(GetPlayerMap(Index)).Tile(x, y).data3), 1)
                                     End If
                                 End If
                                 
-                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_DOOR Then
-                                    TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_DOOR Then
+                                    TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                                     TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                     
-                                    Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                                    Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                                     Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                 End If
                                 
@@ -1822,10 +1844,10 @@ Player(Index).sync = True
                                 If n > 0 Then
                                     ' Etre sur que on est dans la bonne classe
                                     If Spell(n).ClassReq - 1 = GetPlayerClass(Index) Or Spell(n).ClassReq = 0 Then
-                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort ne peut être utilisé que par un administrateur.", BrightRed): Exit Sub
+                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort peut uniquement être utilisé par un admin.", BrightRed): Exit Sub
                                                                     
                                         ' Etre sur qu'on a un level suffisant
-                                        i = GetSpellReqLevel(n)
+                                        i = GetSpellReqLevel(Index, n)
                                         If i <= GetPlayerLevel(Index) Then
                                             i = FindOpenSpellSlot(Index)
                                             
@@ -1851,7 +1873,7 @@ Player(Index).sync = True
                                         Call PlayerMsg(Index, "Ce sort peut être appris uniquement par un " & GetClassName(Spell(n).ClassReq - 1) & ".", White)
                                     End If
                                 Else
-                                    Call PlayerMsg(Index, "Ce parchemin n'est pas lié à un sort, contactez l'administrateur.", White)
+                                    Call PlayerMsg(Index, "Ce parchemin n'est pas lié à un sort, contactez l'admin.", White)
                                 End If
                         End Select
                         
@@ -1912,7 +1934,7 @@ Player(Index).sync = True
                     
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                 
-                    If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre guilde.", Red): Exit Sub
+                    If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre Guilde", Red): Exit Sub
                     
                     If GetPlayerGuild(Index) = vbNullString Then Call PlayerMsg(Index, "Vous n'êtes pas dans une guilde", Red): Exit Sub
                     
@@ -2031,9 +2053,9 @@ Player(Index).sync = True
                 Case "broadcastmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractères incorrects dans ses paroles (global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractère incorrecte dans ses paroles(global)"): Exit Sub
                     
-                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlements ont été désactivés.", BrightRed): Exit Sub
+                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlement ont été désactivés.", BrightRed): Exit Sub
                     
                     If Player(Index).Mute = True Then Exit Sub
                     
@@ -2047,7 +2069,7 @@ Player(Index).sync = True
                 Case "globalmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractères incorrects dans ses paroles (global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractère incorrects dans ses paroles(global)"): Exit Sub
                     
                     If frmServer.chkG.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages globaux ont été désactivés.", BrightRed): Exit Sub
                         
@@ -2082,9 +2104,9 @@ Player(Index).sync = True
                     If (SlotI > 24 Or SlotI < 1) And INum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (Cslot > 30 Or Cslot < 1) And INum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
                     If INum < 1 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & Cslot)) <> INum And INum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & Cslot)) < (IVal - GetPlayerInvItemValue(Index, SlotI)) And IVal <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
-                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & Cslot)) <> IDur And IDur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & Cslot)) <> INum And INum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & Cslot)) < (IVal - GetPlayerInvItemValue(Index, SlotI)) And IVal <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & Cslot)) <> IDur And IDur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
                             
                     Call SetPlayerInvItemNum(Index, SlotI, INum)
                     Call SetPlayerInvItemValue(Index, SlotI, IVal)
@@ -2105,7 +2127,7 @@ Player(Index).sync = True
                     If (SlotC > 30 Or SlotC < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
                     If Cnum < 1 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
                     If GetPlayerInvItemNum(Index, Islot) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If GetPlayerInvItemValue(Index, Islot) < (Cval - Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC))) And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If GetPlayerInvItemValue(Index, Islot) < (Cval - Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC))) And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                     If GetPlayerInvItemDur(Index, Islot) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                     
                     ' Make sure if the item we transfer to the bank is unequiped
@@ -2116,9 +2138,9 @@ Player(Index).sync = True
                     If GetPlayerShieldSlot(Index) = Islot Then SetPlayerShieldSlot Index, 0
                     If GetPlayerPetSlot(Index) = Islot Then SetPlayerPetSlot Index, 0
                     
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
-                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
+                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
                     Exit Sub
             
             
@@ -2577,11 +2599,11 @@ Player(Index).sync = True
                     metier(n).nom = Parse(2)
                     metier(n).type = Val(Parse(3))
                     metier(n).desc = Parse(4)
-                    X = 5
+                    x = 5
                     For i = 0 To MAX_DATA_METIER
                         For z = 0 To 1
-                            metier(n).data(i, z) = Val(Parse(X))
-                            X = X + 1
+                            metier(n).data(i, z) = Val(Parse(x))
+                            x = x + 1
                         Next z
                     Next i
                     
@@ -2611,16 +2633,16 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     If n < 0 Or n > MAX_RECETTE Then Call HackingAttempt(Index, "Index du recette Invalide"): Exit Sub
                     recette(n).nom = Parse(2)
-                    X = 3
+                    x = 3
                     For i = 0 To 9
                         For z = 0 To 1
-                            recette(n).InCraft(i, z) = Val(Parse(X))
-                            X = X + 1
+                            recette(n).InCraft(i, z) = Val(Parse(x))
+                            x = x + 1
                         Next z
                     Next i
                     For z = 0 To 1
-                        recette(n).craft(z) = Val(Parse(X))
-                        X = X + 1
+                        recette(n).craft(z) = Val(Parse(x))
+                        x = x + 1
                     Next z
                     
                     Call SendUpdaterecetteToAll(n)
@@ -2700,7 +2722,7 @@ Player(Index).sync = True
                     ' The spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quête invalide."): Exit Sub
+                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Indes de qete Invalide"): Exit Sub
                     Call AddLog(GetPlayerName(Index) & " edite la quete #" & n & ".", ADMIN_LOG)
                     Call SendEditQuetesTo(Index, n)
                     Exit Sub
@@ -2731,7 +2753,7 @@ Player(Index).sync = True
                     ' Spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quête invalide."): Exit Sub
+                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Indes de quete Invalide"): Exit Sub
                     ' Update the quete
                     quete(n).nom = Parse(2)
                     quete(n).data1 = Val(Parse(3))
@@ -2792,7 +2814,7 @@ Player(Index).sync = True
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     ShopNum = Val(Parse(1))
                     ' Prevent hacking
-                    If ShopNum < 0 Or ShopNum > MAX_SHOPS Then Call HackingAttempt(Index, "Index de magasin invalide"): Exit Sub
+                    If ShopNum < 0 Or ShopNum > MAX_SHOPS Then Call HackingAttempt(Index, "Index de magasin Invalide"): Exit Sub
                     ' Update the shop
                     Shop(ShopNum).Name = Parse(2)
                     Shop(ShopNum).JoinSay = Parse(3)
@@ -2828,7 +2850,7 @@ Player(Index).sync = True
                     ' The spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Index de sort invalide"): Exit Sub
+                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Indes de sort Invalide"): Exit Sub
                     Call AddLog(GetPlayerName(Index) & " edite le sorrt #" & n & ".", ADMIN_LOG)
                     Call SendEditSpellTo(Index, n)
                     Exit Sub
@@ -2839,7 +2861,7 @@ Player(Index).sync = True
                     ' Spell #
                     n = Val(Parse(1))
                     ' Prevent hacking
-                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Index de sort invalide"): Exit Sub
+                    If n < 0 Or n > MAX_SPELLS Then Call HackingAttempt(Index, "Invalide Spell Index"): Exit Sub
                     ' Update the spell
                     Spell(n).Name = Parse(2)
                     Spell(n).ClassReq = Val(Parse(3))
@@ -2921,14 +2943,14 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
-                    X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GetItem)
-                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, inventaire plein.", BrightRed): Exit Sub
+                    x = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GetItem)
+                    If x = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GiveItem) >= Shop(i).TradeItem(n).value(z).GiveValue Then
                         Call TakeItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Shop(i).TradeItem(n).value(z).GiveValue)
@@ -2948,14 +2970,14 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requête d'échange"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
-                    X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GiveItem) 'Shop(i).TradeItem(N).value(z).GetItem)
-                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, inventaire plein.", BrightRed): Exit Sub
+                    x = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GiveItem) 'Shop(i).TradeItem(N).value(z).GetItem)
+                    If x = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GetItem) >= Shop(i).TradeItem(n).value(z).GetValue Then
                         Call GiveItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Math.Round(Shop(i).TradeItem(n).value(z).GiveValue / 2))
@@ -3012,13 +3034,13 @@ Player(Index).sync = True
                     Exit Sub
             
                 Case "search"
-                    X = Val(Parse(1))
-                    Y = Val(Parse(2))
+                    x = Val(Parse(1))
+                    y = Val(Parse(2))
                     ' Prevent subscript out of range
-                    If X < 0 Or X > MAX_MAPX Or Y < 0 Or Y > MAX_MAPY Then Exit Sub
+                    If x < 0 Or x > MAX_MAPX Or y < 0 Or y > MAX_MAPY Then Exit Sub
                     ' Check for a player
                     For i = 1 To MAX_PLAYERS
-                        If IsPlaying(i) And GetPlayerMap(Index) = GetPlayerMap(i) And GetPlayerX(i) = X And GetPlayerY(i) = Y Then
+                        If IsPlaying(i) And GetPlayerMap(Index) = GetPlayerMap(i) And GetPlayerX(i) = x And GetPlayerY(i) = y Then
                             ' Consider the player
                             If GetPlayerLevel(i) >= GetPlayerLevel(Index) + 5 Then
                                 Call PlayerMsg(Index, "Vos chance semble minime...", BrightRed)
@@ -3048,7 +3070,7 @@ Player(Index).sync = True
                     ' Check for an npc
                     For i = 1 To MAX_MAP_NPCS
                         If MapNpc(GetPlayerMap(Index), i).Num > 0 Then
-                            If MapNpc(GetPlayerMap(Index), i).X = X And MapNpc(GetPlayerMap(Index), i).Y = Y Then
+                            If MapNpc(GetPlayerMap(Index), i).x = x And MapNpc(GetPlayerMap(Index), i).y = y Then
                                 ' Change target
                                 Player(Index).Target = i
                                 Player(Index).TargetType = TARGET_TYPE_NPC
@@ -3061,7 +3083,7 @@ Player(Index).sync = True
                     ' Check for an item
                     For i = 1 To MAX_MAP_ITEMS
                         If MapItem(GetPlayerMap(Index), i).Num > 0 Then
-                            If MapItem(GetPlayerMap(Index), i).X = X And MapItem(GetPlayerMap(Index), i).Y = Y Then
+                            If MapItem(GetPlayerMap(Index), i).x = x And MapItem(GetPlayerMap(Index), i).y = y Then
                                 Call PlayerMsg(Index, "Vous voyez un " & Trim$(item(MapItem(GetPlayerMap(Index), i).Num).Name) & ".", Yellow)
                                 Exit Sub
                             End If
@@ -3171,30 +3193,30 @@ Player(Index).sync = True
                         
                         If Player(Index).TradeItemMax2 = Player(Index).TradeItemMax And Player(n).TradeItemMax2 = Player(n).TradeItemMax Then
                             For i = 1 To MAX_PLAYER_TRADES
-                                For X = 1 To MAX_INV
-                                    If GetPlayerInvItemNum(n, X) < 1 Then
+                                For x = 1 To MAX_INV
+                                    If GetPlayerInvItemNum(n, x) < 1 Then
                                         If Player(Index).Trading(i).InvNum > 0 Then
                                             Call GiveItem(n, GetPlayerInvItemNum(Index, Player(Index).Trading(i).InvNum), Player(Index).Trading(i).InvVal)
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, Player(Index).Trading(i).InvNum), Player(Index).Trading(i).InvVal)
                                             Exit For
                                         End If
                                     End If
-                                Next X
+                                Next x
                             Next i
             
                             For i = 1 To MAX_PLAYER_TRADES
-                                For X = 1 To MAX_INV
-                                    If GetPlayerInvItemNum(Index, X) < 1 Then
+                                For x = 1 To MAX_INV
+                                    If GetPlayerInvItemNum(Index, x) < 1 Then
                                         If Player(n).Trading(i).InvNum > 0 Then
                                             Call GiveItem(Index, GetPlayerInvItemNum(n, Player(n).Trading(i).InvNum), Player(n).Trading(i).InvVal)
                                             Call TakeItem(n, GetPlayerInvItemNum(n, Player(n).Trading(i).InvNum), Player(n).Trading(i).InvVal)
                                             Exit For
                                         End If
                                     End If
-                                Next X
+                                Next x
                             Next i
-                            Call PlayerMsg(n, "Echange réussi.", BrightGreen)
-                            Call PlayerMsg(Index, "Echange réussi.", BrightGreen)
+                            Call PlayerMsg(n, "Echange réussit.", BrightGreen)
+                            Call PlayerMsg(Index, "Echange réussit.", BrightGreen)
                             Call SendInventory(n)
                             Call SendInventory(Index)
                         Else
@@ -3224,7 +3246,7 @@ Player(Index).sync = True
                     If n > 0 Then
                         ' Check to make sure they aren't the starter
                             ' Check to make sure that each of there party players match
-                        Call PlayerMsg(Index, "Tu as rejoint le groupe de " & GetPlayerName(n) & " .", Pink)
+                        Call PlayerMsg(Index, "Tu as rejoins le groupe de " & GetPlayerName(n) & " .", Pink)
                         If Player(n).InParty = 0 Then ' Set the party leader up
                             Party.CreateParty n, Index
                         Else
@@ -3399,26 +3421,26 @@ Exit Sub
 er:
 Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans la réception du serveur. Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 On Error Resume Next
-If IBErr Then Call IBMsg("Un erreur s'est produite dans la réception du serveur", BrightRed)
-If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoi, relancez s'il vous plait.", 3)
+If IBErr Then Call IBMsg("Un erreur c'est produite dans la réception du serveur", BrightRed)
+If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoie, relancez s'il vous plait.", 3)
 End Sub
 
-Sub MapDo(ByVal MapNum As Integer, ByVal url As String, ByVal rep As String)
-If FileExist("\Maps\Map" & MapNum & ".fcc") Then Call Kill(App.Path & "\Maps\Map" & MapNum & ".fcc")
-Call ClearMap(MapNum)
+Sub MapDo(ByVal z As Long, ByVal url As String, ByVal rep As String)
+If FileExist("\maps\map" & z & ".fcc") Then Call Kill(App.Path & "\maps\map" & z & ".fcc")
+Call ClearMap(z)
 If Mid(url, Len(url)) = "/" And rep = "/" Then
-    Call DeleteUrlCacheEntry(url & "Map" & MapNum & ".fcc")
-    Call URLDownloadToFile(0, url & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & "map" & z & ".fcc")
+    Call URLDownloadToFile(0, url & "map" & z & ".fcc", App.Path & "\maps\map" & z & ".fcc", 0, 0)
 ElseIf Mid(url, Len(url)) <> "/" And Mid(rep, 1, 1) = "/" Then
-    Call DeleteUrlCacheEntry(url & rep & "Map" & MapNum & ".fcc")
-    Call URLDownloadToFile(0, url & rep & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & rep & "map" & z & ".fcc")
+    Call URLDownloadToFile(0, url & rep & "map" & z & ".fcc", App.Path & "\maps\map" & z & ".fcc", 0, 0)
 Else
-    Call DeleteUrlCacheEntry(url & rep & "Map" & MapNum & ".fcc")
-    Call URLDownloadToFile(0, url & rep & "Map" & MapNum & ".fcc", App.Path & "\Maps\Map" & MapNum & ".fcc", 0, 0)
+    Call DeleteUrlCacheEntry(url & rep & "map" & z & ".fcc")
+    Call URLDownloadToFile(0, url & rep & "map" & z & ".fcc", App.Path & "\maps\map" & z & ".fcc", 0, 0)
 End If
 End Sub
 
-Sub CloseSocket(ByVal Index As Byte, Optional ByVal Bypass As Boolean = False)
+Sub CloseSocket(ByVal Index As Long, Optional ByVal Bypass As Boolean = False)
 On Error Resume Next
     ' Make sure player was/is playing the game, and if so, save'm.
     If Index > 0 Then
@@ -3434,9 +3456,9 @@ On Error Resume Next
         
 End Sub
 
-Sub SendWhosOnline(ByVal Index As Byte)
+Sub SendWhosOnline(ByVal Index As Long)
 Dim s As String
-Dim n As Byte, i As Byte
+Dim n As Long, i As Long
 
     s = vbNullString
     n = 0
@@ -3448,13 +3470,10 @@ Dim n As Byte, i As Byte
     Next i
             
     If n = 0 Then
-        s = "Il n'y a pas d'autre joueur connecté..."
-    ElseIf n = 1 Then
-        s = Mid$(s, 1, Len(s) - 2)
-        s = "Il y a 1 autre joueur en ligne : " & s & "."
+        s = "Il n'y a pas d'autres joueurs connecté..."
     Else
         s = Mid$(s, 1, Len(s) - 2)
-        s = "Il y a " & n & " autres joueurs en ligne : " & s & "."
+        s = "Il y a " & n & " joueur(s) en ligne : " & s & "."
     End If
         
     Call PlayerMsg(Index, s, WhoColor)
@@ -3462,8 +3481,8 @@ End Sub
 
 Sub SendOnlineList()
 Dim Packet As String
-Dim i As Byte
-Dim n As Byte
+Dim i As Long
+Dim n As Long
 Packet = vbNullString
 n = 0
 For i = 1 To MAX_PLAYERS
@@ -3478,9 +3497,9 @@ Packet = "ONLINELIST" & SEP_CHAR & n & Packet & END_CHAR
 Call SendDataToAll(Packet)
 End Sub
 
-Sub SendChars(ByVal Index As Byte)
+Sub SendChars(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
     
     Packet = "ALLCHARS" & SEP_CHAR
     For i = 1 To MAX_CHARS
@@ -3491,9 +3510,9 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendJoinMap(ByVal Index As Byte)
+Sub SendJoinMap(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
 On Error GoTo er:
 
@@ -3550,7 +3569,7 @@ If IBErr Then Call IBMsg("Erreur pendant l'envoi du changement de carte d'un jou
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendLeaveMap(ByVal Index As Byte, ByVal MapNum As Integer)
+Sub SendLeaveMap(ByVal Index As Long, ByVal MapNum As Long)
 Dim Packet As String
 
 On Error GoTo er:
@@ -3582,7 +3601,7 @@ If IBErr Then Call IBMsg("Erreur pendant le dépard de " & GetPlayerName(Index) &
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendPlayerData(ByVal Index As Byte)
+Sub SendPlayerData(ByVal Index As Long)
 Dim Packet As String
 
 On Error GoTo er:
@@ -3614,9 +3633,9 @@ If IBErr Then Call IBMsg("Erreur pendant l'envoi des données du joueur : " & Get
 Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendPlayerQuete(ByVal Index As Byte)
+Sub SendPlayerQuete(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
 On Error GoTo er:
 
@@ -3644,7 +3663,7 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant l'envoi des
 If IBErr Then Call IBMsg("Erreur pendant l'envoi des données(quête) du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
-Sub SendPlayerMetier(ByVal Index As Byte)
+Sub SendPlayerMetier(ByVal Index As Long)
 Dim Packet As String
 
     ' Send index's player data to everyone including himself on th emap
@@ -3657,10 +3676,12 @@ Dim Packet As String
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendMap(ByVal Index As Byte, ByVal MapNum As Integer)
+Sub SendMap(ByVal Index As Long, ByVal MapNum As Long)
 Dim Packet As String
-Dim X As Byte
-Dim Y As Byte
+Dim x As Long
+Dim y As Long
+Dim i As Long
+Dim s As String
 On Error GoTo er:
 
 If CarteFTP Then
@@ -3673,32 +3694,32 @@ Else
     
     Packet = "MAPTILES" & SEP_CHAR
     
-    For Y = 0 To MAX_MAPY
-        For X = 0 To MAX_MAPX
-        With Map(MapNum).Tile(X, Y)
+    For y = 0 To MAX_MAPY
+        For x = 0 To MAX_MAPX
+        With Map(MapNum).Tile(x, y)
             Packet = Packet & .Ground & SEP_CHAR & .Mask & SEP_CHAR & .Anim & SEP_CHAR & .Mask2 & SEP_CHAR & .M2Anim & SEP_CHAR & .Fringe & SEP_CHAR & .FAnim & SEP_CHAR & .Fringe2 & SEP_CHAR & .F2Anim & SEP_CHAR & .type & SEP_CHAR & .data1 & SEP_CHAR & .data2 & SEP_CHAR & .data3 & SEP_CHAR & .String1 & SEP_CHAR & .String2 & SEP_CHAR & .String3 & SEP_CHAR & .Light & SEP_CHAR
             Packet = Packet & .GroundSet & SEP_CHAR & .MaskSet & SEP_CHAR & .AnimSet & SEP_CHAR & .Mask2Set & SEP_CHAR & .M2AnimSet & SEP_CHAR & .FringeSet & SEP_CHAR & .FAnimSet & SEP_CHAR & .Fringe2Set & SEP_CHAR & .F2AnimSet & SEP_CHAR & .Fringe3 & SEP_CHAR & .F3Anim & SEP_CHAR & .Fringe3Set & SEP_CHAR & .F3AnimSet & SEP_CHAR & .M3Anim & SEP_CHAR & .M3AnimSet & SEP_CHAR & .Mask3 & SEP_CHAR & .Mask3Set & SEP_CHAR  '<--
         End With
-        Next X
-    Next Y
+        Next x
+    Next y
     
     Packet = Packet & END_CHAR
     Call SendDataTo(Index, Packet)
     
     Packet = "MAPNPCS" & SEP_CHAR
-    For X = 1 To MAX_MAP_NPCS
-        Packet = Packet & Map(GetPlayerMap(Index)).Npc(X) & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).X & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Y & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).x1 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).y1 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).x2 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).y2 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Hasardm & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Hasardp & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).boucle & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Imobile & SEP_CHAR
-    Next X
+    For x = 1 To MAX_MAP_NPCS
+        Packet = Packet & Map(GetPlayerMap(Index)).Npc(x) & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x1 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y1 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x2 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y2 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Hasardm & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Hasardp & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).boucle & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Imobile & SEP_CHAR
+    Next x
         
     Packet = Packet & END_CHAR
         
@@ -3711,127 +3732,127 @@ On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
 Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index), BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plaît. Pour tout problème récurent, visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ".", 3)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problème récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub SendMapItemsTo(ByVal Index As Byte, ByVal MapNum As Integer)
+Sub SendMapItemsTo(ByVal Index As Long, ByVal MapNum As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        If MapNum > 0 Then Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).x & SEP_CHAR & MapItem(MapNum, i).y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMapItemsToAll(ByVal MapNum As Integer)
+Sub SendMapItemsToAll(ByVal MapNum As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
+        Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).x & SEP_CHAR & MapItem(MapNum, i).y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Sub SendMapNpcsTo(ByVal Index As Byte, ByVal MapNum As Integer)
+Sub SendMapNpcsTo(ByVal Index As Long, ByVal MapNum As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        If MapNum > 0 Then Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).x & SEP_CHAR & MapNpc(MapNum, i).y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMapNpcsToMap(ByVal MapNum As Integer)
+Sub SendMapNpcsToMap(ByVal MapNum As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
+        Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).x & SEP_CHAR & MapNpc(MapNum, i).y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
     Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Sub SendItems(ByVal Index As Byte)
+Sub SendItems(ByVal Index As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_ITEMS
         If Trim$(item(i).Name) <> vbNullString Then Call SendUpdateItemTo(Index, i)
     Next i
 End Sub
 
-Sub SendPets(ByVal Index As Byte)
+Sub SendPets(ByVal Index As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_PETS
         If Trim$(Pets(i).nom) <> vbNullString Then Call SendUpdatePetTo(Index, i)
     Next i
 End Sub
 
-Sub SendMetiers(ByVal Index As Byte)
+Sub SendMetiers(ByVal Index As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_METIER
         If Trim$(metier(i).nom) <> vbNullString Then Call SendUpdatemetierTo(Index, i)
     Next i
 End Sub
 
-Sub SendRecettes(ByVal Index As Byte)
+Sub SendRecettes(ByVal Index As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_RECETTE
         Call SendUpdaterecetteTo(Index, i)
     Next i
 End Sub
 
-Sub SendEmoticons(ByVal Index As Byte)
+Sub SendEmoticons(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     For i = 0 To MAX_EMOTICONS
         If Trim$(Emoticons(i).Command) <> vbNullString Then Call SendUpdateEmoticonTo(Index, i)
     Next i
 End Sub
 
-Sub SendArrows(ByVal Index As Byte)
+Sub SendArrows(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     For i = 1 To MAX_ARROWS
         Call SendUpdateArrowTo(Index, i)
     Next i
 End Sub
 
-Sub SendNpcs(ByVal Index As Byte)
+Sub SendNpcs(ByVal Index As Long)
 Dim Packet As String
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_NPCS
         If Trim$(Npc(i).Name) <> vbNullString Then Call SendUpdateNpcTo(Index, i)
     Next i
 End Sub
 
-Sub SendInventory(ByVal Index As Byte)
+Sub SendInventory(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "PLAYERINV" & SEP_CHAR & Index & SEP_CHAR
     For i = 1 To MAX_INV
@@ -3842,14 +3863,14 @@ Dim i As Byte
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendInventoryUpdate(ByVal Index As Byte, ByVal InvSlot As Byte)
+Sub SendInventoryUpdate(ByVal Index As Long, ByVal InvSlot As Long)
 Dim Packet As String
     
     Packet = "PLAYERINVUPDATE" & SEP_CHAR & InvSlot & SEP_CHAR & Index & SEP_CHAR & GetPlayerInvItemNum(Index, InvSlot) & SEP_CHAR & GetPlayerInvItemValue(Index, InvSlot) & SEP_CHAR & GetPlayerInvItemDur(Index, InvSlot) & SEP_CHAR & Index & END_CHAR
     Call SendDataToMap(GetPlayerMap(Index), Packet)
 End Sub
 
-Sub SendWornEquipment(ByVal Index As Byte)
+Sub SendWornEquipment(ByVal Index As Long)
 Dim Packet As String
     If IsPlaying(Index) Then
     'CODE ORIGINAL:
@@ -3860,46 +3881,46 @@ Dim Packet As String
     End If
 End Sub
 
-Sub SendHP(ByVal Index As Byte)
-Dim Packet As String, X As Byte
+Sub SendHP(ByVal Index As Long)
+Dim Packet As String, x As Byte
 
     Packet = "PLAYERHP" & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & GetPlayerHP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
     
     If Player(Index).InParty > 0 Then
-        For X = 1 To Party.MemberCount(Player(Index).InParty)
-            If Player(Index).PartyPlayer <> X Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, X), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
-        Next X
+        For x = 1 To Party.MemberCount(Player(Index).InParty)
+            If Player(Index).PartyPlayer <> x Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, x), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
+        Next x
     End If
     
     Packet = "PLAYERPOINTS" & SEP_CHAR & GetPlayerPOINTS(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendMP(ByVal Index As Byte)
+Sub SendMP(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "PLAYERMP" & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & GetPlayerMP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendSP(ByVal Index As Byte)
+Sub SendSP(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "PLAYERSP" & SEP_CHAR & GetPlayerMaxSP(Index) & SEP_CHAR & GetPlayerSP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendStats(ByVal Index As Byte)
+Sub SendStats(ByVal Index As Long)
 Dim Packet As String
     
     Packet = "PLAYERSTATSPACKET" & SEP_CHAR & GetPlayerStr(Index) & SEP_CHAR & GetPlayerDEF(Index) & SEP_CHAR & GetPlayerSPEED(Index) & SEP_CHAR & GetPlayerMAGI(Index) & SEP_CHAR & GetPlayerNextLevel(Index) & SEP_CHAR & GetPlayerExp(Index) & SEP_CHAR & GetPlayerLevel(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendClasses(ByVal Index As Byte)
+Sub SendClasses(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "CLASSESDATA" & SEP_CHAR & Max_Classes & SEP_CHAR
     For i = 0 To Max_Classes
@@ -3910,9 +3931,9 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendNewCharClasses(ByVal Index As Byte)
+Sub SendNewCharClasses(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "NEWCHARCLASSES" & SEP_CHAR & Max_Classes & SEP_CHAR
     For i = 0 To Max_Classes
@@ -3923,7 +3944,7 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendLeftGame(ByVal Index As Byte)
+Sub SendLeftGame(ByVal Index As Long)
 
 Dim Packet As String
     Packet = "PLAYERDATA" & SEP_CHAR
@@ -3946,14 +3967,14 @@ Dim Packet As String
     
 End Sub
 
-Sub SendPlayerXY(ByVal Index As Byte)
+Sub SendPlayerXY(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "PLAYERXY" & SEP_CHAR & GetPlayerX(Index) & SEP_CHAR & GetPlayerY(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdateItemToAll(ByVal ItemNum As Integer)
+Sub SendUpdateItemToAll(ByVal ItemNum As Long)
 Dim Packet As String
     
     Packet = "UPDATEITEM" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(item(ItemNum).Name) & SEP_CHAR & item(ItemNum).Pic & SEP_CHAR & item(ItemNum).type & SEP_CHAR & item(ItemNum).data1 & SEP_CHAR & item(ItemNum).data2 & SEP_CHAR & item(ItemNum).data3 & SEP_CHAR & item(ItemNum).StrReq & SEP_CHAR & item(ItemNum).DefReq & SEP_CHAR & item(ItemNum).SpeedReq & SEP_CHAR & item(ItemNum).ClassReq & SEP_CHAR & item(ItemNum).AccessReq & SEP_CHAR
@@ -3962,7 +3983,7 @@ Dim Packet As String
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateItemTo(ByVal Index As Byte, ByVal ItemNum As Integer)
+Sub SendUpdateItemTo(ByVal Index As Long, ByVal ItemNum As Long)
 Dim Packet As String
     
     Packet = "UPDATEITEM" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(item(ItemNum).Name) & SEP_CHAR & item(ItemNum).Pic & SEP_CHAR & item(ItemNum).type & SEP_CHAR & item(ItemNum).data1 & SEP_CHAR & item(ItemNum).data2 & SEP_CHAR & item(ItemNum).data3 & SEP_CHAR & item(ItemNum).StrReq & SEP_CHAR & item(ItemNum).DefReq & SEP_CHAR & item(ItemNum).SpeedReq & SEP_CHAR & item(ItemNum).ClassReq & SEP_CHAR & item(ItemNum).AccessReq & SEP_CHAR
@@ -3971,7 +3992,7 @@ Dim Packet As String
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditItemTo(ByVal Index As Byte, ByVal ItemNum As Integer)
+Sub SendEditItemTo(ByVal Index As Long, ByVal ItemNum As Long)
 Dim Packet As String
     Packet = "EDITITEM" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(item(ItemNum).Name) & SEP_CHAR & item(ItemNum).Pic & SEP_CHAR & item(ItemNum).type & SEP_CHAR & item(ItemNum).data1 & SEP_CHAR & item(ItemNum).data2 & SEP_CHAR & item(ItemNum).data3 & SEP_CHAR & item(ItemNum).StrReq & SEP_CHAR & item(ItemNum).DefReq & SEP_CHAR & item(ItemNum).SpeedReq & SEP_CHAR & item(ItemNum).ClassReq & SEP_CHAR & item(ItemNum).AccessReq & SEP_CHAR
     Packet = Packet & item(ItemNum).AddHP & SEP_CHAR & item(ItemNum).AddMP & SEP_CHAR & item(ItemNum).AddSP & SEP_CHAR & item(ItemNum).AddStr & SEP_CHAR & item(ItemNum).AddDef & SEP_CHAR & item(ItemNum).AddMagi & SEP_CHAR & item(ItemNum).AddSpeed & SEP_CHAR & item(ItemNum).AddEXP & SEP_CHAR & item(ItemNum).desc & SEP_CHAR & item(ItemNum).AttackSpeed
@@ -3979,7 +4000,7 @@ Dim Packet As String
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdatePetToAll(ByVal PetNum As Byte)
+Sub SendUpdatePetToAll(ByVal PetNum As Long)
 Dim Packet As String
     
     Packet = "UPDATEPET" & SEP_CHAR & PetNum & SEP_CHAR & Pets(PetNum).nom & SEP_CHAR & Pets(PetNum).sprite & SEP_CHAR & Pets(PetNum).addForce & SEP_CHAR & Pets(PetNum).addDefence & END_CHAR
@@ -3987,23 +4008,23 @@ Dim Packet As String
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdatePetTo(ByVal Index As Byte, ByVal PetNum As Integer)
+Sub SendUpdatePetTo(ByVal Index As Long, ByVal PetNum As Long)
 Dim Packet As String
     
     Packet = "UPDATEPET" & SEP_CHAR & PetNum & SEP_CHAR & Pets(PetNum).nom & SEP_CHAR & Pets(PetNum).sprite & SEP_CHAR & Pets(PetNum).addForce & SEP_CHAR & Pets(PetNum).addDefence & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditPetTo(ByVal Index As Byte, ByVal PetNum As Integer)
+Sub SendEditPetTo(ByVal Index As Long, ByVal PetNum As Long)
 Dim Packet As String
 
     Packet = "EDITPET" & SEP_CHAR & PetNum & SEP_CHAR & Pets(PetNum).nom & SEP_CHAR & Pets(PetNum).sprite & SEP_CHAR & Pets(PetNum).addForce & SEP_CHAR & Pets(PetNum).addDefence & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdatemetierToAll(ByVal metiernum As Integer)
+Sub SendUpdatemetierToAll(ByVal metiernum As Long)
 Dim Packet As String
-Dim i As Long, z As Byte
+Dim i As Long, z As Long
 
     Packet = "UPDATEMETIER" & SEP_CHAR & metiernum & SEP_CHAR & metier(metiernum).nom & SEP_CHAR & metier(metiernum).type & SEP_CHAR & metier(metiernum).desc & SEP_CHAR
     For i = 0 To MAX_DATA_METIER
@@ -4030,9 +4051,9 @@ Dim i As Long, z As Long
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditmetierTo(ByVal Index As Byte, ByVal metiernum As Integer)
+Sub SendEditmetierTo(ByVal Index As Long, ByVal metiernum As Long)
 Dim Packet As String
-Dim i As Byte, z As Byte
+Dim i As Long, z As Long
 
     Packet = "EDITMETIER" & SEP_CHAR & metiernum & SEP_CHAR & metier(metiernum).nom & SEP_CHAR & metier(metiernum).type & SEP_CHAR & metier(metiernum).desc & SEP_CHAR
     For i = 0 To MAX_DATA_METIER
@@ -4044,9 +4065,9 @@ Dim i As Byte, z As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdaterecetteToAll(ByVal recettenum As Integer)
+Sub SendUpdaterecetteToAll(ByVal recettenum As Long)
 Dim Packet As String
-Dim i As Byte, z As Byte
+Dim i As Long, z As Long
 
     Packet = "UPDATErecette" & SEP_CHAR & recettenum & SEP_CHAR & recette(recettenum).nom & SEP_CHAR
     For i = 0 To 9
@@ -4062,9 +4083,9 @@ Dim i As Byte, z As Byte
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdaterecetteTo(ByVal Index As Byte, ByVal recettenum As Integer)
+Sub SendUpdaterecetteTo(ByVal Index As Long, ByVal recettenum As Long)
 Dim Packet As String
-Dim i As Byte, z As Byte
+Dim i As Long, z As Long
 
     Packet = "UPDATErecette" & SEP_CHAR & recettenum & SEP_CHAR & recette(recettenum).nom & SEP_CHAR
     For i = 0 To 9
@@ -4079,9 +4100,9 @@ Dim i As Byte, z As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditrecetteTo(ByVal Index As Byte, ByVal recettenum As Integer)
+Sub SendEditrecetteTo(ByVal Index As Long, ByVal recettenum As Long)
 Dim Packet As String
-Dim i As Byte, z As Byte
+Dim i As Long, z As Long
 
     Packet = "EDITrecette" & SEP_CHAR & recettenum & SEP_CHAR & recette(recettenum).nom & SEP_CHAR
     For i = 0 To 9
@@ -4096,65 +4117,65 @@ Dim i As Byte, z As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdateEmoticonToAll(ByVal ItemNum As Byte)
+Sub SendUpdateEmoticonToAll(ByVal ItemNum As Long)
 Dim Packet As String
 
     Packet = "UPDATEEMOTICON" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(Emoticons(ItemNum).Command) & SEP_CHAR & Emoticons(ItemNum).Pic & END_CHAR
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateEmoticonTo(ByVal Index As Byte, ByVal ItemNum As Byte)
+Sub SendUpdateEmoticonTo(ByVal Index As Long, ByVal ItemNum As Long)
 Dim Packet As String
 
     Packet = "UPDATEEMOTICON" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(Emoticons(ItemNum).Command) & SEP_CHAR & Emoticons(ItemNum).Pic & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditEmoticonTo(ByVal Index As Byte, ByVal EmoNum As Byte)
+Sub SendEditEmoticonTo(ByVal Index As Long, ByVal EmoNum As Long)
 Dim Packet As String
 
     Packet = "EDITEMOTICON" & SEP_CHAR & EmoNum & SEP_CHAR & Trim$(Emoticons(EmoNum).Command) & SEP_CHAR & Emoticons(EmoNum).Pic & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdateArrowToAll(ByVal ItemNum As Byte)
+Sub SendUpdateArrowToAll(ByVal ItemNum As Long)
 Dim Packet As String
 
     Packet = "UPDATEArrow" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(Arrows(ItemNum).Name) & SEP_CHAR & Arrows(ItemNum).Pic & SEP_CHAR & Arrows(ItemNum).Range & END_CHAR
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateArrowTo(ByVal Index As Byte, ByVal ItemNum As Byte)
+Sub SendUpdateArrowTo(ByVal Index As Long, ByVal ItemNum As Long)
 Dim Packet As String
 
     Packet = "UPDATEArrow" & SEP_CHAR & ItemNum & SEP_CHAR & Trim$(Arrows(ItemNum).Name) & SEP_CHAR & Arrows(ItemNum).Pic & SEP_CHAR & Arrows(ItemNum).Range & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditArrowTo(ByVal Index As Byte, ByVal EmoNum As Byte)
+Sub SendEditArrowTo(ByVal Index As Long, ByVal EmoNum As Long)
 Dim Packet As String
 
     Packet = "EDITArrow" & SEP_CHAR & EmoNum & SEP_CHAR & Trim$(Arrows(EmoNum).Name) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdateNpcToAll(ByVal npcnum As Integer)
+Sub SendUpdateNpcToAll(ByVal npcnum As Long)
 Dim Packet As String
 
     Packet = "UPDATENPC" & SEP_CHAR & npcnum & SEP_CHAR & Trim$(Npc(npcnum).Name) & SEP_CHAR & Npc(npcnum).sprite & SEP_CHAR & Npc(npcnum).MaxHp & SEP_CHAR & Npc(npcnum).QueteNum & SEP_CHAR & Npc(npcnum).Behavior & SEP_CHAR & CLng(Npc(npcnum).Inv) & SEP_CHAR & CLng(Npc(npcnum).Vol) & END_CHAR
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateNpcTo(ByVal Index As Byte, ByVal npcnum As Integer)
+Sub SendUpdateNpcTo(ByVal Index As Long, ByVal npcnum As Long)
 Dim Packet As String
 
     Packet = "UPDATENPC" & SEP_CHAR & npcnum & SEP_CHAR & Trim$(Npc(npcnum).Name) & SEP_CHAR & Npc(npcnum).sprite & SEP_CHAR & Npc(npcnum).MaxHp & SEP_CHAR & Npc(npcnum).QueteNum & SEP_CHAR & Npc(npcnum).Behavior & SEP_CHAR & CLng(Npc(npcnum).Inv) & SEP_CHAR & CLng(Npc(npcnum).Vol) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditNpcTo(ByVal Index As Byte, ByVal npcnum As Integer)
+Sub SendEditNpcTo(ByVal Index As Long, ByVal npcnum As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     'Packet = "EDITNPC" & SEP_CHAR & NpcNum & SEP_CHAR & trim$(Npc(NpcNum).Name) & SEP_CHAR & trim$(Npc(NpcNum).AttackSay) & SEP_CHAR & Npc(NpcNum).Sprite & SEP_CHAR & Npc(NpcNum).SpawnSecs & SEP_CHAR & Npc(NpcNum).Behavior & SEP_CHAR & Npc(NpcNum).Range & SEP_CHAR
     'Packet = Packet & Npc(NpcNum).DropChance & SEP_CHAR & Npc(NpcNum).DropItem & SEP_CHAR & Npc(NpcNum).DropItemValue & SEP_CHAR & Npc(NpcNum).STR & SEP_CHAR & Npc(NpcNum).DEF & SEP_CHAR & Npc(NpcNum).SPEED & SEP_CHAR & Npc(NpcNum).MAGI & SEP_CHAR & Npc(NpcNum).Big & SEP_CHAR & Npc(NpcNum).MaxHp & SEP_CHAR & Npc(NpcNum).Exp & END_CHAR
@@ -4171,31 +4192,31 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendShops(ByVal Index As Byte)
-Dim i As Integer
+Sub SendShops(ByVal Index As Long)
+Dim i As Long
 
     For i = 1 To MAX_SHOPS
         If Trim$(Shop(i).Name) <> vbNullString Then Call SendUpdateShopTo(Index, i)
     Next i
 End Sub
 
-Sub SendUpdateShopToAll(ByVal ShopNum As Integer)
+Sub SendUpdateShopToAll(ByVal ShopNum As Long)
 Dim Packet As String
 
     Packet = "UPDATESHOP" & SEP_CHAR & ShopNum & SEP_CHAR & Trim$(Shop(ShopNum).Name) & END_CHAR
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateShopTo(ByVal Index As Byte, ByVal ShopNum As Integer)
+Sub SendUpdateShopTo(ByVal Index As Long, ByVal ShopNum)
 Dim Packet As String
 
     Packet = "UPDATESHOP" & SEP_CHAR & ShopNum & SEP_CHAR & Trim$(Shop(ShopNum).Name) & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditShopTo(ByVal Index As Byte, ByVal ShopNum As Integer)
+Sub SendEditShopTo(ByVal Index As Long, ByVal ShopNum As Long)
 Dim Packet As String
-Dim i As Byte, z As Byte
+Dim i As Long, z As Long
 
     Packet = "EDITSHOP" & SEP_CHAR & ShopNum & SEP_CHAR & Trim$(Shop(ShopNum).Name) & SEP_CHAR & Trim$(Shop(ShopNum).JoinSay) & SEP_CHAR & Trim$(Shop(ShopNum).LeaveSay) & SEP_CHAR & Shop(ShopNum).FixesItems & SEP_CHAR & Shop(ShopNum).FixObjet & SEP_CHAR
     For i = 1 To 6
@@ -4208,32 +4229,32 @@ Dim i As Byte, z As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendSpells(ByVal Index As Byte)
-Dim i As Integer
+Sub SendSpells(ByVal Index As Long)
+Dim i As Long
 
     For i = 1 To MAX_SPELLS
         If Trim$(Spell(i).Name) <> vbNullString Then Call SendUpdateSpellTo(Index, i)
     Next i
 End Sub
 
-Sub SendQuetes(ByVal Index As Byte)
-Dim i As Integer
+Sub SendQuetes(ByVal Index As Long)
+Dim i As Long
 
     For i = 1 To MAX_QUETES
         If Trim$(quete(i).nom) <> vbNullString Or quete(i).type <> 0 Then Call SendUpdateQueteTo(Index, i)
     Next i
 End Sub
 
-Sub SendUpdateSpellToAll(ByVal SpellNum As Integer)
+Sub SendUpdateSpellToAll(ByVal SpellNum As Long)
 Dim Packet As String
 
     Packet = "UPDATESPELL" & SEP_CHAR & SpellNum & SEP_CHAR & Trim$(Spell(SpellNum).Name) & SEP_CHAR & Spell(SpellNum).Big & SEP_CHAR & Spell(SpellNum).SpellIco & SEP_CHAR & Spell(SpellNum).ClassReq & SEP_CHAR & END_CHAR
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateQueteToAll(ByVal QueteNum As Integer)
+Sub SendUpdateQueteToAll(ByVal QueteNum As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "UPDATEQUETE" & SEP_CHAR & QueteNum & SEP_CHAR & Trim$(quete(QueteNum).nom) & SEP_CHAR & quete(QueteNum).data1 & SEP_CHAR & quete(QueteNum).data2 & SEP_CHAR & quete(QueteNum).data3 & SEP_CHAR & quete(QueteNum).Description & SEP_CHAR & quete(QueteNum).reponse & SEP_CHAR & quete(QueteNum).String1 & SEP_CHAR & quete(QueteNum).temps & SEP_CHAR & quete(QueteNum).type
     
@@ -4246,16 +4267,16 @@ Dim i As Byte
     Call SendDataToAll(Packet)
 End Sub
 
-Sub SendUpdateSpellTo(ByVal Index As Byte, ByVal SpellNum As Integer)
+Sub SendUpdateSpellTo(ByVal Index As Long, ByVal SpellNum As Long)
 Dim Packet As String
 
     Packet = "UPDATESPELL" & SEP_CHAR & SpellNum & SEP_CHAR & Trim$(Spell(SpellNum).Name) & SEP_CHAR & Spell(SpellNum).Big & SEP_CHAR & Spell(SpellNum).SpellIco & SEP_CHAR & Spell(SpellNum).ClassReq & SEP_CHAR & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendUpdateQueteTo(ByVal Index As Byte, ByVal QueteNum As Integer)
+Sub SendUpdateQueteTo(ByVal Index As Long, ByVal QueteNum As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
     Packet = "UPDATEQUETE" & SEP_CHAR & QueteNum & SEP_CHAR & Trim$(quete(QueteNum).nom) & SEP_CHAR & quete(QueteNum).data1 & SEP_CHAR & quete(QueteNum).data2 & SEP_CHAR & quete(QueteNum).data3 & SEP_CHAR & quete(QueteNum).Description & SEP_CHAR & quete(QueteNum).reponse & SEP_CHAR & quete(QueteNum).String1 & SEP_CHAR & quete(QueteNum).temps & SEP_CHAR & quete(QueteNum).type
     
     For i = 1 To 15
@@ -4267,23 +4288,23 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditSpellTo(ByVal Index As Byte, ByVal SpellNum As Integer)
+Sub SendEditSpellTo(ByVal Index As Long, ByVal SpellNum As Long)
 Dim Packet As String
 
     Packet = "EDITSPELL" & SEP_CHAR & SpellNum & SEP_CHAR & Trim$(Spell(SpellNum).Name) & SEP_CHAR & Spell(SpellNum).ClassReq & SEP_CHAR & Spell(SpellNum).LevelReq & SEP_CHAR & Spell(SpellNum).type & SEP_CHAR & Spell(SpellNum).data1 & SEP_CHAR & Spell(SpellNum).data2 & SEP_CHAR & Spell(SpellNum).data3 & SEP_CHAR & Spell(SpellNum).MPCost & SEP_CHAR & Spell(SpellNum).Sound & SEP_CHAR & Spell(SpellNum).Range & SEP_CHAR & Spell(SpellNum).SpellAnim & SEP_CHAR & Spell(SpellNum).SpellTime & SEP_CHAR & Spell(SpellNum).SpellDone & SEP_CHAR & Spell(SpellNum).AE & SEP_CHAR & Spell(SpellNum).Big & SEP_CHAR & Spell(SpellNum).SpellIco & SEP_CHAR & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendEditQuetesTo(ByVal Index As Byte, ByVal QueteNum As Integer)
+Sub SendEditQuetesTo(ByVal Index As Long, ByVal QueteNum As Long)
 Dim Packet As String
 
     Packet = "EDITQUETES" & SEP_CHAR & QueteNum & SEP_CHAR & Trim$(quete(QueteNum).nom) & SEP_CHAR & quete(QueteNum).data1 & SEP_CHAR & quete(QueteNum).data2 & SEP_CHAR & quete(QueteNum).data3 & SEP_CHAR & quete(QueteNum).Description & SEP_CHAR & quete(QueteNum).reponse & SEP_CHAR & quete(QueteNum).String1 & SEP_CHAR & quete(QueteNum).temps & SEP_CHAR & quete(QueteNum).type & END_CHAR
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendTrade(ByVal Index As Byte, ByVal ShopNum As Integer)
+Sub SendTrade(ByVal Index As Long, ByVal ShopNum As Long)
 Dim Packet As String
-Dim i As Byte, z As Integer, XX As Byte
+Dim i As Long, x As Long, y As Long, z As Long, XX As Long
     
     Player(Index).Char(Player(Index).CharNum).vendeur = ShopNum
     
@@ -4303,9 +4324,9 @@ Dim i As Byte, z As Integer, XX As Byte
     End If
 End Sub
 
-Sub SendPlayerSpells(ByVal Index As Byte)
+Sub SendPlayerSpells(ByVal Index As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
 
     Packet = "SPELLS" & SEP_CHAR
     For i = 1 To MAX_PLAYER_SPELLS
@@ -4316,7 +4337,7 @@ Dim i As Byte
     Call SendDataTo(Index, Packet)
 End Sub
 
-Sub SendWeatherTo(ByVal Index As Byte)
+Sub SendWeatherTo(ByVal Index As Long)
 Dim Packet As String
     If RainIntensity <= 0 Then RainIntensity = 1
     Packet = "WEATHER" & SEP_CHAR & GameWeather & SEP_CHAR & RainIntensity & END_CHAR
@@ -4324,7 +4345,7 @@ Dim Packet As String
 End Sub
 
 Sub SendWeatherToAll()
-Dim i As Byte
+Dim i As Long
 Dim Weather As String
 
     PutVar App.Path & "\Data.ini", "CONFIG", "MeteoParMap", 0
@@ -4348,7 +4369,7 @@ Dim Weather As String
     Next i
 End Sub
 
-Sub SendTimeTo(ByVal Index As Byte)
+Sub SendTimeTo(ByVal Index As Long)
 Dim Packet As String
 
     Packet = "TIME" & SEP_CHAR & GameTime & END_CHAR
@@ -4356,7 +4377,7 @@ Dim Packet As String
 End Sub
 
 Sub SendTimeToAll()
-Dim i As Byte
+Dim i As Long
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then Call SendTimeTo(i)
@@ -4365,7 +4386,7 @@ Dim i As Byte
     Call SpawnAllMapNpcs
 End Sub
 
-Sub MapMsg2(ByVal MapNum As Integer, ByVal Msg As String, ByVal Index As Byte)
+Sub MapMsg2(ByVal MapNum As Long, ByVal Msg As String, ByVal Index As Long)
 Dim Packet As String
 
     Packet = "MAPMSG2" & SEP_CHAR & Msg & SEP_CHAR & Index & END_CHAR
@@ -4374,7 +4395,7 @@ Dim Packet As String
 End Sub
 
 Function MMsg(ByVal Msg As String) As Boolean
-Dim i As Integer
+Dim i As Long
 Dim Asct As String
 
 MMsg = True

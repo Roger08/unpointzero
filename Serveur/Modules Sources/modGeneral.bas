@@ -22,11 +22,11 @@ Public DetectScriptErr As Boolean
 Public SpawnSeconds As Long
 
 ' Used for weather effects
-Public GameWeather As Byte
+Public GameWeather As Long
 Public WeatherSeconds As Long
 Public GameTime As Long
 Public TimeSeconds As Long
-Public RainIntensity As Byte
+Public RainIntensity As Long
 Public InDestroy As Boolean
 
 ' Used for closing key doors again
@@ -76,15 +76,15 @@ End Sub
 
 Sub InitServer()
 Dim IPMask As String
-Dim i As Integer
-Dim f As Integer
+Dim i As Long
+Dim f As Long
     'On Error GoTo er:
     
     Randomize Timer
     
     
     If Not FileExist("Serveur.exe.manifest") Then
-    Call URLDownloadToFile(0, "http://frogcreator.fr/update/Serveur.exe.manifest", App.Path & "\Serveur.exe.manifest", 0, 0)
+    Call URLDownloadToFile(0, "http://frogcreator/update/Serveur.exe.manifest", App.Path & "\Serveur.exe.manifest", 0, 0)
     End If
 
     Call InitXpStyle
@@ -114,18 +114,18 @@ Dim f As Integer
     TimeSeconds = 0
     RainIntensity = 25
     
-    If LCase$(Dir(App.Path & "\Maps", vbDirectory)) <> "maps" Then Call MkDir(App.Path & "\Maps")
-    If LCase$(Dir(App.Path & "\Logs", vbDirectory)) <> "logs" Then Call MkDir(App.Path & "\Logs")
-    If LCase$(Dir(App.Path & "\Comptes", vbDirectory)) <> "comptes" Then Call MkDir(App.Path & "\Comptes")
-    If LCase$(Dir(App.Path & "\PNJs", vbDirectory)) <> "pnjs" Then Call MkDir(App.Path & "\PNJs")
-    If LCase$(Dir(App.Path & "\Objets", vbDirectory)) <> "objets" Then Call MkDir(App.Path & "\Objets")
-    If LCase$(Dir(App.Path & "\Sorts", vbDirectory)) <> "sorts" Then Call MkDir(App.Path & "\Sorts")
-    If LCase$(Dir(App.Path & "\Quetes", vbDirectory)) <> "quetes" Then Call MkDir(App.Path & "\Quetes")
-    If LCase$(Dir(App.Path & "\Magasins", vbDirectory)) <> "magasins" Then Call MkDir(App.Path & "\Magasins")
-    If LCase$(Dir(App.Path & "\Classes", vbDirectory)) <> "classes" Then Call MkDir(App.Path & "\Classes")
-    If LCase$(Dir(App.Path & "\Metiers", vbDirectory)) <> "metiers" Then Call MkDir(App.Path & "\Metiers")
-    If LCase$(Dir(App.Path & "\Pets", vbDirectory)) <> "pets" Then Call MkDir(App.Path & "\Pets")
-    If LCase$(Dir(App.Path & "\Recettes", vbDirectory)) <> "recettes" Then Call MkDir(App.Path & "\Recettes")
+    If LCase$(Dir(App.Path & "\maps", vbDirectory)) <> "maps" Then Call MkDir(App.Path & "\maps")
+    If LCase$(Dir(App.Path & "\logs", vbDirectory)) <> "logs" Then Call MkDir(App.Path & "\Logs")
+    If LCase$(Dir(App.Path & "\accounts", vbDirectory)) <> "accounts" Then Call MkDir(App.Path & "\accounts")
+    If LCase$(Dir(App.Path & "\npcs", vbDirectory)) <> "npcs" Then Call MkDir(App.Path & "\Npcs")
+    If LCase$(Dir(App.Path & "\items", vbDirectory)) <> "items" Then Call MkDir(App.Path & "\Items")
+    If LCase$(Dir(App.Path & "\spells", vbDirectory)) <> "spells" Then Call MkDir(App.Path & "\Spells")
+    If LCase$(Dir(App.Path & "\quetes", vbDirectory)) <> "quetes" Then Call MkDir(App.Path & "\Quetes")
+    If LCase$(Dir(App.Path & "\shops", vbDirectory)) <> "shops" Then Call MkDir(App.Path & "\Shops")
+    If LCase$(Dir(App.Path & "\classes", vbDirectory)) <> "classes" Then Call MkDir(App.Path & "\Classes")
+    If LCase$(Dir(App.Path & "\metiers", vbDirectory)) <> "metiers" Then Call MkDir(App.Path & "\Metiers")
+    If LCase$(Dir(App.Path & "\pets", vbDirectory)) <> "pets" Then Call MkDir(App.Path & "\Pets")
+    If LCase$(Dir(App.Path & "\recettes", vbDirectory)) <> "recettes" Then Call MkDir(App.Path & "\recettes")
 
     loading (5)
     SEP_CHAR = Chr$(0)
@@ -294,7 +294,7 @@ Dim f As Integer
     ReDim quete(1 To MAX_QUETES) As QueteRec
     ReDim Map(1 To MAX_MAPS) As MapRec
     ReDim TempTile(1 To MAX_MAPS) As TempTileRec
-    ReDim PlayersOnMap(1 To MAX_MAPS) As Integer
+    ReDim PlayersOnMap(1 To MAX_MAPS) As Long
     ReDim Player(1 To MAX_PLAYERS) As AccountRec
     ReDim item(0 To MAX_ITEMS) As ItemRec
     ReDim Npc(0 To MAX_NPCS) As NpcRec
@@ -326,13 +326,13 @@ Dim f As Integer
     ReDim experience(1 To MAX_LEVEL) As Long
     ReDim PnjMove(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Boolean
     ReDim bouclier(1 To MAX_PLAYERS) As Boolean
-    ReDim BouclierT(1 To MAX_PLAYERS) As Integer
+    ReDim BouclierT(1 To MAX_PLAYERS) As Long
     ReDim Para(1 To MAX_PLAYERS) As Boolean
-    ReDim ParaT(1 To MAX_PLAYERS) As Integer
-    ReDim Point(1 To MAX_PLAYERS) As Integer
-    ReDim PointT(1 To MAX_PLAYERS) As Integer
+    ReDim ParaT(1 To MAX_PLAYERS) As Long
+    ReDim Point(1 To MAX_PLAYERS) As Long
+    ReDim PointT(1 To MAX_PLAYERS) As Long
     ReDim ParaN(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Boolean
-    ReDim ParaNT(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Integer
+    ReDim ParaNT(1 To MAX_MAP_NPCS, 1 To MAX_MAPS) As Long
     
     START_MAP = 1
     START_X = MAX_MAPX / 2
@@ -509,9 +509,9 @@ Dim f As Integer
     frmServer.Command13.Enabled = False
     
     ' Check if the master charlist file exists for checking duplicate names, and if it doesnt make it
-    If Not FileExist("Comptes\charlist.txt") Then
+    If Not FileExist("accounts\charlist.txt") Then
         f = FreeFile
-        Open App.Path & "\Comptes\charlist.txt" For Output As #f
+        Open App.Path & "\accounts\charlist.txt" For Output As #f
         Close #f
     End If
     
@@ -641,7 +641,7 @@ Sub SetStatus(ByVal Status As String)
 End Sub
 
 Sub ServerLogic()
-Dim i As Byte
+Dim i As Long
 
     ' Check for disconnections
     For i = 1 To MAX_PLAYERS
@@ -654,7 +654,7 @@ Dim i As Byte
 End Sub
 
 Sub CheckSpawnMapItems()
-Dim X As Byte, Y As Byte
+Dim X As Long, Y As Long
 
     ' Used for map item respawning
     SpawnSeconds = SpawnSeconds + 1
@@ -957,7 +957,7 @@ Dim SpellSlot As Byte
 End Sub
 
 Sub CheckGiveHP()
-Dim i As Byte
+Dim i As Long, n As Long
 
     If GetTickCount > GiveHPTimer + 10000 Then
         For i = 1 To MAX_PLAYERS
@@ -977,8 +977,8 @@ Dim i As Byte
 End Sub
 
 Sub VerifEffetsJoueur()
-Dim i As Byte
-Dim z As Integer 'Compteur boucle NPC
+Dim i As Long
+Dim z As Long
 For i = 1 To MAX_PLAYERS
     If bouclier(i) And GetTickCount >= BouclierT(i) Then bouclier(i) = False: BouclierT(i) = 0
     If Para(i) And GetTickCount >= ParaT(i) Then Call ContrOnOff(i): Para(i) = False: ParaT(i) = 0
@@ -1011,6 +1011,7 @@ End Sub
 
 Sub PlayerSaveTimer()
 Static MinPassed As Long
+Dim i As Long
 
 MinPassed = MinPassed + 1
 If MinPassed >= 60 Then
@@ -1361,7 +1362,7 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & MapNpc(MapNum, MapNpcNumDef).Num & ")par un PNJ(" & MapNpc(MapNum, MapNpcNumAtt).Num & ")", BrightRed)
 End Sub
 'Script Hotel de ventes par Horace
-Public Sub HdvCmd(ByVal Index As Byte, ByVal s As String)
+Public Sub HdvCmd(ByVal Index As Long, ByVal s As String)
 Dim Parse() As String, Answer As Integer
     s = Mid$(s, 7)
     Parse = Split(s, " ")

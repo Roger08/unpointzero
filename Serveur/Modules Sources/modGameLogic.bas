@@ -1,8 +1,8 @@
 Attribute VB_Name = "modGameLogic"
 Option Explicit
 
-Function GetPlayerDamage(ByVal Index As Byte) As Long
-Dim WeaponSlot As Byte
+Function GetPlayerDamage(ByVal Index As Long) As Long
+Dim WeaponSlot As Long
 
     GetPlayerDamage = 0
     
@@ -38,8 +38,8 @@ Dim WeaponSlot As Byte
     
 End Function
 
-Function GetPlayerProtection(ByVal Index As Byte) As Long
-Dim ArmorSlot As Byte, HelmSlot As Byte, ShieldSlot As Byte
+Function GetPlayerProtection(ByVal Index As Long) As Long
+Dim ArmorSlot As Long, HelmSlot As Long, ShieldSlot As Long
     
     GetPlayerProtection = 0
     
@@ -98,8 +98,8 @@ Dim ArmorSlot As Byte, HelmSlot As Byte, ShieldSlot As Byte
     End If
 End Function
 
-Function FindOpenPlayerSlot() As Byte
-Dim i As Byte
+Function FindOpenPlayerSlot() As Long
+Dim i As Long
 
     FindOpenPlayerSlot = 0
     
@@ -108,8 +108,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function FindOpenInvSlot(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
-Dim i As Byte
+Function FindOpenInvSlot(ByVal Index As Long, ByVal ItemNum As Long) As Long
+Dim i As Long
     
     FindOpenInvSlot = 0
     
@@ -129,8 +129,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function FindOpenMapItemSlot(ByVal MapNum As Integer) As Byte
-Dim i As Byte
+Function FindOpenMapItemSlot(ByVal MapNum As Long) As Long
+Dim i As Long
 
     FindOpenMapItemSlot = 0
     
@@ -142,8 +142,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function FindOpenSpellSlot(ByVal Index As Byte) As Byte
-Dim i As Byte
+Function FindOpenSpellSlot(ByVal Index As Long) As Long
+Dim i As Long
 
     FindOpenSpellSlot = 0
     
@@ -152,8 +152,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function HasSpell(ByVal Index As Byte, ByVal SpellNum As Integer) As Boolean
-Dim i As Byte
+Function HasSpell(ByVal Index As Long, ByVal SpellNum As Long) As Boolean
+Dim i As Long
 
     HasSpell = False
     
@@ -162,8 +162,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function TotalOnlinePlayers() As Byte
-Dim i As Byte
+Function TotalOnlinePlayers() As Long
+Dim i As Long
 TotalOnlinePlayers = 0
 
 For i = 1 To MAX_PLAYERS
@@ -171,8 +171,8 @@ For i = 1 To MAX_PLAYERS
 Next i
 End Function
 
-Function FindPlayer(ByVal Name As String) As Byte
-Dim i As Byte
+Function FindPlayer(ByVal Name As String) As Long
+Dim i As Long
 
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then
@@ -189,8 +189,8 @@ Dim i As Byte
     FindPlayer = 0
 End Function
 
-Function HasItem(ByVal Index As Byte, ByVal ItemNum As Integer) As Byte
-Dim i As Byte
+Function HasItem(ByVal Index As Long, ByVal ItemNum As Long) As Long
+Dim i As Long
     
     HasItem = 0
     
@@ -210,8 +210,8 @@ Dim i As Byte
     Next i
 End Function
 
-Sub TakeItem(ByVal Index As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer)
-Dim i As Byte, n As Byte
+Sub TakeItem(ByVal Index As Long, ByVal ItemNum As Long, ByVal ItemVal As Long)
+Dim i As Long, n As Long
 Dim TakeItem As Boolean
 
     TakeItem = False
@@ -329,8 +329,8 @@ Dim TakeItem As Boolean
     Next i
 End Sub
 
-Sub GiveItem(ByVal Index As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer)
-Dim i As Byte
+Sub GiveItem(ByVal Index As Long, ByVal ItemNum As Long, ByVal ItemVal As Long)
+Dim i As Long
 
     ' Check for subscript out of range
     If IsPlaying(Index) = False Or ItemNum <= 0 Or ItemNum > MAX_ITEMS Then Exit Sub
@@ -352,8 +352,8 @@ Dim i As Byte
     End If
 End Sub
 
-Sub SpawnItem(ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
-Dim i As Byte
+Sub SpawnItem(ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
+Dim i As Long
 
     ' Check for subscript out of range
     If ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -361,12 +361,12 @@ Dim i As Byte
     ' Find open map item slot
     i = FindOpenMapItemSlot(MapNum)
     
-    Call SpawnItemSlot(i, ItemNum, ItemVal, item(ItemNum).data1, MapNum, X, Y)
+    Call SpawnItemSlot(i, ItemNum, ItemVal, item(ItemNum).data1, MapNum, x, y)
 End Sub
 
-Sub SpawnItemSlot(ByVal MapItemSlot As Byte, ByVal ItemNum As Integer, ByVal ItemVal As Integer, ByVal ItemDur As Integer, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
+Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal ItemVal As Long, ByVal ItemDur As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
     
     ' Check for subscript out of range
     If MapItemSlot <= 0 Or MapItemSlot > MAX_MAP_ITEMS Or ItemNum < 0 Or ItemNum > MAX_ITEMS Or MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
@@ -387,50 +387,51 @@ Dim i As Byte
             MapItem(MapNum, i).Dur = 0
         End If
         
-        MapItem(MapNum, i).X = X
-        MapItem(MapNum, i).Y = Y
+        MapItem(MapNum, i).x = x
+        MapItem(MapNum, i).y = y
             
-        Packet = "SPAWNITEM" & SEP_CHAR & i & SEP_CHAR & ItemNum & SEP_CHAR & ItemVal & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & X & SEP_CHAR & Y & END_CHAR
+        Packet = "SPAWNITEM" & SEP_CHAR & i & SEP_CHAR & ItemNum & SEP_CHAR & ItemVal & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & x & SEP_CHAR & y & END_CHAR
         Call SendDataToMap(MapNum, Packet)
     End If
 End Sub
 
 Sub SpawnAllMapsItems()
-Dim i As Integer
+Dim i As Long
     
     For i = 1 To MAX_MAPS
         Call SpawnMapItems(i)
     Next i
 End Sub
 
-Sub SpawnMapItems(ByVal MapNum As Integer)
-Dim X As Byte
-Dim Y As Byte
+Sub SpawnMapItems(ByVal MapNum As Long)
+Dim x As Long
+Dim y As Long
+Dim i As Long
 
     ' Check for subscript out of range
     If MapNum <= 0 Or MapNum > MAX_MAPS Then Exit Sub
         
     ' Spawn what we have
-    For Y = 0 To MAX_MAPY
-        For X = 0 To MAX_MAPX
+    For y = 0 To MAX_MAPY
+        For x = 0 To MAX_MAPX
             ' Check if the tile type is an item or a saved tile incase someone drops something
 
-            If (Map(MapNum).Tile(X, Y).type = TILE_TYPE_ITEM) Then
+            If (Map(MapNum).Tile(x, y).type = TILE_TYPE_ITEM) Then
                 ' Check to see if its a currency and if they set the value to 0 set it to 1 automatically
-                If (item(Map(MapNum).Tile(X, Y).data1).type = ITEM_TYPE_CURRENCY Or item(Map(MapNum).Tile(X, Y).data1).Empilable <> 0) And Map(MapNum).Tile(X, Y).data2 <= 0 Then
-                    Call SpawnItem(Map(MapNum).Tile(X, Y).data1, 1, MapNum, X, Y)
+                If (item(Map(MapNum).Tile(x, y).data1).type = ITEM_TYPE_CURRENCY Or item(Map(MapNum).Tile(x, y).data1).Empilable <> 0) And Map(MapNum).Tile(x, y).data2 <= 0 Then
+                    Call SpawnItem(Map(MapNum).Tile(x, y).data1, 1, MapNum, x, y)
                 Else
-                    Call SpawnItem(Map(MapNum).Tile(X, Y).data1, Map(MapNum).Tile(X, Y).data2, MapNum, X, Y)
+                    Call SpawnItem(Map(MapNum).Tile(x, y).data1, Map(MapNum).Tile(x, y).data2, MapNum, x, y)
                 End If
             End If
-        Next X
-    Next Y
+        Next x
+    Next y
 End Sub
 
-Sub PlayerMapGetItem(ByVal Index As Byte)
-Dim i As Byte
-Dim n As Integer
-Dim MapNum As Integer
+Sub PlayerMapGetItem(ByVal Index As Long)
+Dim i As Long
+Dim n As Long
+Dim MapNum As Long
 Dim Msg As String
 
 
@@ -442,7 +443,7 @@ Dim Msg As String
         ' See if theres even an item here
         If (MapItem(MapNum, i).Num > 0) And (MapItem(MapNum, i).Num <= MAX_ITEMS) Then
             ' Check if item is at the same location as the player
-            If (MapItem(MapNum, i).X = GetPlayerX(Index)) And (MapItem(MapNum, i).Y = GetPlayerY(Index)) Then
+            If (MapItem(MapNum, i).x = GetPlayerX(Index)) And (MapItem(MapNum, i).y = GetPlayerY(Index)) Then
                 ' Find open slot
                 n = FindOpenInvSlot(Index, MapItem(MapNum, i).Num)
                                
@@ -471,8 +472,8 @@ Dim Msg As String
                     MapItem(MapNum, i).Num = 0
                     MapItem(MapNum, i).value = 0
                     MapItem(MapNum, i).Dur = 0
-                    MapItem(MapNum, i).X = 0
-                    MapItem(MapNum, i).Y = 0
+                    MapItem(MapNum, i).x = 0
+                    MapItem(MapNum, i).y = 0
                         
                     Call SendInventoryUpdate(Index, n)
                     Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), GetPlayerX(Index), GetPlayerY(Index))
@@ -488,8 +489,8 @@ Dim Msg As String
     Next i
 End Sub
 
-Sub PlayerMapDropItem(ByVal Index As Byte, ByVal InvNum As Integer, ByVal Amount As Integer)
-Dim i As Byte
+Sub PlayerMapDropItem(ByVal Index As Long, ByVal InvNum As Long, ByVal Amount As Long)
+Dim i As Long
 
     ' Check for subscript out of range
     If IsPlaying(Index) = False Or InvNum <= 0 Or InvNum > MAX_INV Then Exit Sub
@@ -544,11 +545,11 @@ Dim i As Byte
                     
                 Case ITEM_TYPE_MONTURE
                     If InvNum = GetPlayerArmorSlot(Index) Then
-                        Dim s As Integer
+                        Dim s As Long
                         Call SetPlayerArmorSlot(Index, 0)
                         Call SendInventory(Index)
                         Call SendWornEquipment(Index)
-                        s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+                        s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
                         Call SetPlayerSprite(Index, s)
                         Call SendPlayerData(Index)
                     End If
@@ -556,8 +557,8 @@ Dim i As Byte
             End Select
                                 
             MapItem(GetPlayerMap(Index), i).Num = GetPlayerInvItemNum(Index, InvNum)
-            MapItem(GetPlayerMap(Index), i).X = GetPlayerX(Index)
-            MapItem(GetPlayerMap(Index), i).Y = GetPlayerY(Index)
+            MapItem(GetPlayerMap(Index), i).x = GetPlayerX(Index)
+            MapItem(GetPlayerMap(Index), i).y = GetPlayerY(Index)
                         
             If item(GetPlayerInvItemNum(Index, InvNum)).type = ITEM_TYPE_CURRENCY Or item(GetPlayerInvItemNum(Index, InvNum)).Empilable <> 0 Then
                 ' Check if its more then they have and if so drop it all
@@ -603,9 +604,10 @@ End Sub
 'Thanks to Gotakk 'cause he's the one who tracked a bug (after almost a year, he's the only one)
 'The bug was a forgot to check if we already informed the player about the QuestStatus
 
-Sub PlayerQueteTypeRecup(ByVal Index As Byte, ByVal Queteec As Integer, ByVal Objnum As Integer, ByVal Objvalue As Integer)
-Dim i As Byte
-Dim n As Integer
+Sub PlayerQueteTypeRecup(ByVal Index As Long, ByVal Queteec As Long, ByVal Objnum As Long, ByVal Objvalue As Long)
+Dim i As Long
+Dim n As Long
+Dim z As Long
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Then Exit Sub
@@ -639,9 +641,9 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeAport(ByVal Index As Byte, ByVal Queteec As Integer)
-Dim i As Byte
-Dim n As Byte
+Sub PlayerQueteTypeAport(ByVal Index As Long, ByVal Queteec As Long)
+Dim i As Long
+Dim n As Long
 n = 0
 
 If Not IsPlaying(Index) Then Exit Sub
@@ -670,9 +672,9 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeTuer(ByVal Index As Byte, ByVal Queteec As Integer, ByVal NpcTnum As Integer)
-Dim i As Byte
-Dim n As Byte
+Sub PlayerQueteTypeTuer(ByVal Index As Long, ByVal Queteec As Long, ByVal NpcTnum As Long)
+Dim i As Long
+Dim n As Long
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Then Exit Sub
@@ -707,7 +709,9 @@ End If
 
 End Sub
 
-Sub PlayerQueteTypeXp(ByVal Index As Byte, ByVal Queteec As Integer, ByVal Xp As Long)
+Sub PlayerQueteTypeXp(ByVal Index As Long, ByVal Queteec As Long, ByVal Xp As Long)
+Dim i As Long
+Dim n As Long
 
 If Not IsPlaying(Index) Then Exit Sub
 If Queteec <= 0 Or Xp <= 0 Then Exit Sub
@@ -725,8 +729,10 @@ End If
 
 End Sub
 
-Sub TerminerPlayerQuete(ByVal Index As Byte, ByVal QueteTindex As Integer)
+Sub TerminerPlayerQuete(ByVal Index As Long, ByVal QueteTindex As Long)
 Dim Packet As String
+Dim i As Long
+
 If Not IsPlaying(Index) Then Exit Sub
 If QueteTindex <= 0 Then Exit Sub
 If GetPlayerQueteEtat(Index, QueteTindex) Then Exit Sub
@@ -766,10 +772,10 @@ Call SendDataTo(Index, Packet)
 
 End Sub
 
-Sub SpawnNpc(ByVal MapNpcNum As Integer, ByVal MapNum As Integer)
+Sub SpawnNpc(ByVal MapNpcNum As Long, ByVal MapNum As Long)
 Dim Packet As String
-Dim npcnum As Integer
-Dim i As Byte, X As Byte, Y As Byte
+Dim npcnum As Long
+Dim i As Long, x As Long, y As Long
 Dim Spawned As Boolean
 
     ' Check for subscript out of range
@@ -809,21 +815,21 @@ Dim Spawned As Boolean
         
         ' Well try 100 times to randomly place the sprite
         If Map(MapNum).Npcs(MapNpcNum).Hasardp = 0 Then
-            MapNpc(MapNum, MapNpcNum).X = Map(MapNum).Npcs(MapNpcNum).X
-            MapNpc(MapNum, MapNpcNum).Y = Map(MapNum).Npcs(MapNpcNum).Y
+            MapNpc(MapNum, MapNpcNum).x = Map(MapNum).Npcs(MapNpcNum).x
+            MapNpc(MapNum, MapNpcNum).y = Map(MapNum).Npcs(MapNpcNum).y
             If Map(MapNum).Npcs(MapNpcNum).Imobile > 0 Then MapNpc(MapNum, MapNpcNum).Dir = Map(MapNum).Npcs(MapNpcNum).Imobile - 1
             Spawned = True
         Else
             For i = 1 To 100
-                X = Int(Rnd * MAX_MAPX)
-                Y = Int(Rnd * MAX_MAPY)
+                x = Int(Rnd * MAX_MAPX)
+                y = Int(Rnd * MAX_MAPY)
                 
                 ' Check if the tile is walkable
-                If Map(MapNum).Tile(X, Y).type = TILE_TYPE_WALKABLE Then
-                    MapNpc(MapNum, MapNpcNum).X = X
-                    MapNpc(MapNum, MapNpcNum).Y = Y
-                    Map(MapNum).Npcs(MapNpcNum).X = X
-                    Map(MapNum).Npcs(MapNpcNum).Y = Y
+                If Map(MapNum).Tile(x, y).type = TILE_TYPE_WALKABLE Then
+                    MapNpc(MapNum, MapNpcNum).x = x
+                    MapNpc(MapNum, MapNpcNum).y = y
+                    Map(MapNum).Npcs(MapNpcNum).x = x
+                    Map(MapNum).Npcs(MapNpcNum).y = y
                     Spawned = True
                     Exit For
                 End If
@@ -831,20 +837,20 @@ Dim Spawned As Boolean
         End If
             ' Didn't spawn, so now we'll just try to find a free tile
         If Not Spawned Then
-            For Y = 0 To MAX_MAPY
-                For X = 0 To MAX_MAPX
-                    If Map(MapNum).Tile(X, Y).type = TILE_TYPE_WALKABLE Then
-                        MapNpc(MapNum, MapNpcNum).X = X
-                        MapNpc(MapNum, MapNpcNum).Y = Y
+            For y = 0 To MAX_MAPY
+                For x = 0 To MAX_MAPX
+                    If Map(MapNum).Tile(x, y).type = TILE_TYPE_WALKABLE Then
+                        MapNpc(MapNum, MapNpcNum).x = x
+                        MapNpc(MapNum, MapNpcNum).y = y
                         Spawned = True
                     End If
-                Next X
-            Next Y
+                Next x
+            Next y
         End If
              
         ' If we suceeded in spawning then send it to everyone
         If Spawned Then
-            Packet = "SPAWNNPC" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Num & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & END_CHAR
+            Packet = "SPAWNNPC" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Num & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & END_CHAR
             Call SendDataToMap(MapNum, Packet)
         End If
     Else
@@ -854,9 +860,10 @@ Dim Spawned As Boolean
         Call SendDataToMap(MapNum, Packet)
     End If
     
+    'Call SendDataToMap(MapNum, "npchp" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).HP & SEP_CHAR & GetNpcMaxHP(MapNpc(MapNum, MapNpcNum).num) & END_CHAR)
 End Sub
 
-Sub SpawnMapNpcs(ByVal MapNum As Integer)
+Sub SpawnMapNpcs(ByVal MapNum As Long)
 Dim i As Integer
 
     For i = 1 To MAX_MAP_NPCS
@@ -872,8 +879,8 @@ Dim i As Integer
     Next i
 End Sub
 
-Function CanAttackPlayer(ByVal Attacker As Byte, ByVal Victim As Byte) As Boolean
-Dim AttackSpeed As Integer
+Function CanAttackPlayer(ByVal Attacker As Long, ByVal Victim As Long) As Boolean
+Dim AttackSpeed As Long
 
     ' Check for subscript out of range
     If IsPlaying(Attacker) = False Or IsPlaying(Victim) = False Then Exit Function
@@ -1006,11 +1013,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(ATT : " & GetPlayerName(Attacker) & ",VIC : " & GetPlayerName(Victim) & ")", BrightRed)
 End Function
 
-Function CanAttackNpc(ByVal Attacker As Byte, ByVal MapNpcNum As Integer) As Boolean
-Dim X As Byte, Y As Byte, npcnum As Integer
-Dim AttackSpeed As Integer
+Function CanAttackNpc(ByVal Attacker As Long, ByVal MapNpcNum As Long) As Boolean
+Dim MapNum As Long, npcnum As Long
+Dim AttackSpeed As Long
 Dim TmpX As Byte, TmpY As Byte
-Dim MapNum As Integer
+
 
 
 ' Check for subscript out of range
@@ -1087,7 +1094,7 @@ If IsPlaying(Attacker) Then
                 TmpY = 1
         End Select
         
-        If (MapNpc(MapNum, MapNpcNum).Y + (TmpY - 1) = GetPlayerY(Attacker)) And (MapNpc(MapNum, MapNpcNum).X + (TmpX - 1) = GetPlayerX(Attacker)) Then
+        If (MapNpc(MapNum, MapNpcNum).y + (TmpY - 1) = GetPlayerY(Attacker)) And (MapNpc(MapNum, MapNpcNum).x + (TmpX - 1) = GetPlayerX(Attacker)) Then
             If Npc(npcnum).Behavior <> NPC_BEHAVIOR_FRIENDLY And Npc(npcnum).Behavior <> NPC_BEHAVIOR_SHOPKEEPER And Npc(npcnum).Behavior <> NPC_BEHAVIOR_QUETEUR And Npc(npcnum).Behavior <> NPC_BEHAVIOR_SCRIPT Then
                 CanAttackNpc = True
                 If Val(Scripting) = 1 And IsNumeric(Trim$(Npc(npcnum).AttackSay)) Then
@@ -1156,9 +1163,8 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ") par un joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Function
 
-Function CanNpcAttackPlayer(ByVal MapNpcNum As Integer, ByVal Index As Byte) As Boolean
-Dim X As Byte, Y As Byte, npcnum As Integer
-Dim MapNum As Integer
+Function CanNpcAttackPlayer(ByVal MapNpcNum As Long, ByVal Index As Long) As Boolean
+Dim MapNum As Long, npcnum As Long
     
     CanNpcAttackPlayer = False
     
@@ -1190,16 +1196,16 @@ Dim MapNum As Integer
     If IsPlaying(Index) Then
         If npcnum > 0 Then
             ' Check if at same coordinates
-            If (GetPlayerY(Index) + 1 = MapNpc(MapNum, MapNpcNum).Y) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).X) Then
+            If (GetPlayerY(Index) + 1 = MapNpc(MapNum, MapNpcNum).y) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).x) Then
                 CanNpcAttackPlayer = True
             Else
-                If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).Y + 1) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).X) Then
+                If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).y + 1) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).x) Then
                     CanNpcAttackPlayer = True
                 Else
-                    If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).Y) And (GetPlayerX(Index) + 1 = MapNpc(MapNum, MapNpcNum).X) Then
+                    If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).y) And (GetPlayerX(Index) + 1 = MapNpc(MapNum, MapNpcNum).x) Then
                         CanNpcAttackPlayer = True
                     Else
-                        If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).Y) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).X + 1) Then
+                        If (GetPlayerY(Index) = MapNpc(MapNum, MapNpcNum).y) And (GetPlayerX(Index) = MapNpc(MapNum, MapNpcNum).x + 1) Then
                             CanNpcAttackPlayer = True
                         End If
                     End If
@@ -1218,9 +1224,10 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Index) & ")par un PNJ(" & npcnum & ")", BrightRed)
 End Function
 
-Sub AttackPlayer(ByVal Attacker As Byte, ByVal Victim As Byte, ByVal Damage As Long)
+Sub AttackPlayer(ByVal Attacker As Long, ByVal Victim As Long, ByVal Damage As Long)
 Dim Exp As Long
-Dim n As Integer
+Dim n As Long
+Dim i As Long
     
     ' Check for subscript out of range
     If IsPlaying(Attacker) = False Or IsPlaying(Victim) = False Or Damage < 0 Then Exit Sub
@@ -1383,10 +1390,10 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ")par un autre joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Sub
 
-Sub NpcAttackPlayer(ByVal MapNpcNum As Integer, ByVal Victim As Byte, ByVal Damage As Integer)
+Sub NpcAttackPlayer(ByVal MapNpcNum As Long, ByVal Victim As Long, ByVal Damage As Long)
 Dim Name As String
 Dim Exp As Long
-Dim MapNum As Integer
+Dim MapNum As Long
 
     If Not IsPlaying(Victim) Then Exit Sub
     
@@ -1503,11 +1510,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ")par un PNJ(" & MapNpc(MapNum, MapNpcNum).Num & ")", BrightRed)
 End Sub
 
-Sub AttackNpc(ByVal Attacker As Byte, ByVal MapNpcNum As Integer, ByVal Damage As Integer)
+Sub AttackNpc(ByVal Attacker As Long, ByVal MapNpcNum As Long, ByVal Damage As Long)
 Dim Name As String
 Dim Exp As Long, ExpG As Long
-Dim n As Long, i As Long, q As Integer, X As Byte
-Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
+Dim n As Long, i As Long, q As Integer, x As Long
+Dim STR As Long, def As Long, MapNum As Long, npcnum As Long
 
     On Error GoTo er:
     
@@ -1605,16 +1612,16 @@ Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
         Else
             q = Party.MemberCount(Player(Attacker).InParty)
             If Party.ShareExp(Player(Attacker).InParty) = 2 Then
-                For X = 1 To q
-                    n = Party.PlayerIndex(Player(Attacker).InParty, X)
+                For x = 1 To q
+                    n = Party.PlayerIndex(Player(Attacker).InParty, x)
                     i = i + Player(n).Char(Player(n).CharNum).Level
-                Next X
+                Next x
             Else
                 ExpG = Exp / q
             End If
             
-            For X = 1 To q
-                n = Party.PlayerIndex(Player(Attacker).InParty, X)
+            For x = 1 To q
+                n = Party.PlayerIndex(Player(Attacker).InParty, x)
                 If Party.ShareExp(Player(Attacker).InParty) = 2 Then ExpG = Exp * (Player(n).Char(Player(n).CharNum).Level / i)
                 If GetPlayerLevel(n) = MAX_LEVEL Then
                     Call SetPlayerExp(n, experience(MAX_LEVEL))
@@ -1623,7 +1630,7 @@ Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
                     Call SetPlayerExp(n, GetPlayerExp(n) + ExpG)
                     Call BattleMsg(n, "Vous avez gagné " & ExpG & " points d'expérience de groupe.", BrightBlue, 0)
                 End If
-            Next X
+            Next x
         End If
                       
         For i = 1 To MAX_NPC_DROPS
@@ -1643,19 +1650,19 @@ Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
                             n = Math.Round(Math.Rnd * 100)
 
                             If n > 0 And n <= DoubleDrop(Attacker) Then
-                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
-                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
+                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
+                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
                             Else
-                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
+                                Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
                             End If
                         Else
-                            Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
+                            Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
                         End If
                     Else
-                        Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
+                        Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
                     End If
                 Else
-                    Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y)
+                    Call SpawnItem(Npc(npcnum).ItemNPC(i).ItemNum, Npc(npcnum).ItemNPC(i).ItemValue, MapNum, MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y)
                 End If
             End If
         Next i
@@ -1680,10 +1687,10 @@ Dim STR As Integer, def As Integer, MapNum As Integer, npcnum As Integer
 
         ' Check for level up party member
         If Player(Attacker).InParty > 0 Then
-            For X = 1 To Party.MemberCount(Player(Attacker).InParty)
-                n = Party.PlayerIndex(Player(Attacker).InParty, X)
+            For x = 1 To Party.MemberCount(Player(Attacker).InParty)
+                n = Party.PlayerIndex(Player(Attacker).InParty, x)
                 Call CheckPlayerLevelUp(n)
-            Next X
+            Next x
         End If
     
         ' Check if target is npc that died and if so set target to 0
@@ -1730,9 +1737,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ")par un joueur(" & GetPlayerName(Attacker) & ")", BrightRed)
 End Sub
 
-Sub PlayerWarp(ByVal Index As Byte, ByVal MapNum As Integer, ByVal X As Byte, ByVal Y As Byte)
+Sub PlayerWarp(ByVal Index As Long, ByVal MapNum As Long, ByVal x As Long, ByVal y As Long)
 Dim Packet As String
-Dim OldMap As Integer
+Dim OldMap As Long
 
     On Error GoTo er:
 
@@ -1744,11 +1751,11 @@ Dim OldMap As Integer
     Call SendLeaveMap(Index, OldMap)
     
     Call SetPlayerMap(Index, MapNum)
-    Call SetPlayerX(Index, X)
-    Call SetPlayerY(Index, Y)
+    Call SetPlayerX(Index, x)
+    Call SetPlayerY(Index, y)
                 
     ' Now we check if there were any players left on the map the player just left, and if not stop processing npcs
-    If PlayerInMap(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
+    If GetTotalMapPlayers(OldMap) = 0 Then PlayersOnMap(OldMap) = NO
         
     ' Sets it so we know to process npcs on the map
     PlayersOnMap(MapNum) = YES
@@ -1760,7 +1767,7 @@ Dim OldMap As Integer
     Call SendInventory(Index)
     'Call SendWornEquipment(Index)
     'PAPERDOLL
-    Dim i As Byte
+    Dim i As Long
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(Index) Then
             If Index <> i Then Call SendInventory(i)
@@ -1791,84 +1798,84 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant la téléportation du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",Carte : " & MapNum & "(" & X & "," & Y & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant la téléportation du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",Carte : " & MapNum & "(" & x & "," & y & "). Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant la téléportation du joueur : " & GetPlayerName(Index), BrightRed)
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function canPetMove(ByVal Index As Byte, ByVal Dir As Byte) As Boolean
+Function canPetMove(ByVal Index As Long, ByVal Dir As Byte) As Boolean
     canPetMove = True
     With Player(Index).Char(Player(Index).CharNum).pet
         Select Case Dir
             Case DIR_UP
-                If Map(GetPlayerMap(Index)).Tile(.X, .Y - 1).type = TILE_TYPE_BLOCKED Then canPetMove = False
+                If Map(GetPlayerMap(Index)).Tile(.x, .y - 1).type = TILE_TYPE_BLOCKED Then canPetMove = False
             Case DIR_DOWN
-                If Map(GetPlayerMap(Index)).Tile(.X, .Y + 1).type = TILE_TYPE_BLOCKED Then canPetMove = False
+                If Map(GetPlayerMap(Index)).Tile(.x, .y + 1).type = TILE_TYPE_BLOCKED Then canPetMove = False
             Case DIR_LEFT
-                If Map(GetPlayerMap(Index)).Tile(.X - 1, .Y).type = TILE_TYPE_BLOCKED Then canPetMove = False
+                If Map(GetPlayerMap(Index)).Tile(.x - 1, .y).type = TILE_TYPE_BLOCKED Then canPetMove = False
             Case DIR_RIGHT
-                If Map(GetPlayerMap(Index)).Tile(.X + 1, .Y).type = TILE_TYPE_BLOCKED Then canPetMove = False
+                If Map(GetPlayerMap(Index)).Tile(.x + 1, .y).type = TILE_TYPE_BLOCKED Then canPetMove = False
         End Select
     End With
 End Function
 
-Sub PetMove(ByVal Index As Byte)
+Sub PetMove(ByVal Index As Long)
 Dim Moved As Byte
     If IsPlaying(Index) = False Then Exit Sub
     With Player(Index).Char(Player(Index).CharNum).pet
         Moved = 0
                 
-        If GetPlayerX(Index) = .X And GetPlayerY(Index) = .Y And Moved <> 2 Then Exit Sub
-        If GetPlayerX(Index) > .X Then
+        If GetPlayerX(Index) = .x And GetPlayerY(Index) = .y And Moved <> 2 Then Exit Sub
+        If GetPlayerX(Index) > .x Then
             If canPetMove(Index, DIR_RIGHT) And Moved = 0 Then
                 Moved = 1
-                .X = .X + 1
+                .x = .x + 1
                 .Dir = DIR_RIGHT
             End If
-            If .X - GetPlayerX(Index) > 2 Then Moved = 2
-        ElseIf GetPlayerX(Index) < .X Then
+            If .x - GetPlayerX(Index) > 2 Then Moved = 2
+        ElseIf GetPlayerX(Index) < .x Then
             If canPetMove(Index, DIR_LEFT) And Moved = 0 Then
                 Moved = 1
-                .X = .X - 1
+                .x = .x - 1
                 .Dir = DIR_LEFT
             End If
-            If .X - GetPlayerX(Index) > 2 Then Moved = 2
+            If .x - GetPlayerX(Index) > 2 Then Moved = 2
         End If
-        If GetPlayerY(Index) > .Y Then
+        If GetPlayerY(Index) > .y Then
             If canPetMove(Index, DIR_DOWN) And Moved = 0 Then
                 Moved = 1
-                .Y = .Y + 1
+                .y = .y + 1
                 .Dir = DIR_DOWN
             End If
-            If GetPlayerY(Index) - .Y > 2 Then Moved = 2
-        ElseIf GetPlayerY(Index) < .Y Then
+            If GetPlayerY(Index) - .y > 2 Then Moved = 2
+        ElseIf GetPlayerY(Index) < .y Then
             
             If canPetMove(Index, DIR_UP) And Moved = 0 Then
                 Moved = 1
-                .Y = .Y - 1
+                .y = .y - 1
                 .Dir = DIR_UP
             End If
-            If .Y - GetPlayerY(Index) > 2 Then Moved = 2
+            If .y - GetPlayerY(Index) > 2 Then Moved = 2
         End If
            
 
         If Moved = 2 Then
-            .Y = GetPlayerY(Index)
-            .X = GetPlayerX(Index)
+            .y = GetPlayerY(Index)
+            .x = GetPlayerX(Index)
             .Dir = GetPlayerDir(Index)
             Moved = 0
         End If
-        Call SendDataToMap(GetPlayerMap(Index), "PLAYERPET" & SEP_CHAR & Index & SEP_CHAR & .Dir & SEP_CHAR & .X & SEP_CHAR & .Y & SEP_CHAR & Moved & END_CHAR)
+        Call SendDataToMap(GetPlayerMap(Index), "PLAYERPET" & SEP_CHAR & Index & SEP_CHAR & .Dir & SEP_CHAR & .x & SEP_CHAR & .y & SEP_CHAR & Moved & END_CHAR)
     End With
 End Sub
 
-Sub PlayerMove(ByVal Index As Byte, ByVal Dir As Byte, ByVal Movement As Byte)
+Sub PlayerMove(ByVal Index As Long, ByVal Dir As Long, ByVal Movement As Long)
 Dim Packet As String
-Dim X As Byte
-Dim Y As Byte
-Dim i As Integer
+Dim MapNum As Long
+Dim x As Long
+Dim y As Long
+Dim i As Long
 Dim Moved As Byte
-Dim MapNum As Integer
     On Error GoTo er:
         
     ' Check for subscript out of range
@@ -2100,56 +2107,56 @@ Dim MapNum As Integer
 
     If GetPlayerX(Index) + 1 <= MAX_MAPX Then
         If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) + 1, GetPlayerY(Index)).type = TILE_TYPE_DOOR Then
-            X = GetPlayerX(Index) + 1
-            Y = GetPlayerY(Index)
+            x = GetPlayerX(Index) + 1
+            y = GetPlayerY(Index)
             
-            If TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = NO Then
-                TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+            If TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = NO Then
+                TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                 TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                 
-                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "door" & END_CHAR)
             End If
         End If
     End If
     If GetPlayerX(Index) - 1 >= 0 Then
         If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) - 1, GetPlayerY(Index)).type = TILE_TYPE_DOOR Then
-            X = GetPlayerX(Index) - 1
-            Y = GetPlayerY(Index)
+            x = GetPlayerX(Index) - 1
+            y = GetPlayerY(Index)
             
-            If TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = NO Then
-                TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+            If TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = NO Then
+                TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                 TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                 
-                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "door" & END_CHAR)
             End If
         End If
     End If
     If GetPlayerY(Index) - 1 >= 0 Then
         If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) - 1).type = TILE_TYPE_DOOR Then
-            X = GetPlayerX(Index)
-            Y = GetPlayerY(Index) - 1
+            x = GetPlayerX(Index)
+            y = GetPlayerY(Index) - 1
             
-            If TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = NO Then
-                TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+            If TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = NO Then
+                TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                 TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                 
-                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "door" & END_CHAR)
             End If
         End If
     End If
     If GetPlayerY(Index) + 1 <= MAX_MAPY Then
         If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) + 1).type = TILE_TYPE_DOOR Then
-            X = GetPlayerX(Index)
-            Y = GetPlayerY(Index) + 1
+            x = GetPlayerX(Index)
+            y = GetPlayerY(Index) + 1
             
-            If TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = NO Then
-                TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+            If TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = NO Then
+                TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
                 TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                 
-                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+                Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "door" & END_CHAR)
             End If
         End If
@@ -2158,9 +2165,9 @@ Dim MapNum As Integer
     ' Check to see if the tile is a warp tile, and if so warp them
     If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_WARP Then
         MapNum = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1
-        X = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data2
-        Y = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data3
-        Call PlayerWarp(Index, MapNum, X, Y)
+        x = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data2
+        y = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data3
+        Call PlayerWarp(Index, MapNum, x, y)
         'Call PlayerPet(Index, 0, GetPlayerDir(Index))
         Call PetMove(Index)
         Moved = YES
@@ -2168,14 +2175,14 @@ Dim MapNum As Integer
     
     ' Check for key trigger open
     If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_KEYOPEN Then
-        X = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1
-        Y = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data2
+        x = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1
+        y = Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data2
         
-        If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_KEY And TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = NO Then
-            TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
+        If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_KEY And TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = NO Then
+            TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
             TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                             
-            Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
+            Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
             If Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1) = vbNullString Then
                 Call MapMsg(GetPlayerMap(Index), "La porte a été ouverte par un mécanisme.", White)
             Else
@@ -2188,9 +2195,10 @@ Dim MapNum As Integer
     ' Check for shop
     If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_SHOP Then
        If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1 > 0 Then
-            If (GetPlayerX(Index) = Player(Index).Char(Player(Index).CharNum).LastX) And (GetPlayerY(Index) <> Player(Index).Char(Player(Index).CharNum).Y) Then
+            If (GetPlayerX(Index) = Player(Index).Char(Player(Index).CharNum).LastX) And (GetPlayerY(Index) <> Player(Index).Char(Player(Index).CharNum).y) Then
                 Call QueteMsg(Index, Shop(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1).JoinSay)
                 Call SendTrade(Index, Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1)
+                MsgBox ("OK")
             End If
         Else
             Call PlayerMsg(Index, "Il n'y a pas de magasin ici.", BrightRed)
@@ -2255,7 +2263,7 @@ Dim MapNum As Integer
             Call SetPlayerMAGI(Index, (Player(Index).Char(Player(Index).CharNum).magi + Classe(GetPlayerClass(Index)).magi + GetVar("Classes\Class" & GetPlayerClass(Index) & ".ini", "CLASSCHANGE", "AddMagi")))
             Call SetPlayerSPEED(Index, (Player(Index).Char(Player(Index).CharNum).Speed + Classe(GetPlayerClass(Index)).Speed + GetVar("Classes\Class" & GetPlayerClass(Index) & ".ini", "CLASSCHANGE", "AddSpeed")))
             
-            Dim ItemNum As Integer
+            Dim ItemNum As Long
             ItemNum = Val(GetVar(App.Path & "\" & "Classes\Class" & GetPlayerClass(Index) & ".ini", "STARTUP", "Weapon"))
             If item(ItemNum).type = ITEM_TYPE_WEAPON Then
                 i = FindOpenInvSlot(Index, ItemNum)
@@ -2389,10 +2397,10 @@ If IBErr Then Call IBMsg("Erreur pendant le mouvement du joueur : " & GetPlayerN
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function CanNpcMove(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte) As Boolean
-Dim i As Integer, n As Integer
-Dim X As Byte, Y As Byte
-Dim BX As Byte, BY As Byte
+Function CanNpcMove(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir) As Boolean
+Dim i As Long, n As Long
+Dim x As Long, y As Long
+Dim BX As Long, BY As Long
 Dim TmpX As Byte, TmpY As Byte
 
     On Error GoTo er:
@@ -2404,15 +2412,15 @@ Dim TmpX As Byte, TmpY As Byte
         Exit Function
     End If
     
-    X = MapNpc(MapNum, MapNpcNum).X
-    Y = MapNpc(MapNum, MapNpcNum).Y
+    x = MapNpc(MapNum, MapNpcNum).x
+    y = MapNpc(MapNum, MapNpcNum).y
     
     CanNpcMove = True
     
     Select Case Dir
         Case DIR_UP
             ' Check to make sure not outside of boundries
-            If Y > 0 Then
+            If y > 0 Then
                 TmpY = 0
                 TmpX = 1
             Else
@@ -2422,7 +2430,7 @@ Dim TmpX As Byte, TmpY As Byte
                 
         Case DIR_DOWN
             ' Check to make sure not outside of boundries
-            If Y < MAX_MAPY Then
+            If y < MAX_MAPY Then
                 TmpY = 2
                 TmpX = 1
             Else
@@ -2432,7 +2440,7 @@ Dim TmpX As Byte, TmpY As Byte
                 
         Case DIR_LEFT
             ' Check to make sure not outside of boundries
-            If X > 0 Then
+            If x > 0 Then
                 TmpY = 1
                 TmpX = 0
             Else
@@ -2442,7 +2450,7 @@ Dim TmpX As Byte, TmpY As Byte
                 
         Case DIR_RIGHT
             ' Check to make sure not outside of boundries
-            If X < MAX_MAPX Then
+            If x < MAX_MAPX Then
                 TmpY = 1
                 TmpX = 2
             Else
@@ -2451,7 +2459,7 @@ Dim TmpX As Byte, TmpY As Byte
             End If
     End Select
     
-    n = Map(MapNum).Tile(X + (TmpX - 1), Y + (TmpY - 1)).type
+    n = Map(MapNum).Tile(x + (TmpX - 1), y + (TmpY - 1)).type
     
     ' Check to make sure that the tile is walkable
     If n <> TILE_TYPE_WALKABLE And n <> TILE_TYPE_ITEM And n <> TILE_TYPE_NPC_SPAWN And n <> TILE_TYPE_SCRIPTED And n <> TILE_TYPE_TOIT Then
@@ -2463,7 +2471,7 @@ Dim TmpX As Byte, TmpY As Byte
     ' Check to make sure that there is not a player in the way
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then
-            If (GetPlayerMap(i) = MapNum) And (GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X + (TmpX - 1)) And (GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y + (TmpY - 1)) Then
+            If (GetPlayerMap(i) = MapNum) And (GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x + (TmpX - 1)) And (GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y + (TmpY - 1)) Then
                 CanNpcMove = False
                 Exit Function
             End If
@@ -2472,7 +2480,7 @@ Dim TmpX As Byte, TmpY As Byte
     
     ' Check to make sure that there is not another npc in the way
     For i = 1 To MAX_MAP_NPCS
-        If (i <> MapNpcNum) And (MapNpc(MapNum, i).Num > 0) And (MapNpc(MapNum, i).X = MapNpc(MapNum, MapNpcNum).X + (TmpX - 1)) And (MapNpc(MapNum, i).Y = MapNpc(MapNum, MapNpcNum).Y + (TmpY - 1)) Then
+        If (i <> MapNpcNum) And (MapNpc(MapNum, i).Num > 0) And (MapNpc(MapNum, i).x = MapNpc(MapNum, MapNpcNum).x + (TmpX - 1)) And (MapNpc(MapNum, i).y = MapNpc(MapNum, MapNpcNum).y + (TmpY - 1)) Then
             CanNpcMove = False
             Exit Function
         End If
@@ -2485,11 +2493,11 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur du mouvement du PNJ
 If IBErr Then Call IBMsg("Erreur du mouvement du PNJ" & MapNpcNum & " sur la carte " & MapNum, BrightRed)
 End Function
 
-Sub NpcMove(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte, ByVal Movement As Byte)
+Sub NpcMove(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long, ByVal Movement As Long)
 Dim Packet As String
-Dim X As Byte
-Dim Y As Byte
-Dim i As Integer
+Dim x As Long
+Dim y As Long
+Dim i As Long
     
     On Error GoTo er:
     
@@ -2502,23 +2510,23 @@ Dim i As Integer
     
     Select Case Dir
         Case DIR_UP
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
     
         Case DIR_DOWN
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
     
         Case DIR_LEFT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
     
         Case DIR_RIGHT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
     End Select
 Exit Sub
@@ -2528,9 +2536,9 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le mouvemen
 If IBErr Then Call IBMsg("Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum, BrightRed)
 End Sub
 
-Sub NpcMoveTo(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte, ByVal Movement As Byte, ByVal X As Byte, ByVal Y As Byte)
+Sub NpcMoveTo(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long, ByVal Movement As Long, ByVal x As Long, ByVal y As Long)
 Dim Packet As String
-Dim i As Byte
+Dim i As Long
  
    On Error GoTo er:
         
@@ -2541,114 +2549,114 @@ Dim i As Byte
     
 If Map(MapNum).Npcs(MapNpcNum).boucle = 0 Or Map(MapNum).Npcs(MapNpcNum).Axy = True Then
 
-    If X > MapNpc(MapNum, MapNpcNum).X Then
+    If x > MapNpc(MapNum, MapNpcNum).x Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X + 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x + 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_RIGHT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
         
-    If X < MapNpc(MapNum, MapNpcNum).X Then
+    If x < MapNpc(MapNum, MapNpcNum).x Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X - 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x - 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_LEFT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
     
-    If MapNpc(MapNum, MapNpcNum).Y < Y Then
+    If MapNpc(MapNum, MapNpcNum).y < y Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y + 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y + 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_DOWN
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
     
-    If MapNpc(MapNum, MapNpcNum).Y > Y Then
+    If MapNpc(MapNum, MapNpcNum).y > y Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y - 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y - 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_UP
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
      End If
 Else
 
-    If MapNpc(MapNum, MapNpcNum).Y < Y Then
+    If MapNpc(MapNum, MapNpcNum).y < y Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y + 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y + 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y + 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y + 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_DOWN) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_DOWN
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
     
-    If MapNpc(MapNum, MapNpcNum).Y > Y Then
+    If MapNpc(MapNum, MapNpcNum).y > y Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y - 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y - 1 And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X, MapNpc(MapNum, MapNpcNum).Y - 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x, MapNpc(MapNum, MapNpcNum).y - 1).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_UP) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_UP
-            MapNpc(MapNum, MapNpcNum).Y = MapNpc(MapNum, MapNpcNum).Y - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).y = MapNpc(MapNum, MapNpcNum).y - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
     
-    If X > MapNpc(MapNum, MapNpcNum).X Then
+    If x > MapNpc(MapNum, MapNpcNum).x Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X + 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x + 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X + 1, MapNpc(MapNum, MapNpcNum).Y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x + 1, MapNpc(MapNum, MapNpcNum).y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_RIGHT) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_RIGHT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X + 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x + 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
     End If
     
-    If X < MapNpc(MapNum, MapNpcNum).X Then
+    If x < MapNpc(MapNum, MapNpcNum).x Then
         For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).X - 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).Y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
+            If IsPlaying(i) And GetPlayerX(i) = MapNpc(MapNum, MapNpcNum).x - 1 And GetPlayerY(i) = MapNpc(MapNum, MapNpcNum).y And CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) = 0 Then Exit Sub
         Next i
-        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).X - 1, MapNpc(MapNum, MapNpcNum).Y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
+        If Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_WALKABLE Or Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type = TILE_TYPE_ITEM Or (Map(MapNum).Tile(MapNpc(MapNum, MapNpcNum).x - 1, MapNpc(MapNum, MapNpcNum).y).type <> TILE_TYPE_NPCAVOID Or CLng(Npc(MapNpc(MapNum, MapNpcNum).Num).Vol) <> 0) Then
             If Not CanNpcMove(MapNum, MapNpcNum, DIR_LEFT) Then Exit Sub
             MapNpc(MapNum, MapNpcNum).Dir = DIR_LEFT
-            MapNpc(MapNum, MapNpcNum).X = MapNpc(MapNum, MapNpcNum).X - 1
-            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).X & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
+            MapNpc(MapNum, MapNpcNum).x = MapNpc(MapNum, MapNpcNum).x - 1
+            Packet = "NPCMOVE" & SEP_CHAR & MapNpcNum & SEP_CHAR & MapNpc(MapNum, MapNpcNum).x & SEP_CHAR & MapNpc(MapNum, MapNpcNum).y & SEP_CHAR & MapNpc(MapNum, MapNpcNum).Dir & SEP_CHAR & Movement & END_CHAR
             Call SendDataToMap(MapNum, Packet)
             Exit Sub
         End If
@@ -2658,11 +2666,11 @@ End If
 Exit Sub
 er:
 On Error Resume Next
-Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum & ",Direction : " & Dir & "(" & Movement & ")" & ",Vers(X;Y) : " & X & ";" & Y & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     à : " & time & "...Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum & ",Direction : " & Dir & "(" & Movement & ")" & ",Vers(X;Y) : " & x & ";" & y & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant le mouvement du PNJ" & MapNpcNum & " sur la carte : " & MapNum, BrightRed)
 End Sub
 
-Sub NpcDir(ByVal MapNum As Integer, ByVal MapNpcNum As Integer, ByVal Dir As Byte)
+Sub NpcDir(ByVal MapNum As Long, ByVal MapNpcNum As Long, ByVal Dir As Long)
 Dim Packet As String
 
     ' Check for subscript out of range
@@ -2675,7 +2683,7 @@ Dim Packet As String
     Call SendDataToMap(MapNum, Packet)
 End Sub
 
-Sub JoinGame(ByVal Index As Byte)
+Sub JoinGame(ByVal Index As Long)
 Dim MOTD As String
 Dim f As Long
     
@@ -2737,12 +2745,19 @@ Dim f As Long
         ' Send motd
         If Trim$(MOTD) <> vbNullString Then Call PlayerMsg(Index, "MOTD: " & MOTD, 11)
     End If
+    
+        'Send time quete
+        'Dim Queten As Long
+        'Queten = Val(Player(Index).Char(Player(Index).CharNum).QueteEnCour)
+        'If Queten <= 0 Then
+        '    If quete(Queten).temps > 0 Then Call SendDataTo(Index, "TEMPSQUETE" & SEP_CHAR & quete(Queten).temps & END_CHAR)
+        'End If
 
     ' Send whos online
     Call SendWhosOnline(Index)
     Call ShowPLR(Index)
     'PAPERDOLL
-    Dim i As Byte
+    Dim i As Long
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(Index) Then
             If Index <> i Then Call SendInventory(i)
@@ -2764,8 +2779,8 @@ If IBErr Then Call IBMsg("Erreur de connexion au jeu, joueur : " & GetPlayerName
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub LeftGame(ByVal Index As Byte, Optional ByVal Bypass As Boolean = False)
-Dim n As Integer
+Sub LeftGame(ByVal Index As Long, Optional ByVal Bypass As Boolean = False)
+Dim n As Long
 
 'If Len(Trim$(Player(Index).Login)) <= 1 Then Exit Sub
 
@@ -2796,7 +2811,7 @@ Dim n As Integer
     If Player(Index).InGame Then
         
         ' Check if player was the only player on the map and stop npc processing if so
-        If PlayerInMap(GetPlayerMap(Index)) = 0 Then PlayersOnMap(GetPlayerMap(Index)) = NO
+        If GetTotalMapPlayers(GetPlayerMap(Index)) = 0 Then PlayersOnMap(GetPlayerMap(Index)) = NO
         
         Player(Index).InGame = False
         
@@ -2851,7 +2866,19 @@ If IBErr Then Call IBMsg("Erreur de déconnexion au jeu, joueur : " & GetPlayerNa
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Function GetNpcMaxHP(ByVal npcnum As Integer)
+Function GetTotalMapPlayers(ByVal MapNum As Long) As Long
+Dim i As Long, n As Long
+
+    n = 0
+    
+    For i = 1 To MAX_PLAYERS
+        If IsPlaying(i) And GetPlayerMap(i) = MapNum Then n = n + 1
+    Next i
+    
+    GetTotalMapPlayers = n
+End Function
+
+Function GetNpcMaxHP(ByVal npcnum As Long)
 
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxHP = 0: Exit Function
@@ -2859,22 +2886,22 @@ Function GetNpcMaxHP(ByVal npcnum As Integer)
     GetNpcMaxHP = Npc(npcnum).MaxHp
 End Function
 
-Function GetNpcMaxMP(ByVal npcnum As Integer)
+Function GetNpcMaxMP(ByVal npcnum As Long)
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxMP = 0: Exit Function
         
     GetNpcMaxMP = Npc(npcnum).magi * 2
 End Function
 
-Function GetNpcMaxSP(ByVal npcnum As Integer)
+Function GetNpcMaxSP(ByVal npcnum As Long)
     ' Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcMaxSP = 0: Exit Function
         
     GetNpcMaxSP = Npc(npcnum).Speed * 2
 End Function
 
-Function GetPlayerHPRegen(ByVal Index As Byte)
-Dim i As Byte
+Function GetPlayerHPRegen(ByVal Index As Long)
+Dim i As Long
     
     GetPlayerHPRegen = 0
     
@@ -2889,8 +2916,8 @@ Dim i As Byte
     End If
 End Function
 
-Function GetPlayerMPRegen(ByVal Index As Byte)
-Dim i As Byte
+Function GetPlayerMPRegen(ByVal Index As Long)
+Dim i As Long
     
     GetPlayerMPRegen = 0
     
@@ -2905,8 +2932,8 @@ Dim i As Byte
     End If
 End Function
 
-Function GetPlayerSPRegen(ByVal Index As Byte)
-Dim i As Byte
+Function GetPlayerSPRegen(ByVal Index As Long)
+Dim i As Long
     
     GetPlayerSPRegen = 0
     
@@ -2921,8 +2948,8 @@ Dim i As Byte
     End If
 End Function
 
-Function GetNpcHPRegen(ByVal npcnum As Integer)
-Dim i As Byte
+Function GetNpcHPRegen(ByVal npcnum As Long)
+Dim i As Long
 
     'Prevent subscript out of range
     If npcnum <= 0 Or npcnum > MAX_NPCS Then GetNpcHPRegen = 0: Exit Function
@@ -2933,8 +2960,8 @@ Dim i As Byte
     GetNpcHPRegen = i
 End Function
 
-Sub CheckPlayerLevelUp(ByVal Index As Byte)
-Dim i As Integer
+Sub CheckPlayerLevelUp(ByVal Index As Long)
+Dim i As Long
 Dim d As Long
 Dim c As Long
     c = 0
@@ -2989,8 +3016,8 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur lors de la vérifica
 If IBErr Then Call IBMsg("Erreur lors de la vérification du niveau du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
-Sub CastSpell(ByVal Index As Byte, ByVal SpellSlot As Byte)
-Dim SpellNum As Integer, i As Integer, n As Integer, Damage As Integer
+Sub CastSpell(ByVal Index As Long, ByVal SpellSlot As Long)
+Dim SpellNum As Long, i As Long, n As Long, Damage As Long
 Dim Casted As Boolean
 
     Casted = False
@@ -3009,7 +3036,7 @@ Dim Casted As Boolean
         Exit Sub
     End If
     
-    i = GetSpellReqLevel(SpellNum)
+    i = GetSpellReqLevel(Index, SpellNum)
 
     ' Check if they have enough MP
     If GetPlayerMP(Index) < Spell(SpellNum).MPCost Then
@@ -3045,16 +3072,16 @@ Dim Casted As Boolean
         Exit Sub
     End If
         
-Dim X As Byte, Y As Byte
+Dim x As Long, y As Long
 
 If Spell(SpellNum).AE = 1 Then
-    For Y = GetPlayerY(Index) - Spell(SpellNum).Range To GetPlayerY(Index) + Spell(SpellNum).Range
-        For X = GetPlayerX(Index) - Spell(SpellNum).Range To GetPlayerX(Index) + Spell(SpellNum).Range
+    For y = GetPlayerY(Index) - Spell(SpellNum).Range To GetPlayerY(Index) + Spell(SpellNum).Range
+        For x = GetPlayerX(Index) - Spell(SpellNum).Range To GetPlayerX(Index) + Spell(SpellNum).Range
             n = -1
             For i = 1 To MAX_PLAYERS
                 If IsPlaying(i) = True Then
                     If GetPlayerMap(Index) = GetPlayerMap(i) Then
-                        If GetPlayerX(i) = X And GetPlayerY(i) = Y Then
+                        If GetPlayerX(i) = x And GetPlayerY(i) = y Then
                             If i = Index Then
                                 If Spell(SpellNum).type = SPELL_TYPE_ADDHP Or Spell(SpellNum).type = SPELL_TYPE_ADDMP Or Spell(SpellNum).type = SPELL_TYPE_ADDSP Then
                                     Player(Index).Target = i
@@ -3073,7 +3100,7 @@ If Spell(SpellNum).AE = 1 Then
             
             For i = 1 To MAX_MAP_NPCS
                 If MapNpc(GetPlayerMap(Index), i).Num > 0 Then
-                    If MapNpc(GetPlayerMap(Index), i).X = X And MapNpc(GetPlayerMap(Index), i).Y = Y Then
+                    If MapNpc(GetPlayerMap(Index), i).x = x And MapNpc(GetPlayerMap(Index), i).y = y Then
                         If Npc(MapNpc(GetPlayerMap(Index), i).Num).Behavior <> NPC_BEHAVIOR_FRIENDLY And Npc(MapNpc(GetPlayerMap(Index), i).Num).Behavior <> NPC_BEHAVIOR_SHOPKEEPER And Npc(MapNpc(GetPlayerMap(Index), i).Num).Behavior <> NPC_BEHAVIOR_QUETEUR Then
                             Player(Index).Target = i
                             Player(Index).TargetType = TARGET_TYPE_NPC
@@ -3269,8 +3296,8 @@ If Spell(SpellNum).AE = 1 Then
             Call SendDataToMap(GetPlayerMap(Index), "spellanim" & SEP_CHAR & SpellNum & SEP_CHAR & Spell(SpellNum).SpellAnim & SEP_CHAR & Spell(SpellNum).SpellTime & SEP_CHAR & Spell(SpellNum).SpellDone & SEP_CHAR & Index & SEP_CHAR & Player(Index).TargetType & SEP_CHAR & Player(Index).Target & END_CHAR)
             'Call SendDataToMap(GetPlayerMap(index), "sound" & SEP_CHAR & "magic" & SEP_CHAR & Spell(SpellNum).Sound & END_CHAR)
         End If
-        Next X
-    Next Y
+        Next x
+    Next y
     
     Call SetPlayerMP(Index, GetPlayerMP(Index) - Spell(SpellNum).MPCost)
     Call SendMP(Index)
@@ -3409,7 +3436,7 @@ Else
             Call PlayerMsg(Index, "Vous n'avez pas pu envoyer le sort, cible hors ligne.", BrightRed)
         End If
     Else
-        If CInt(Sqr((GetPlayerX(Index) - MapNpc(GetPlayerMap(Index), n).X) ^ 2 + ((GetPlayerY(Index) - MapNpc(GetPlayerMap(Index), n).Y) ^ 2))) > Spell(SpellNum).Range Then
+        If CInt(Sqr((GetPlayerX(Index) - MapNpc(GetPlayerMap(Index), n).x) ^ 2 + ((GetPlayerY(Index) - MapNpc(GetPlayerMap(Index), n).y) ^ 2))) > Spell(SpellNum).Range Then
             Call BattleMsg(Index, "Vous êtes trop loin pour toucher la cible.", BrightRed, 0)
             Exit Sub
         End If
@@ -3472,12 +3499,12 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur de lancement d'un s
 If IBErr Then Call IBMsg("Erreur de lancement d'un sort du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
-Function GetSpellReqLevel(ByVal SpellNum As Integer)
+Function GetSpellReqLevel(ByVal Index As Long, ByVal SpellNum As Long)
     GetSpellReqLevel = Spell(SpellNum).LevelReq
 End Function
 
-Function CanPlayerCriticalHit(ByVal Index As Byte) As Boolean
-Dim i As Integer, n As Integer
+Function CanPlayerCriticalHit(ByVal Index As Long) As Boolean
+Dim i As Long, n As Long
 
     CanPlayerCriticalHit = False
         
@@ -3492,8 +3519,8 @@ Dim i As Integer, n As Integer
     End If
 End Function
 
-Function CanPlayerBlockHit(ByVal Index As Byte) As Boolean
-Dim i As Integer, n As Integer, ShieldSlot As Byte
+Function CanPlayerBlockHit(ByVal Index As Long) As Boolean
+Dim i As Long, n As Long, ShieldSlot As Long
 
     CanPlayerBlockHit = False
     
@@ -3510,8 +3537,8 @@ Dim i As Integer, n As Integer, ShieldSlot As Byte
     End If
 End Function
 
-Function CanPlayerEsquiveHit(ByVal Index As Byte) As Boolean
-Dim i As Integer, n As Integer
+Function CanPlayerEsquiveHit(ByVal Index As Long) As Boolean
+Dim i As Long, n As Long
 
     CanPlayerEsquiveHit = False
     
@@ -3525,8 +3552,8 @@ Dim i As Integer, n As Integer
     
 End Function
 
-Sub CheckEquippedItems(ByVal Index As Byte)
-Dim Slot As Byte, ItemNum As Integer
+Sub CheckEquippedItems(ByVal Index As Long)
+Dim Slot As Long, ItemNum As Long
 
     ' We want to check incase an admin takes away an object but they had it equipped
     Slot = GetPlayerWeaponSlot(Index)
@@ -3587,7 +3614,7 @@ Dim Slot As Byte, ItemNum As Integer
     End If
 End Sub
 
-Public Sub ShowPLR(ByVal Index As Byte)
+Public Sub ShowPLR(ByVal Index As Long)
 Dim lS As ListItem
 On Error Resume Next
 
@@ -3615,12 +3642,9 @@ Public Sub RemovePLR()
     frmServer.lvUsers.ListItems.Clear
 End Sub
 
-Function CanAttackNpcWithArrow(ByVal Attacker As Byte, ByVal MapNpcNum As Integer) As Boolean
-Dim X As Byte
-Dim Y As Byte
-Dim npcnum As Integer
-Dim AttackSpeed As Integer
-Dim MapNum As Integer
+Function CanAttackNpcWithArrow(ByVal Attacker As Long, ByVal MapNpcNum As Long) As Boolean
+Dim MapNum As Long, npcnum As Long
+Dim AttackSpeed As Long
 
 On Error GoTo er:
 If CLng(Npc(MapNpc(GetPlayerMap(Attacker), MapNpcNum).Num).Vol) <> 0 Then CanAttackNpcWithArrow = False: Exit Function
@@ -3696,7 +3720,7 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un PNJ(" & npcnum & ") par un joueur(" & GetPlayerName(Attacker) & ")avec un arc", BrightRed)
 End Function
 
-Function CanAttackPlayerWithArrow(ByVal Attacker As Byte, ByVal Victim As Byte) As Boolean
+Function CanAttackPlayerWithArrow(ByVal Attacker As Long, ByVal Victim As Long) As Boolean
 
 CanAttackPlayerWithArrow = False
 
@@ -3737,13 +3761,13 @@ Call AddLog("le : " & Date & "     à : " & time & "...Erreur dans l'attaque d'un
 If IBErr Then Call IBMsg("Erreur dans l'attaque d'un joueur(" & GetPlayerName(Victim) & ") par un joueur(" & GetPlayerName(Attacker) & ")avec un arc", BrightRed)
 End Function
 
-Function AvMonture(ByVal Index As Byte) As Boolean
+Function AvMonture(ByVal Index As Long) As Boolean
     If Not IsPlaying(Index) Then Exit Function
     
     If GetPlayerArmorSlot(Index) > 0 Then If item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).type = ITEM_TYPE_MONTURE Then AvMonture = True Else AvMonture = False
 End Function
 
-Sub Debloque(ByVal Index As Byte)
+Sub Debloque(ByVal Index As Long)
 Dim Packet As String
 
 If Not IsPlaying(Index) Then Exit Sub
@@ -3770,27 +3794,27 @@ Call SendDataToMap(GetPlayerMap(Index), Packet)
 
 End Sub
 
-Function ACoter(ByVal MapNpcNum As Integer, ByVal Index As Byte) As Boolean
+Function ACoter(ByVal MapNpcNum As Long, ByVal Index As Long) As Boolean
 On Error Resume Next
 
 ACoter = False
 If Index < 1 Or Index > MAX_PLAYERS Or MapNpcNum < 1 Or MapNpcNum > 15 Then Exit Function
 
-If GetPlayerX(Index) - 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).Y Then ACoter = True: Exit Function
-If GetPlayerX(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(Index) - 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).Y Then ACoter = True: Exit Function
-If GetPlayerX(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(Index) + 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).Y Then ACoter = True: Exit Function
-If GetPlayerX(Index) + 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).X And GetPlayerY(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).Y Then ACoter = True: Exit Function
+If GetPlayerX(Index) - 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).x And GetPlayerY(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).y Then ACoter = True: Exit Function
+If GetPlayerX(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).x And GetPlayerY(Index) - 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).y Then ACoter = True: Exit Function
+If GetPlayerX(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).x And GetPlayerY(Index) + 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).y Then ACoter = True: Exit Function
+If GetPlayerX(Index) + 1 = MapNpc(GetPlayerMap(Index), MapNpcNum).x And GetPlayerY(Index) = MapNpc(GetPlayerMap(Index), MapNpcNum).y Then ACoter = True: Exit Function
 End Function
 
-Sub EnMonture(ByVal Index As Byte)
-Dim s As Integer
-s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+Sub EnMonture(ByVal Index As Long)
+Dim s As Long
+s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
 Call SetPlayerSprite(Index, s)
 Call SendPlayerData(Index)
 End Sub
 
-Function AObjet(ByVal Index As Byte, ByVal ItemNum As Integer) As Integer
-Dim i As Byte
+Function AObjet(ByVal Index As Long, ByVal ItemNum As Long) As Long
+Dim i As Long
     
     AObjet = 0
     
@@ -3806,8 +3830,8 @@ Dim i As Byte
     Next i
 End Function
 
-Function NbObjet(ByVal Index As Byte, ByVal ItemNum As Integer) As Integer
-Dim i As Byte
+Function NbObjet(ByVal Index As Long, ByVal ItemNum As Long) As Long
+Dim i As Long
 
     NbObjet = 0
     

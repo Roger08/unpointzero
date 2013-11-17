@@ -5,15 +5,25 @@ Private Declare Function WritePrivateProfileString Lib "kernel32.dll" Alias "Wri
 Private Declare Function GetPrivateProfileString Lib "kernel32.dll" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
 Declare Sub ZeroMemory Lib "kernel32" Alias "RtlZeroMemory" (dst As Any, ByVal iLen&)
 
-Public START_MAP As Integer
-Public START_X As Byte
-Public START_Y As Byte
+Public START_MAP As Long
+Public START_X As Long
+Public START_Y As Long
 
 Public Const ADMIN_LOG = "logs\admin.txt"
 Public Const PLAYER_LOG = "logs\player.txt"
 Public Const GUILDE_LOG = "logs\guildes.txt"
 Public surcharge As Boolean
 
+'Code by Cryo
+Public Function PlayerInMap(ByVal MapNum As Integer) As Integer
+    Dim i As Integer
+    Dim Player As Integer
+    Player = 0
+    For i = 1 To MAX_PLAYERS
+        If GetPlayerMap(i) = MapNum Then Player = Player + 1
+    Next i
+    PlayerInMap = Player
+End Function
 
 Public Function GetVar(File As String, Header As String, Var As String) As String
 Dim sSpaces As String   ' Max string length
@@ -33,9 +43,25 @@ Public Sub PutVar(File As String, Header As String, Var As String, value As Stri
     Call WritePrivateProfileString$(Header, Var, value, File)
 End Sub
 
+Public Sub WriteINI(INISection As String, INIKey As String, INIValue As String, INIFile As String)
+    Call WritePrivateProfileString$(INISection, INIKey, INIValue, INIFile)
+End Sub
+
+Public Function ReadINI(INISection As String, INIKey As String, INIFile As String) As String
+    Dim StringBuffer As String
+    Dim StringBufferSize As Long
+    
+    StringBuffer = Space$(255)
+    StringBufferSize = Len(StringBuffer)
+    
+    StringBufferSize = GetPrivateProfileString(INISection, INIKey, "", StringBuffer, StringBufferSize, INIFile)
+    
+    If StringBufferSize > 0 Then ReadINI = Left$(StringBuffer, StringBufferSize) Else ReadINI = vbNullString
+End Function
+
 Sub LoadExps()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 
     Call CheckExps
     
@@ -51,7 +77,7 @@ End Sub
 
 Sub CheckExps()
     If Not FileExist("experience.ini") Then
-        Dim i As Integer
+        Dim i As Long
     
         For i = 1 To MAX_LEVEL
             'Call SetStatus("Sauvegarde de l'experience... " & i & "/" & MAX_LEVEL)
@@ -62,7 +88,7 @@ Sub CheckExps()
 End Sub
 
 Sub ClearExps()
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_LEVEL
         'experience(i) = 0
@@ -72,7 +98,7 @@ End Sub
 
 Sub LoadEmos()
 Dim FileName As String
-Dim i As Byte
+Dim i As Long
 
     'Call CheckEmos
     Call ClearEmos
@@ -90,7 +116,7 @@ End Sub
 
 Sub CheckEmos()
     If Not FileExist("emoticons.ini") Then
-        Dim i As Byte
+        Dim i As Long
     
         For i = 0 To MAX_EMOTICONS
             'Call SetStatus("Sauvegarde des émoticons... " & i & "/" & MAX_EMOTICONS)
@@ -102,7 +128,7 @@ Sub CheckEmos()
 End Sub
 
 Sub ClearEmos()
-Dim i As Byte
+Dim i As Long
 
     For i = 0 To MAX_EMOTICONS
         Emoticons(i).Pic = 0
@@ -111,7 +137,7 @@ Dim i As Byte
     Next i
 End Sub
 
-Sub SaveEmoticon(ByVal EmoNum As Byte)
+Sub SaveEmoticon(ByVal EmoNum As Long)
 Dim FileName As String
 
     FileName = App.Path & "\emoticons.ini"
@@ -129,14 +155,14 @@ On Error Resume Next
     End If
 End Function
 
-Sub SavePlayer(ByVal Index As Byte, Optional ByVal coffredel As Boolean = False)
+Sub SavePlayer(ByVal Index As Long, Optional ByVal coffredel As Boolean = False)
 Dim FileName As String
-Dim i As Byte
+Dim i As Integer
 Dim n As Integer
 
   If Len(Trim$(Player(Index).Login)) <= 1 Then Exit Sub
     
-    FileName = App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini"
+    FileName = App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini"
     
     Call PutVar(FileName, "GENERAL", "Login", Trim$(Player(Index).Login))
     Call PutVar(FileName, "GENERAL", "Password", Trim$(Player(Index).Password))
@@ -174,8 +200,8 @@ Dim n As Integer
         Call PutVar(FileName, "CHAR" & i, "PetSlot", STR$(Player(Index).Char(i).PetSlot))
         
         Call PutVar(FileName, "CHAR" & i, "PetDir", STR$(Player(Index).Char(i).pet.Dir))
-        Call PutVar(FileName, "CHAR" & i, "PetX", STR$(Player(Index).Char(i).pet.X))
-        Call PutVar(FileName, "CHAR" & i, "PetY", STR$(Player(Index).Char(i).pet.Y))
+        Call PutVar(FileName, "CHAR" & i, "PetX", STR$(Player(Index).Char(i).pet.x))
+        Call PutVar(FileName, "CHAR" & i, "PetY", STR$(Player(Index).Char(i).pet.y))
         
         Call PutVar(FileName, "CHAR" & i, "Metier", STR$(Player(Index).Char(i).metier))
         Call PutVar(FileName, "CHAR" & i, "MetierLvl", STR$(Player(Index).Char(i).MetierLvl))
@@ -185,14 +211,14 @@ Dim n As Integer
         ' Check to make sure that they aren't on map 0, if so reset'm
         If Player(Index).Char(i).Map = 0 Then
             Player(Index).Char(i).Map = START_MAP
-            Player(Index).Char(i).X = START_X
-            Player(Index).Char(i).Y = START_Y
+            Player(Index).Char(i).x = START_X
+            Player(Index).Char(i).y = START_Y
         End If
             
         ' Position
         Call PutVar(FileName, "CHAR" & i, "Map", STR$(Player(Index).Char(i).Map))
-        Call PutVar(FileName, "CHAR" & i, "X", STR$(Player(Index).Char(i).X))
-        Call PutVar(FileName, "CHAR" & i, "Y", STR$(Player(Index).Char(i).Y))
+        Call PutVar(FileName, "CHAR" & i, "X", STR$(Player(Index).Char(i).x))
+        Call PutVar(FileName, "CHAR" & i, "Y", STR$(Player(Index).Char(i).y))
         Call PutVar(FileName, "CHAR" & i, "Dir", STR$(Player(Index).Char(i).Dir))
         
         ' Inventory
@@ -230,14 +256,14 @@ Dim n As Integer
     
 End Sub
 
-Sub SavePlayerOptim(ByVal Index As Byte)
+Sub SavePlayerOptim(ByVal Index As Long)
 Dim FileName As String
-Dim i As Byte
+Dim i As Integer
 Dim n As Integer
 
   If Len(Trim$(Player(Index).Login)) <= 1 Then Exit Sub
     
-    FileName = App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini"
+    FileName = App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini"
     i = Player(Index).CharNum
         ' General
         Call PutVar(FileName, "CHAR" & i, "Name", Trim$(Player(Index).Char(i).Name))
@@ -272,8 +298,8 @@ Dim n As Integer
         Call PutVar(FileName, "CHAR" & i, "PetSlot", STR$(Player(Index).Char(i).PetSlot))
         
         Call PutVar(FileName, "CHAR" & i, "PetDir", STR$(Player(Index).Char(i).pet.Dir))
-        Call PutVar(FileName, "CHAR" & i, "PetX", STR$(Player(Index).Char(i).pet.X))
-        Call PutVar(FileName, "CHAR" & i, "PetY", STR$(Player(Index).Char(i).pet.Y))
+        Call PutVar(FileName, "CHAR" & i, "PetX", STR$(Player(Index).Char(i).pet.x))
+        Call PutVar(FileName, "CHAR" & i, "PetY", STR$(Player(Index).Char(i).pet.y))
         
         Call PutVar(FileName, "CHAR" & i, "Metier", STR$(Player(Index).Char(i).metier))
         Call PutVar(FileName, "CHAR" & i, "MetierLvl", STR$(Player(Index).Char(i).MetierLvl))
@@ -283,14 +309,14 @@ Dim n As Integer
         ' Check to make sure that they aren't on map 0, if so reset'm
         If Player(Index).Char(i).Map = 0 Then
             Player(Index).Char(i).Map = START_MAP
-            Player(Index).Char(i).X = START_X
-            Player(Index).Char(i).Y = START_Y
+            Player(Index).Char(i).x = START_X
+            Player(Index).Char(i).y = START_Y
         End If
             
         ' Position
         Call PutVar(FileName, "CHAR" & i, "Map", STR$(Player(Index).Char(i).Map))
-        Call PutVar(FileName, "CHAR" & i, "X", STR$(Player(Index).Char(i).X))
-        Call PutVar(FileName, "CHAR" & i, "Y", STR$(Player(Index).Char(i).Y))
+        Call PutVar(FileName, "CHAR" & i, "X", STR$(Player(Index).Char(i).x))
+        Call PutVar(FileName, "CHAR" & i, "Y", STR$(Player(Index).Char(i).y))
         Call PutVar(FileName, "CHAR" & i, "Dir", STR$(Player(Index).Char(i).Dir))
         
         ' Inventory
@@ -327,17 +353,17 @@ Dim n As Integer
 
     
 End Sub
-Sub LoadPlayer(ByVal Index As Byte, ByVal Name As String)
+Sub LoadPlayer(ByVal Index As Long, ByVal Name As String)
 Dim FileName As String
-Dim i As Byte
-Dim n As Integer
+Dim i As Long
+Dim n As Long
 On Error GoTo er:
 
  If Len(Player(Index).Login) <= 1 Then Exit Sub
 Call ClearPlayer(Index)
 
 With Player(Index)
-    FileName = App.Path & "\Comptes\" & Trim$(Name) & ".ini"
+    FileName = App.Path & "\accounts\" & Trim$(Name) & ".ini"
     .Login = GetVar(FileName, "GENERAL", "Login")
     .Password = GetVar(FileName, "GENERAL", "Password")
     If .Login <> Trim$(Name) Then .Login = Name
@@ -377,13 +403,13 @@ With Player(Index)
         
         ' Position
         .Map = Val(GetVar(FileName, "CHAR" & i, "Map"))
-        .X = Val(GetVar(FileName, "CHAR" & i, "X"))
-        .Y = Val(GetVar(FileName, "CHAR" & i, "Y"))
+        .x = Val(GetVar(FileName, "CHAR" & i, "X"))
+        .y = Val(GetVar(FileName, "CHAR" & i, "Y"))
         .Dir = Val(GetVar(FileName, "CHAR" & i, "Dir"))
         
         .pet.Dir = Val(GetVar(FileName, "CHAR" & i, "PetDir"))
-        .pet.X = Val(GetVar(FileName, "CHAR" & i, "PetX"))
-        .pet.Y = Val(GetVar(FileName, "CHAR" & i, "PetY"))
+        .pet.x = Val(GetVar(FileName, "CHAR" & i, "PetX"))
+        .pet.y = Val(GetVar(FileName, "CHAR" & i, "PetY"))
         
         .metier = Val(GetVar(FileName, "CHAR" & i, "Metier"))
         .MetierLvl = Val(GetVar(FileName, "CHAR" & i, "MetierLvl"))
@@ -392,8 +418,8 @@ With Player(Index)
         ' Check to make sure that they aren't on map 0, if so reset'm
         If .Map = 0 Then
             .Map = START_MAP
-            .X = START_X
-            .Y = START_Y
+            .x = START_X
+            .y = START_Y
         End If
         
         ' Inventory
@@ -428,11 +454,11 @@ If IBErr Then Call IBMsg("Erreur pendant le chargement du joueur : " & Name, Bri
 Call PlainMsg(Index, "Erreur du serveur, relancer s'il vous plait.(Pour tous problème récurent visiter " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
-Sub LoadPlayerQuete(ByVal Index As Byte)
+Sub LoadPlayerQuete(ByVal Index As Long)
 Dim FileName As String
  If Len(Player(Index).Login) = 0 Then Exit Sub
 With Player(Index)
-    FileName = App.Path & "\Comptes\" & Trim$(.Login) & ".ini"
+    FileName = App.Path & "\accounts\" & Trim$(.Login) & ".ini"
     .Char(.CharNum).QueteEnCour = Val(GetVar(FileName, "CHAR" & .CharNum, "QueteC"))
 End With
 End Sub
@@ -440,20 +466,20 @@ End Sub
 Function AccountExist(ByVal Name As String) As Boolean
 Dim FileName As String
 
-    FileName = "Comptes\" & Trim$(Name) & ".ini"
+    FileName = "accounts\" & Trim$(Name) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
     
-    FileName = "Comptes\" & Trim$(LCase$(Name)) & ".ini"
+    FileName = "accounts\" & Trim$(LCase$(Name)) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
     
-    FileName = "Comptes\" & Trim$(UCase$(Name)) & ".ini"
+    FileName = "accounts\" & Trim$(UCase$(Name)) & ".ini"
     
     If FileExist(FileName) Then AccountExist = True Else AccountExist = False
 End Function
 
-Function CharExist(ByVal Index As Byte, ByVal CharNum As Byte) As Boolean
+Function CharExist(ByVal Index As Long, ByVal CharNum As Long) As Boolean
     If Trim$(Player(Index).Char(CharNum).Name) <> vbNullString Then CharExist = True Else CharExist = False
 End Function
 
@@ -464,7 +490,7 @@ Dim hash As New clsMD5
     PasswordOK = False
     
     If AccountExist(Name) Then
-        FileName = App.Path & "\Comptes\" & Trim$(Name) & ".ini"
+        FileName = App.Path & "\accounts\" & Trim$(Name) & ".ini"
         RightPassword = GetVar(FileName, "GENERAL", "Password")
         
         If UCase$(Trim$(hash.MD5StrToHexStr(Password))) = UCase$(Trim$(RightPassword)) Then
@@ -476,8 +502,8 @@ Dim hash As New clsMD5
     End If
 End Function
 
-Sub AddAccount(ByVal Index As Byte, ByVal Name As String, ByVal Password As String)
-Dim i As Byte
+Sub AddAccount(ByVal Index As Long, ByVal Name As String, ByVal Password As String)
+Dim i As Long
 Dim hash As New clsMD5
     Player(Index).Login = Name
     Player(Index).Password = hash.MD5StrToHexStr(Password)
@@ -489,7 +515,7 @@ Dim hash As New clsMD5
     Call SavePlayer(Index)
 End Sub
 
-Sub AddChar(ByVal Index As Byte, ByVal Name As String, ByVal Sex As Byte, ByVal ClassNum As Byte, ByVal CharNum As Byte)
+Sub AddChar(ByVal Index As Long, ByVal Name As String, ByVal Sex As Byte, ByVal ClassNum As Byte, ByVal CharNum As Long)
 Dim f As Long
 
     If Trim$(Player(Index).Char(CharNum).Name) = vbNullString Then
@@ -514,19 +540,19 @@ Dim f As Long
         .Char(CharNum).magi = Classe(ClassNum).magi
         
         If Classe(ClassNum).Map <= 0 Then Classe(ClassNum).Map = 1
-        If Classe(ClassNum).X < 0 Or Classe(ClassNum).X > MAX_MAPX Then Classe(ClassNum).X = Int(Classe(ClassNum).X / 2)
-        If Classe(ClassNum).Y < 0 Or Classe(ClassNum).Y > MAX_MAPY Then Classe(ClassNum).Y = Int(Classe(ClassNum).Y / 2)
+        If Classe(ClassNum).x < 0 Or Classe(ClassNum).x > MAX_MAPX Then Classe(ClassNum).x = Int(Classe(ClassNum).x / 2)
+        If Classe(ClassNum).y < 0 Or Classe(ClassNum).y > MAX_MAPY Then Classe(ClassNum).y = Int(Classe(ClassNum).y / 2)
         .Char(CharNum).Map = Classe(ClassNum).Map
-        .Char(CharNum).X = Classe(ClassNum).X
-        .Char(CharNum).Y = Classe(ClassNum).Y
+        .Char(CharNum).x = Classe(ClassNum).x
+        .Char(CharNum).y = Classe(ClassNum).y
             
         .Char(CharNum).HP = GetPlayerMaxHP(Index)
         .Char(CharNum).MP = GetPlayerMaxMP(Index)
         .Char(CharNum).SP = GetPlayerMaxSP(Index)
         
         'Objet de classe
-        Dim ItemNum As Integer
-        Dim i As Integer
+        Dim ItemNum As Long
+        Dim i As Long
             ItemNum = Val(GetVar(App.Path & "\" & "Classes\Class" & ClassNum & ".ini", "STARTUP", "Weapon"))
             If item(ItemNum).type = ITEM_TYPE_WEAPON Then
                 i = FindOpenInvSlot(Index, ItemNum)
@@ -562,7 +588,7 @@ Dim f As Long
             
         ' Append name to file
         f = FreeFile
-        Open App.Path & "\Comptes\charlist.txt" For Append As #f
+        Open App.Path & "\accounts\charlist.txt" For Append As #f
             Print #f, Name
         Close #f
         
@@ -573,7 +599,10 @@ Dim f As Long
     End If
 End Sub
 
-Sub DelChar(ByVal Index As Byte, ByVal CharNum As Byte)
+Sub DelChar(ByVal Index As Long, ByVal CharNum As Long)
+Dim f1 As Long, f2 As Long
+Dim s As String
+
     Call DeleteName(Player(Index).Char(CharNum).Name)
     Call ClearChar(Index, CharNum)
     Call SavePlayer(Index, True)
@@ -586,7 +615,7 @@ Dim s As String
     FindChar = False
     
     f = FreeFile
-    Open App.Path & "\Comptes\charlist.txt" For Input As #f
+    Open App.Path & "\accounts\charlist.txt" For Input As #f
         Do While Not EOF(f)
             Input #f, s
             
@@ -608,7 +637,8 @@ Dim s As String
 End Function
 
 Sub SaveAllPlayersOnline()
-Dim i As Byte
+Dim i As Long
+
     For i = 1 To MAX_PLAYERS
         If IsPlaying(i) Then Call SavePlayer(i)
     Next i
@@ -616,7 +646,7 @@ End Sub
 
 Sub LoadClasses()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 
     
     i = 0
@@ -644,8 +674,8 @@ Dim i As Integer
             Classe(i).Speed = Val(GetVar(FileName, "CLASS", "SPEED"))
             Classe(i).magi = Val(GetVar(FileName, "CLASS", "MAGI"))
             Classe(i).Map = Val(GetVar(FileName, "CLASS", "MAP"))
-            Classe(i).X = Val(GetVar(FileName, "CLASS", "X"))
-            Classe(i).Y = Val(GetVar(FileName, "CLASS", "Y"))
+            Classe(i).x = Val(GetVar(FileName, "CLASS", "X"))
+            Classe(i).y = Val(GetVar(FileName, "CLASS", "Y"))
             Classe(i).Locked = Val(GetVar(FileName, "CLASS", "Locked"))
         End If
         loading (37.5 + (5.8 / Max_Classes) * i)
@@ -655,7 +685,7 @@ End Sub
 
 Sub SaveClasses()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 
     FileName = App.Path & "\Classes\info.ini"
         
@@ -675,15 +705,15 @@ Dim i As Integer
             Call PutVar(FileName, "CLASS", "SPEED", STR$(Classe(i).Speed))
             Call PutVar(FileName, "CLASS", "MAGI", STR$(Classe(i).magi))
             Call PutVar(FileName, "CLASS", "MAP", STR$(Classe(i).Map))
-            Call PutVar(FileName, "CLASS", "X", STR$(Classe(i).X))
-            Call PutVar(FileName, "CLASS", "Y", STR$(Classe(i).Y))
+            Call PutVar(FileName, "CLASS", "X", STR$(Classe(i).x))
+            Call PutVar(FileName, "CLASS", "Y", STR$(Classe(i).y))
             Call PutVar(FileName, "CLASS", "Locked", STR$(Classe(i).Locked))
         End If
     Next i
 End Sub
 
 Sub SaveItems()
-Dim i As Integer
+Dim i As Long
         
     Call SetStatus("Sauvegarde des objets... ")
     For i = 1 To MAX_ITEMS
@@ -695,7 +725,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SaveItem(ByVal ItemNum As Integer)
+Sub SaveItem(ByVal ItemNum As Long)
 Dim FileName As String
 Dim f  As Long
 FileName = App.Path & "\items\item" & ItemNum & ".fco"
@@ -708,7 +738,7 @@ End Sub
 
 Sub LoadItems()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 Dim f As Long
 
     'Call CheckItems
@@ -736,7 +766,7 @@ Sub CheckItems()
 End Sub
 
 Sub SavePets()
-Dim i As Integer
+Dim i As Long
         
     Call SetStatus("Sauvegarde des familliers... ")
     For i = 1 To MAX_PETS
@@ -748,9 +778,9 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SavePet(ByVal PetNum As Integer)
+Sub SavePet(ByVal PetNum As Long)
 Dim FileName As String
-Dim f As Long
+Dim f  As Long
 FileName = App.Path & "\Pets\Pet" & PetNum & ".fcf"
         
     f = FreeFile
@@ -760,9 +790,9 @@ FileName = App.Path & "\Pets\Pet" & PetNum & ".fcf"
 End Sub
 
 Sub LoadPets()
-Dim i As Integer
+Dim i As Long
 Dim FileName As String
-Dim f As Long
+Dim f  As Long
 
     'Call SavePets
     'Call ClearPets
@@ -785,7 +815,7 @@ Dim f As Long
 End Sub
 
 Sub SaveMetiers()
-Dim i As Integer
+Dim i As Long
         
     Call SetStatus("Sauvegarde des Metiers... ")
     For i = 1 To MAX_METIER
@@ -797,7 +827,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SaveMetier(ByVal metiernum As Integer)
+Sub SaveMetier(ByVal metiernum As Long)
 Dim FileName As String
 Dim f  As Long
 FileName = App.Path & "\Metiers\Metier" & metiernum & ".fcm"
@@ -808,7 +838,7 @@ FileName = App.Path & "\Metiers\Metier" & metiernum & ".fcm"
 End Sub
 
 Sub LoadMetiers()
-Dim i As Integer
+Dim i As Long
 Dim FileName As String
 Dim f  As Long
 
@@ -834,7 +864,7 @@ Dim f  As Long
 End Sub
 
 Sub Saverecettes()
-Dim i As Integer
+Dim i As Long
         
     Call SetStatus("Sauvegarde des recettes... ")
     For i = 1 To MAX_RECETTE
@@ -846,7 +876,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub Saverecette(ByVal recettenum As Integer)
+Sub Saverecette(ByVal recettenum As Long)
 Dim FileName As String
 Dim f  As Long
 FileName = App.Path & "\recettes\recette" & recettenum & ".fcr"
@@ -858,7 +888,7 @@ FileName = App.Path & "\recettes\recette" & recettenum & ".fcr"
 End Sub
 
 Sub Loadrecettes()
-Dim i As Integer
+Dim i As Long
 Dim FileName As String
 Dim f  As Long
 
@@ -883,7 +913,7 @@ Dim f  As Long
 End Sub
 
 Sub SaveShops()
-Dim i As Integer
+Dim i As Long
 
     Call SetStatus("Sauvegarde des magasins... ")
     For i = 1 To MAX_SHOPS
@@ -895,7 +925,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SaveShop(ByVal ShopNum As Integer)
+Sub SaveShop(ByVal ShopNum As Long)
 Dim FileName As String
 Dim f As Long
 
@@ -909,8 +939,7 @@ End Sub
 
 Sub LoadShops()
 Dim FileName As String
-Dim i As Integer
-Dim f As Long
+Dim i As Long, f As Long
 
     'Call CheckShops
     'Call ClearShops
@@ -935,7 +964,7 @@ Sub CheckShops()
     Call SaveShops
 End Sub
 
-Sub SaveSpell(ByVal SpellNum As Integer)
+Sub SaveSpell(ByVal SpellNum As Long)
 Dim FileName As String
 Dim f As Long
 
@@ -947,7 +976,7 @@ Dim f As Long
     Close #f
 End Sub
 
-Sub SaveQuete(ByVal QueteNum As Integer)
+Sub SaveQuete(ByVal QueteNum As Long)
 Dim FileName As String
 Dim f As Long
 
@@ -960,7 +989,7 @@ Dim f As Long
 End Sub
 
 Sub SaveSpells()
-Dim i As Integer
+Dim i As Long
 
     Call SetStatus("Sauvegarde des sorts... ")
     For i = 1 To MAX_SPELLS
@@ -974,7 +1003,7 @@ End Sub
 
 Sub LoadSpells()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 Dim f As Long
 
     'Call CheckSpells
@@ -1002,7 +1031,7 @@ Sub CheckSpells()
 End Sub
 
 Sub SaveNpcs()
-Dim i As Integer
+Dim i As Long
 
     Call SetStatus("Sauvegarde des NPCs... ")
     
@@ -1015,7 +1044,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SaveNpc(ByVal npcnum As Integer)
+Sub SaveNpc(ByVal npcnum As Long)
 Dim FileName As String
 Dim f As Long
 FileName = App.Path & "\npcs\npc" & npcnum & ".fcp"
@@ -1028,7 +1057,8 @@ End Sub
 
 Sub LoadNpcs()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
+Dim z As Long
 Dim f As Long
 
     'Call CheckNpcs
@@ -1054,11 +1084,11 @@ Sub CheckNpcs()
     Call SaveNpcs
 End Sub
 
-Sub SaveMap(ByVal MapNum As Integer)
+Sub SaveMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
 
-    FileName = App.Path & "\Maps\Map" & MapNum & ".fcc"
+    FileName = App.Path & "\maps\map" & MapNum & ".fcc"
     
     f = FreeFile
     Open FileName For Binary As #f
@@ -1073,7 +1103,7 @@ Dim f As Long
 Dim r As Integer
     'Call ClearMaps
     For i = 1 To MAX_MAPS
-        FileName = App.Path & "\Maps\Map" & i & ".fcc"
+        FileName = App.Path & "\maps\map" & i & ".fcc"
         If FileExist(FileName, False) Then
             'Call SetStatus("Chargement des maps " & i & "/" & MAX_MAPS)
             f = FreeFile
@@ -1099,13 +1129,13 @@ Dim r As Integer
     End If
 End Sub
 
-Sub LoadMap(ByVal MapNum As Integer)
+Sub LoadMap(ByVal MapNum As Long)
 Dim FileName As String
 Dim f As Long
             
-    FileName = App.Path & "\Maps\Map" & MapNum & ".fcc"
+    FileName = App.Path & "\maps\map" & MapNum & ".fcc"
 
-    If Not FileExist("\Maps\Map" & MapNum & ".fcc") Then Exit Sub
+    If Not FileExist("\maps\map" & MapNum & ".fcc") Then Exit Sub
     
     f = FreeFile
     Open FileName For Binary Access Read As #f
@@ -1118,7 +1148,7 @@ End Sub
 
 Sub LoadQuetes()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 Dim f As Long
 
     'Call CheckQuetes
@@ -1143,7 +1173,10 @@ End Sub
 
 Sub CheckQuetes()
 Dim FileName As String
-Dim i As Integer
+Dim x As Long
+Dim y As Long
+Dim i As Long
+Dim n As Long
 
     Call ClearQuetes
         
@@ -1179,9 +1212,9 @@ On Error Resume Next
     End If
 End Sub
 
-Sub BanIndex(ByVal BanPlayerIndex As Byte, ByVal BannedByIndex As Byte)
+Sub BanIndex(ByVal BanPlayerIndex As Long, ByVal BannedByIndex As Long)
 Dim FileName, IP As String
-Dim f As Long, i As Integer
+Dim f As Long, i As Long
 
     FileName = App.Path & "\banlist.txt"
     
@@ -1215,13 +1248,13 @@ Sub DeleteName(ByVal Name As String)
 Dim f1 As Long, f2 As Long
 Dim s As String
 
-    Call FileCopy(App.Path & "\Comptes\charlist.txt", App.Path & "\Comptes\chartemp.txt")
+    Call FileCopy(App.Path & "\accounts\charlist.txt", App.Path & "\accounts\chartemp.txt")
     
     ' Destroy name from charlist
     f1 = FreeFile
-    Open App.Path & "\Comptes\chartemp.txt" For Input As #f1
+    Open App.Path & "\accounts\chartemp.txt" For Input As #f1
     f2 = FreeFile
-    Open App.Path & "\Comptes\charlist.txt" For Output As #f2
+    Open App.Path & "\accounts\charlist.txt" For Output As #f2
         
     Do While Not EOF(f1)
         Input #f1, s
@@ -1231,12 +1264,12 @@ Dim s As String
     Close #f1
     Close #f2
     
-    Call Kill(App.Path & "\Comptes\chartemp.txt")
+    Call Kill(App.Path & "\accounts\chartemp.txt")
 End Sub
 
-Sub BanByServer(ByVal BanPlayerIndex As Byte, ByVal Reason As String)
+Sub BanByServer(ByVal BanPlayerIndex As Long, ByVal Reason As String)
 Dim FileName, IP As String
-Dim f As Long, i As Integer
+Dim f As Long, i As Long
 
     FileName = App.Path & "\banlist.txt"
     
@@ -1271,7 +1304,7 @@ Dim f As Long, i As Integer
     End If
 End Sub
 
-Private Function Replace(strWord As String, strFind As String, strReplace As String, charAmount As String) As String
+Private Function Replace(strWord, strFind, strReplace, charAmount) As String
 Dim a  As Integer
 
     a = InStr(1, UCase$(strWord), UCase$(strFind))
@@ -1339,7 +1372,7 @@ End Sub
 
 Sub LoadArrows()
 Dim FileName As String
-Dim i As Integer
+Dim i As Long
 
     'Call CheckArrows
     Call ClearArrows
@@ -1358,7 +1391,7 @@ End Sub
 
 Sub CheckArrows()
     If Not FileExist("Arrows.ini") Then
-        Dim i As Integer
+        Dim i As Long
     
         For i = 1 To MAX_ARROWS
             Call SetStatus("Sauvegarde des flêches... " & i & "/" & MAX_ARROWS)
@@ -1371,7 +1404,7 @@ Sub CheckArrows()
 End Sub
 
 Sub ClearArrows()
-Dim i As Integer
+Dim i As Long
 
     For i = 1 To MAX_ARROWS
         Arrows(i).Name = vbNullString
@@ -1380,7 +1413,7 @@ Dim i As Integer
     Next i
 End Sub
 
-Sub SaveArrow(ByVal ArrowNum As Integer)
+Sub SaveArrow(ByVal ArrowNum As Long)
 Dim FileName As String
 
     FileName = App.Path & "\Arrows.ini"
@@ -1390,7 +1423,7 @@ Dim FileName As String
     Call PutVar(FileName, "Arrow" & ArrowNum, "ArrowRange", Val(Arrows(ArrowNum).Range))
 End Sub
 
-Public Function GetPlayerQueteEtat(ByVal PIndex As Byte, ByVal qindex As Integer) As Boolean
+Public Function GetPlayerQueteEtat(ByVal PIndex As Long, ByVal qindex As Long) As Boolean
     GetPlayerQueteEtat = False
     If Player(PIndex).Char(Player(PIndex).CharNum).QueteStatut(qindex) = 2 Then GetPlayerQueteEtat = True
 End Function

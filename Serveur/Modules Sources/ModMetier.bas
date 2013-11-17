@@ -2,7 +2,7 @@ Attribute VB_Name = "ModMetier"
 Public Const MAX_DATA_METIER = 100
 Public Const MAX_DATA_RECETTE = 9
 
-Sub craftv2(ByVal Index As Byte, ByVal rec As Long)
+Sub craftv2(ByVal Index As Long, ByVal rec As Long)
 Dim n As Byte, i As Byte, v As Byte, w As Byte, s As Byte, r As Byte
 Dim nb_item As Byte, f As Byte
 
@@ -108,7 +108,7 @@ Dim nb_item As Byte, f As Byte
 End Sub
 
 
-Sub craft(ByVal Index As Byte, ByVal rec As Long)
+Sub craft(ByVal Index As Long, ByVal rec As Long)
 Dim n As Byte, i As Byte, v As Byte, w As Byte, r As Byte, rb As Boolean
 Dim rin As Boolean
 Dim pin(0 To MAX_DATA_METIER) As Boolean, piv(0 To MAX_DATA_METIER) As Boolean
@@ -230,7 +230,7 @@ If n > 0 Then
 End If
 End Sub
 
-Public Function InMetier(ByVal metiernum As Integer, ByVal npcnum As Integer) As Byte
+Public Function InMetier(ByVal metiernum As Long, ByVal npcnum As Long) As Byte
 Dim i As Byte
     For i = 0 To MAX_DATA_METIER
         If metier(metiernum).data(i, 0) = npcnum Then
@@ -241,7 +241,7 @@ Dim i As Byte
     InMetier = 10
 End Function
 
-Public Function CraftReussite(ByVal Index As Byte, ByVal nb_item As Byte) As Byte
+Public Function CraftReussite(ByVal Index As Long, ByVal nb_item As Byte) As Byte
     CraftReussite = 20
     If nb_item > 2 Then
         If CraftReussite <= CraftReussite - ((nb_item - 1) * 5) Then
@@ -257,7 +257,7 @@ Public Function CraftReussite(ByVal Index As Byte, ByVal nb_item As Byte) As Byt
     End If
 End Function
 
-Public Function CraftReussiteV2(ByVal Index As Byte, ByVal nb_item As Byte) As Integer
+Public Function CraftReussiteV2(ByVal Index As Long, ByVal nb_item As Byte) As Integer
     CraftReussiteV2 = 20
     If nb_item > 2 Then
         If 0 <= CraftReussiteV2 - ((nb_item - 1) * 5) Then
@@ -273,7 +273,7 @@ Public Function CraftReussiteV2(ByVal Index As Byte, ByVal nb_item As Byte) As I
     End If
 End Function
 
-Public Function DoubleDrop(ByVal Index As Byte) As Byte
+Public Function DoubleDrop(ByVal Index As Long) As Byte
     DoubleDrop = 0
     If DoubleDrop + Math.Round(Player(Index).Char(Player(Index).CharNum).MetierLvl / 2) > 99 Then
         DoubleDrop = 99
@@ -282,7 +282,7 @@ Public Function DoubleDrop(ByVal Index As Byte) As Byte
     End If
 End Function
 
-Public Sub checkLvlUpMetier(ByVal Index As Byte)
+Public Sub checkLvlUpMetier(ByVal Index As Long)
     If Player(Index).Char(Player(Index).CharNum).metier > 0 Then
         If Player(Index).Char(Player(Index).CharNum).MetierLvl < 200 Then
             Do While ((Player(Index).Char(Player(Index).CharNum).MetierLvl + 1) * 2) <= Player(Index).Char(Player(Index).CharNum).MetierExp
