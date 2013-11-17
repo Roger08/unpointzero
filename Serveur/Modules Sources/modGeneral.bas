@@ -114,18 +114,18 @@ Dim f As Long
     TimeSeconds = 0
     RainIntensity = 25
     
-    If LCase$(Dir(App.Path & "\maps", vbDirectory)) <> "maps" Then Call MkDir(App.Path & "\maps")
-    If LCase$(Dir(App.Path & "\logs", vbDirectory)) <> "logs" Then Call MkDir(App.Path & "\Logs")
-    If LCase$(Dir(App.Path & "\accounts", vbDirectory)) <> "accounts" Then Call MkDir(App.Path & "\accounts")
-    If LCase$(Dir(App.Path & "\npcs", vbDirectory)) <> "npcs" Then Call MkDir(App.Path & "\Npcs")
-    If LCase$(Dir(App.Path & "\items", vbDirectory)) <> "items" Then Call MkDir(App.Path & "\Items")
-    If LCase$(Dir(App.Path & "\spells", vbDirectory)) <> "spells" Then Call MkDir(App.Path & "\Spells")
-    If LCase$(Dir(App.Path & "\quetes", vbDirectory)) <> "quetes" Then Call MkDir(App.Path & "\Quetes")
-    If LCase$(Dir(App.Path & "\shops", vbDirectory)) <> "shops" Then Call MkDir(App.Path & "\Shops")
-    If LCase$(Dir(App.Path & "\classes", vbDirectory)) <> "classes" Then Call MkDir(App.Path & "\Classes")
-    If LCase$(Dir(App.Path & "\metiers", vbDirectory)) <> "metiers" Then Call MkDir(App.Path & "\Metiers")
-    If LCase$(Dir(App.Path & "\pets", vbDirectory)) <> "pets" Then Call MkDir(App.Path & "\Pets")
-    If LCase$(Dir(App.Path & "\recettes", vbDirectory)) <> "recettes" Then Call MkDir(App.Path & "\recettes")
+    If LCase$(Dir(App.Path & "\Maps", vbDirectory)) <> "maps" Then Call MkDir(App.Path & "\Maps")
+    If LCase$(Dir(App.Path & "\Logs", vbDirectory)) <> "logs" Then Call MkDir(App.Path & "\Logs")
+    If LCase$(Dir(App.Path & "\Comptes", vbDirectory)) <> "comptes" Then Call MkDir(App.Path & "\Comptes")
+    If LCase$(Dir(App.Path & "\PNJs", vbDirectory)) <> "pnjs" Then Call MkDir(App.Path & "\PNJs")
+    If LCase$(Dir(App.Path & "\Objets", vbDirectory)) <> "objets" Then Call MkDir(App.Path & "\Objets")
+    If LCase$(Dir(App.Path & "\Sorts", vbDirectory)) <> "sorts" Then Call MkDir(App.Path & "\Sorts")
+    If LCase$(Dir(App.Path & "\Quetes", vbDirectory)) <> "quetes" Then Call MkDir(App.Path & "\Quetes")
+    If LCase$(Dir(App.Path & "\Magasins", vbDirectory)) <> "magasins" Then Call MkDir(App.Path & "\Magasins")
+    If LCase$(Dir(App.Path & "\Classes", vbDirectory)) <> "classes" Then Call MkDir(App.Path & "\Classes")
+    If LCase$(Dir(App.Path & "\Metiers", vbDirectory)) <> "metiers" Then Call MkDir(App.Path & "\Metiers")
+    If LCase$(Dir(App.Path & "\Pets", vbDirectory)) <> "pets" Then Call MkDir(App.Path & "\Pets")
+    If LCase$(Dir(App.Path & "\Recettes", vbDirectory)) <> "recettes" Then Call MkDir(App.Path & "\Recettes")
 
     loading (5)
     SEP_CHAR = Chr$(0)
@@ -509,9 +509,9 @@ Dim f As Long
     frmServer.Command13.Enabled = False
     
     ' Check if the master charlist file exists for checking duplicate names, and if it doesnt make it
-    If Not FileExist("accounts\charlist.txt") Then
+    If Not FileExist("Comptes\charlist.txt") Then
         f = FreeFile
-        Open App.Path & "\accounts\charlist.txt" For Output As #f
+        Open App.Path & "\Comptes\charlist.txt" For Output As #f
         Close #f
     End If
     

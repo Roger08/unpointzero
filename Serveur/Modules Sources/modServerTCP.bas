@@ -159,7 +159,7 @@ Dim i As Long
         If IsPlaying(i) And GetPlayerAccess(i) > 0 Then Call SendDataTo(i, Packet)
     Next i
 End Sub
-'Message privï¿½
+'Message privé
 Sub PlayerMsg(ByVal Index As Long, ByVal Msg As String, ByVal Color As Long)
 Dim Packet As String
 
@@ -213,7 +213,7 @@ Dim Packet As String
     Call CloseSocket(Index)
     If Index > 0 And Index < MAX_PLAYERS Then
     If IsPlaying(Index) Then
-    If IBErr Then Call IBMsg("Un joueur a reï¿½u un message d'alerte. (Login : " & GetPlayerLogin(Index) & " perso : " & GetPlayerName(Index) & " Message : " & Msg & ").", BrightRed)
+    If IBErr Then Call IBMsg("Un joueur a reéu un message d'alerte. (Login : " & GetPlayerLogin(Index) & " perso : " & GetPlayerName(Index) & " Message : " & Msg & ").", BrightRed)
     End If
     End If
 End Sub
@@ -230,11 +230,11 @@ Sub HackingAttempt(ByVal Index As Long, ByVal Reason As String)
     On Error Resume Next
     If Index > 0 And Index < MAX_PLAYERS Then
         If IsPlaying(Index) Then
-            Call GlobalMsg(GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " a ï¿½tï¿½ dï¿½connectï¿½ pour (" & Reason & ")", White)
+            Call GlobalMsg(GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " a été déconnecté pour (" & Reason & ")", White)
         End If
     
         Call AlertMsg(Index, "Tu as perdu ta connexion avec " & GAME_NAME & "." & Reason)
-        If IBErr Then Call IBMsg("Tentative de hack dï¿½tectï¿½, raison : " & Reason & " Login : " & GetPlayerLogin(Index) & " Personnage : " & GetPlayerName(Index) & ").", BrightRed)
+        If IBErr Then Call IBMsg("Tentative de hack détecté, raison : " & Reason & " Login : " & GetPlayerLogin(Index) & " Personnage : " & GetPlayerName(Index) & ").", BrightRed)
     End If
     Exit Sub
 End Sub
@@ -259,9 +259,9 @@ Sub SocketConnected(ByVal Index As Long)
         ' Tentative de connexion multiple ?
         If Not IsMultiIPOnline(GetPlayerIP(Index)) Then
             If Not IsBanned(GetPlayerIP(Index)) Then
-                Call TextAdd(frmServer.txtText(0), "Connexion reï¿½ue depuis l'IP " & GetPlayerIP(Index) & ".", True)
+                Call TextAdd(frmServer.txtText(0), "Connexion reéue depuis l'IP " & GetPlayerIP(Index) & ".", True)
             Else
-                Call AlertMsg(Index, "Tu as ï¿½tï¿½ banni de " & GAME_NAME & ".")
+                Call AlertMsg(Index, "Tu as été banni de " & GAME_NAME & ".")
             End If
         Else
            ' Tentative d'IP multiple
@@ -352,20 +352,20 @@ Dim i As Integer, n As Integer, f As Integer
                 Password = Parse(2)
                 
                 If Len(Name) < 3 Then
-                Call PlainMsg(Index, "Votre pseudo est trop court, il doit contenir au minimum 3 caractï¿½res.", 3)
+                Call PlainMsg(Index, "Votre pseudo est trop court, il doit contenir au minimum 3 caractères.", 3)
                 Exit Sub
                 End If
                 
                 For i = 1 To Len(Name)
                     n = Asc(Mid$(Name, i, 1))
                     If (n <= 65 And n >= 90) Or (n <= 97 And n >= 122) Or (n = 95) Or (n = 32) Or (n <= 48 And n >= 57) Then
-                        Call PlainMsg(Index, "Le nom est invalide, il ne doit pas contenir des caractï¿½res spï¿½ciaux.", 3)
+                        Call PlainMsg(Index, "Le nom est invalide, il ne doit pas contenir des caractères spéciaux.", 3)
                         Exit Sub
                     End If
                 Next i
         
                             
-                If Not AccountExist(Name) Then Call PlainMsg(Index, "Aucun compte ne possï¿½de ce nom.", 3): Exit Sub
+                If Not AccountExist(Name) Then Call PlainMsg(Index, "Aucun compte ne possède ce nom.", 3): Exit Sub
             
                 If Not PasswordOK(Name, Password) Then Call PlainMsg(Index, "Le mot de passe est incorrect.", 3): Exit Sub
             
@@ -374,7 +374,7 @@ Dim i As Integer, n As Integer, f As Integer
                 If frmServer.Closed.value = Checked Then Call PlainMsg(Index, "Le serveur va fermer dans quelques minutes, merci de revenir plus tard.", 3): Exit Sub
                     
                 If Parse(6) <> SEC_CODE1 And Parse(7) = SEC_CODE2 And Parse(8) = SEC_CODE3 And Val(Parse(9)) = SEC_CODE4 Then
-                    Call AlertMsg(Index, "Clï¿½ de sï¿½curitï¿½ incorrecte.")
+                    Call AlertMsg(Index, "Clé de sécurité incorrecte.")
                     Exit Sub
                 End If
                             
@@ -404,28 +404,28 @@ Dim i As Integer, n As Integer, f As Integer
                 Call LoadPlayer(Index, Name)
                 Call SendChars(Index)
         
-                Call AddLog(GetPlayerLogin(Index) & " s'est connectï¿½ depuis " & GetPlayerIP(Index) & ".", PLAYER_LOG)
-                Call TextAdd(frmServer.txtText(0), GetPlayerLogin(Index) & " s'est connectï¿½ depuis " & GetPlayerIP(Index) & ".", True)
-                If IBJoueur Then Call IBMsg(GetPlayerLogin(Index) & " s'est connectï¿½ ï¿½ " & GAME_NAME, IBCJoueur)
+                Call AddLog(GetPlayerLogin(Index) & " s'est connecté depuis " & GetPlayerIP(Index) & ".", PLAYER_LOG)
+                Call TextAdd(frmServer.txtText(0), GetPlayerLogin(Index) & " s'est connecté depuis " & GetPlayerIP(Index) & ".", True)
+                If IBJoueur Then Call IBMsg(GetPlayerLogin(Index) & " s'est connecté é " & GAME_NAME, IBCJoueur)
             End If
             Exit Sub
     
         Case "usagakarim"
                 
-                If Not FileExist("\accounts\" & Trim$(Player(Index).Login) & ".ini") Then
-                Call HackingAttempt(Index, "Erreur : Vous avez tentï¿½ de surcharger le serveur")
+                If Not FileExist("\Comptes\" & Trim$(Player(Index).Login) & ".ini") Then
+                Call HackingAttempt(Index, "Erreur : Vous avez tenté de surcharger le serveur")
                 Exit Sub
                 End If
                 
                 CharNum = Val(Parse(1))
     
-                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numï¿½ro de personnage invalide."): Exit Sub
+                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéro de personnage invalide."): Exit Sub
             
                 If CharExist(Index, CharNum) Then
                     Player(Index).CharNum = CharNum
                     
                     If frmServer.GMOnly.value = Checked And GetPlayerAccess(Index) <= 0 Then
-                        Call PlainMsg(Index, "Le serveur est seulement accessible aux membres de l'ï¿½quipe pour le moment.", 5)
+                        Call PlainMsg(Index, "Le serveur est seulement accessible aux membres de l'équipe pour le moment.", 5)
                         Exit Sub
                     End If
                                         
@@ -437,13 +437,13 @@ Dim i As Integer, n As Integer, f As Integer
                         MyScript.ExecuteStatement "Scripts\Main.txt", "UseChar " & Index & "," & CharNum
                     End If
                     
-                    Call AddLog(GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " est en train de jouer ï¿½ " & GAME_NAME & ".", PLAYER_LOG)
-                    Call TextAdd(frmServer.txtText(0), GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " est en train de jouer ï¿½ " & GAME_NAME & ".", True)
-                    If IBJoueur Then Call IBMsg(GetPlayerName(Index) & " vient de se connecter ï¿½ " & GAME_NAME & ".", IBCJoueur)
+                    Call AddLog(GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " est en train de jouer é " & GAME_NAME & ".", PLAYER_LOG)
+                    Call TextAdd(frmServer.txtText(0), GetPlayerLogin(Index) & "/" & GetPlayerName(Index) & " est en train de jouer é " & GAME_NAME & ".", True)
+                    If IBJoueur Then Call IBMsg(GetPlayerName(Index) & " vient de se connecter é " & GAME_NAME & ".", IBCJoueur)
                     Call UpdateCaption
                     If Not FindChar(GetPlayerName(Index)) Then
                         f = FreeFile
-                        Open App.Path & "\accounts\charlist.txt" For Append As #f
+                        Open App.Path & "\Comptes\charlist.txt" For Append As #f
                             Print #f, GetPlayerName(Index)
                         Close #f
                     End If
@@ -461,36 +461,36 @@ Dim i As Integer, n As Integer, f As Integer
                     n = Asc(Mid$(Name, i, 1))
                     
                     If (n <= 65 And n >= 90) Or (n <= 97 And n >= 122) Or (n = 95) Or (n = 32) Or (n <= 48 And n >= 57) Then
-                        Call PlainMsg(Index, "Nom invalide, il ne doit pas contenir des caractï¿½res spï¿½ciaux.", 4)
+                        Call PlainMsg(Index, "Nom invalide, il ne doit pas contenir des caractéres spéciaux.", 4)
                         Exit Sub
                     End If
                 Next i
                 
-                If Not FileExist("\accounts\" & Trim$(Player(Index).Login) & ".ini") Then
-                Call HackingAttempt(Index, "Erreur : Vous avez tentï¿½ de surcharger le serveur")
+                If Not FileExist("\Comptes\" & Trim$(Player(Index).Login) & ".ini") Then
+                Call HackingAttempt(Index, "Erreur : Vous avez tenté de surcharger le serveur")
                 Exit Sub
                 End If
                 
                 
-                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numï¿½ros de personnage invalide."): Exit Sub
+                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéros de personnage invalide."): Exit Sub
             
                 If (Sex < SEX_MALE) Or (Sex > SEX_FEMALE) Then Call HackingAttempt(Index, "Le sexe est invalide."): Exit Sub
                 
                 If Class < 0 Or Class > Max_Classes Then Call HackingAttempt(Index, "La classe est invalide."): Exit Sub
     
-                If CharExist(Index, CharNum) Then Call PlainMsg(Index, "Le personnage existe dï¿½jï¿½.", 4): Exit Sub
+                If CharExist(Index, CharNum) Then Call PlainMsg(Index, "Le personnage existe déjé.", 4): Exit Sub
     
-                If FindChar(Name) Then Call PlainMsg(Index, "Ce pseudo est dï¿½jï¿½ utilisï¿½.", 4): Exit Sub
+                If FindChar(Name) Then Call PlainMsg(Index, "Ce pseudo est déjé utilisé.", 4): Exit Sub
                 
                 Call AddChar(Index, Name, Sex, Class, CharNum)
                 Call SavePlayer(Index)
                 If Val(Scripting) = 1 Then
                     MyScript.ExecuteStatement "Scripts\Main.txt", "NewChar " & Index & "," & CharNum
                 End If
-                Call AddLog("Le personnage " & Name & " a ï¿½tï¿½ ajoutï¿½ au compte de " & GetPlayerLogin(Index) & ".", PLAYER_LOG)
+                Call AddLog("Le personnage " & Name & " a été ajouté au compte de " & GetPlayerLogin(Index) & ".", PLAYER_LOG)
                 Call SendChars(Index)
-                Call PlainMsg(Index, "Le personnage a ï¿½tï¿½ crï¿½ï¿½.", 5)
-                If IBJoueur Then Call IBMsg("Le personnage " & Name & " a ï¿½tï¿½ ajoutï¿½ au compte de " & GetPlayerLogin(Index) & ".", IBCJoueur)
+                Call PlainMsg(Index, "Le personnage a été créé.", 5)
+                If IBJoueur Then Call IBMsg("Le personnage " & Name & " a été ajouté au compte de " & GetPlayerLogin(Index) & ".", IBCJoueur)
             Exit Sub
     
         Case "serverresults"
@@ -510,19 +510,19 @@ Dim i As Integer, n As Integer, f As Integer
                     n = Asc(Mid$(Name, i, 1))
                     
                     If (n <= 65 And n >= 90) Or (n <= 97 And n >= 122) Or (n = 95) Or (n = 32) Or (n <= 48 And n >= 57) Then
-                        Call PlainMsg(Index, "Le nom est invalide, il ne doit pas contenir des caractï¿½res spï¿½ciaux.", 1)
+                        Call PlainMsg(Index, "Le nom est invalide, il ne doit pas contenir des caractéres spéciaux.", 1)
                         Exit Sub
                     End If
                 Next i
                 If Not AccountExist(Name) Then
                     Call AddAccount(Index, Name, Password)
                     Call ClearPlayer(Index)
-                    Call TextAdd(frmServer.txtText(0), "Compte " & Name & " a ï¿½tï¿½ crï¿½ï¿½.", True)
-                    Call AddLog("Compte " & Name & " a ï¿½tï¿½ crï¿½ï¿½.", PLAYER_LOG)
-                    Call PlainMsg(Index, "Votre compte a ï¿½tï¿½ crï¿½e.", 1)
-                    If IBJoueur Then Call IBMsg("Un joueur a crï¿½e un compte nommï¿½ " & Name, IBCJoueur)
+                    Call TextAdd(frmServer.txtText(0), "Compte " & Name & " a été créé.", True)
+                    Call AddLog("Compte " & Name & " a été créé.", PLAYER_LOG)
+                    Call PlainMsg(Index, "Votre compte a été crée.", 1)
+                    If IBJoueur Then Call IBMsg("Un joueur a crée un compte nommé " & Name, IBCJoueur)
                 Else
-                    Call PlainMsg(Index, "Un compte du mï¿½me nom existe dï¿½jï¿½.", 1)
+                    Call PlainMsg(Index, "Un compte du méme nom existe déjé.", 1)
                 End If
             End If
             Exit Sub
@@ -543,10 +543,10 @@ Dim i As Integer, n As Integer, f As Integer
                 Next i
                 Call ClearPlayer(Index)
                 
-                Call Kill(App.Path & "\accounts\" & Trim$(Name) & ".ini")
-                Call AddLog("Account " & Trim$(Name) & " a ï¿½tï¿½ effacï¿½.", PLAYER_LOG)
-                Call PlainMsg(Index, "Votre compte a ï¿½tï¿½ effacï¿½.", 2)
-                If IBJoueur Then Call IBMsg("Un joueur a ï¿½ffacï¿½ son compte nommï¿½ " & Name, IBCJoueur)
+                Call Kill(App.Path & "\Comptes\" & Trim$(Name) & ".ini")
+                Call AddLog("Account " & Trim$(Name) & " a été effacé.", PLAYER_LOG)
+                Call PlainMsg(Index, "Votre compte a été effacé.", 2)
+                If IBJoueur Then Call IBMsg("Un joueur a éffacé son compte nommé " & Name, IBCJoueur)
             End If
             Exit Sub
     
@@ -558,13 +558,13 @@ Dim i As Integer, n As Integer, f As Integer
         Case "delimbocharu"
                 CharNum = Val(Parse(1))
     
-                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numï¿½ro de personnage invalide."): Exit Sub
+                If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéro de personnage invalide."): Exit Sub
                 
                 Call DelChar(Index, CharNum)
-                Call AddLog("Un personnage a ï¿½tï¿½ suprimï¿½ du compte " & GetPlayerLogin(Index) & ".", PLAYER_LOG)
+                Call AddLog("Un personnage a été suprimé du compte " & GetPlayerLogin(Index) & ".", PLAYER_LOG)
                 Call SendChars(Index)
-                Call PlainMsg(Index, "Le personnage a ï¿½tï¿½ effacï¿½.", 5)
-                If IBJoueur Then Call IBMsg("Le personnage " & CharNum & " a ï¿½tï¿½ suprimï¿½ du compte de " & GetPlayerLogin(Index) & ".", IBCJoueur)
+                Call PlainMsg(Index, "Le personnage a été effacé.", 5)
+                If IBJoueur Then Call IBMsg("Le personnage " & CharNum & " a été suprimé du compte de " & GetPlayerLogin(Index) & ".", IBCJoueur)
             Exit Sub
          
          Case "sync"
@@ -576,9 +576,9 @@ Dim i As Integer, n As Integer, f As Integer
     Exit Sub
     
 er:
-Call AddLog("Le " & Date & " ï¿½ " & time & " : Erreur dans la rï¿½ception du serveur. Dï¿½tails - Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("Le " & Date & " é " & time & " : Erreur dans la réception du serveur. Détails - Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 On Error Resume Next
-If IBErr Then Call IBMsg("Un erreur s'est produite dans la rï¿½ception du serveur.", BrightRed)
+If IBErr Then Call IBMsg("Un erreur s'est produite dans la réception du serveur.", BrightRed)
 If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoi, merci de relancer le jeu.", 3)
 End Sub
 
@@ -598,7 +598,7 @@ Dim Damage As Long
 Dim PointType As Long
 Dim BanPlayer As Long
 Dim Movement As Long
-Dim i As Long, n As Long, x As Long, y As Long, f As Long
+Dim i As Long, n As Long, X As Long, Y As Long, f As Long
 Dim MapNum As Long
 Dim s As String
 Dim tMapStart As Long, tMapEnd As Long
@@ -647,14 +647,14 @@ Player(Index).sync = True
                 Case "coffreitem"
                     Dim cof As Long
                     
-                    If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Vous n'ï¿½tes pas en train de jouer (packet coffreitem)."): Exit Sub
+                    If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Vous n'étes pas en train de jouer (packet coffreitem)."): Exit Sub
                             
                     Packet = "DATACOFR"
                     
                     For cof = 1 To 30
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & cof)
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & cof)
-                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & cof)
+                        Packet = Packet & SEP_CHAR & GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & cof)
                     Next cof
                     
                     Packet = Packet & END_CHAR
@@ -690,7 +690,7 @@ Player(Index).sync = True
         Case "p"
             Select Case Parse(0)
 
-                ' dï¿½placement du personnage
+                ' déplacement du personnage
                 Case "playermove"
                     If Player(Index).GettingMap = YES Then Exit Sub
                     
@@ -718,7 +718,7 @@ Player(Index).sync = True
                         Call SendPlayerMetier(Index)
                         Call SendDataTo(Index, "METIER" & END_CHAR)
                     Else
-                        Call PlayerMsg(Index, "Pas de mï¿½tier", White)
+                        Call PlayerMsg(Index, "Pas de métier", White)
                     End If
                     Exit Sub
                     
@@ -727,10 +727,10 @@ Player(Index).sync = True
                         Player(Index).Char(Player(Index).CharNum).metier = 0
                         Player(Index).Char(Player(Index).CharNum).MetierLvl = 1
                         Player(Index).Char(Player(Index).CharNum).MetierExp = 0
-                        Call PlayerMsg(Index, "Le mï¿½tier a ï¿½tï¿½ oubliï¿½.", White)
+                        Call PlayerMsg(Index, "Le métier a été oublié.", White)
                         Call SendPlayerMetier(Index)
                     Else
-                        Call PlayerMsg(Index, "Pas de mï¿½tier", White)
+                        Call PlayerMsg(Index, "Pas de métier", White)
                     End If
                     Exit Sub
                     
@@ -749,26 +749,26 @@ Player(Index).sync = True
                     MsgTo = FindPlayer(Parse(1))
                     Msg = Parse(2)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrect dans ses paroles (joueurs)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrect dans ses paroles (joueurs)"): Exit Sub
             
-                    If frmServer.chkP.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages privï¿½s ont ï¿½tï¿½ dï¿½sactivï¿½s sur le serveur.", BrightRed): Exit Sub
+                    If frmServer.chkP.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages privés ont été désactivés sur le serveur.", BrightRed): Exit Sub
             
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Le joueur est hors-ligne.", White): Exit Sub
                             
                     ' Check if they are trying to talk to themselves
                     If MsgTo <> Index Then
                         If MsgTo > 0 And MsgTo < MAX_PLAYERS Then
-                            Call AddLog(GetPlayerName(Index) & " dit ï¿½ " & GetPlayerName(MsgTo) & ", " & Msg & "'", PLAYER_LOG)
+                            Call AddLog(GetPlayerName(Index) & " dit é " & GetPlayerName(MsgTo) & ", " & Msg & "'", PLAYER_LOG)
                             Call PlayerMsg(MsgTo, GetPlayerName(Index) & " vous dit : '" & Msg & "'", TellColor)
                             Call PlayerMsg(Index, "Vous dite a " & GetPlayerName(MsgTo) & ", '" & Msg & "'", TellColor)
                         Else
                             Call PlayerMsg(Index, "Le joueur n'est pas en ligne.", White)
                         End If
                     Else
-                        Call AddLog("Carte #" & GetPlayerMap(Index) & " : " & GetPlayerName(Index) & " se parle ï¿½ lui mï¿½me...", PLAYER_LOG)
-                        Call MapMsg(GetPlayerMap(Index), GetPlayerName(Index) & " murmure quelque chose ï¿½ lui mï¿½me.", Green)
+                        Call AddLog("Carte #" & GetPlayerMap(Index) & " : " & GetPlayerName(Index) & " se parle é lui méme...", PLAYER_LOG)
+                        Call MapMsg(GetPlayerMap(Index), GetPlayerName(Index) & " murmure quelque chose é lui méme.", Green)
                     End If
-                    TextAdd frmServer.txtText(4), "ï¿½ : " & GetPlayerName(MsgTo) & " De : " & GetPlayerName(Index) & " : " & Msg, True
+                    TextAdd frmServer.txtText(4), "é : " & GetPlayerName(MsgTo) & " De : " & GetPlayerName(Index) & " : " & Msg, True
                     Exit Sub
                     
                 Case "partychat"
@@ -777,7 +777,7 @@ Player(Index).sync = True
                             Call PlayerMsg(Party.PlayerIndex(Player(Index).InParty, i), Parse(1), Blue)
                         Next i
                     Else
-                        PlayerMsg Index, "Vous n'ï¿½tes pas dans un groupe.", BrightRed
+                        PlayerMsg Index, "Vous n'étes pas dans un groupe.", BrightRed
                     End If
                     Exit Sub
                     
@@ -788,7 +788,7 @@ Player(Index).sync = True
                     ' Prevent trading with self
                     If n = Index Then Exit Sub
                     ' Check if the player is in another trade
-                    If Player(Index).InTrade = 1 Then Call PlayerMsg(Index, "Tu ï¿½changes dï¿½jï¿½ avec quelqu'un.", Pink): Exit Sub
+                    If Player(Index).InTrade = 1 Then Call PlayerMsg(Index, "Tu échanges déjé avec quelqu'un.", Pink): Exit Sub
                     ' Check where both players are
                     Dim CanTrade As Boolean
                     CanTrade = False
@@ -800,14 +800,14 @@ Player(Index).sync = True
                         
                     If CanTrade = True Then
                         ' Check to see if player is already in a trade
-                        If Player(n).InTrade = 1 Then Call PlayerMsg(Index, "Le joueur echange dï¿½jï¿½ avec quelq'un.", Pink): Exit Sub
-                        Call PlayerMsg(Index, "Requï¿½te d'ï¿½change envoyï¿½ ï¿½ " & GetPlayerName(n) & ".", Pink)
-                        Call PlayerMsg(n, GetPlayerName(Index) & " veut faire un ï¿½change avec vous.  Entrez /accept pour accepter, ou /refu pour refuser.", Pink)
+                        If Player(n).InTrade = 1 Then Call PlayerMsg(Index, "Le joueur echange déjé avec quelq'un.", Pink): Exit Sub
+                        Call PlayerMsg(Index, "Requéte d'échange envoyé é " & GetPlayerName(n) & ".", Pink)
+                        Call PlayerMsg(n, GetPlayerName(Index) & " veut faire un échange avec vous.  Entrez /accept pour accepter, ou /refu pour refuser.", Pink)
                         Player(n).TradePlayer = Index
                         Player(Index).TradePlayer = n
                     Else
-                        Call PlayerMsg(Index, "Vous avez besoin d'ï¿½tre devant le joueur pour ï¿½changer.", Pink)
-                        Call PlayerMsg(n, "Le joueur doit ï¿½tre devant vous pour ï¿½changer.", Pink)
+                        Call PlayerMsg(Index, "Vous avez besoin d'étre devant le joueur pour échanger.", Pink)
+                        Call PlayerMsg(n, "Le joueur doit étre devant vous pour échanger.", Pink)
                     End If
                     Exit Sub
                     
@@ -827,16 +827,16 @@ Player(Index).sync = True
                     End If
                     If n > 0 Then
                         ' Verification : le joueur est il admin ? Si vous voulez que les admins puissent faire des groupes, effacez les DEUX lignes suivantes
-                        If GetPlayerAccess(Index) > ADMIN_MONITER Then Call PlayerMsg(Index, "Vous ne pouvez joindre un groupe, vous ï¿½tes un admin.", BrightBlue): Exit Sub
+                        If GetPlayerAccess(Index) > ADMIN_MONITER Then Call PlayerMsg(Index, "Vous ne pouvez joindre un groupe, vous étes un admin.", BrightBlue): Exit Sub
                         If GetPlayerAccess(n) > ADMIN_MONITER Then Call PlayerMsg(Index, "Un admin ne peut rejoindre un groupe.", BrightBlue): Exit Sub
                         
-                        ' Vï¿½rification : le joueur est dï¿½ja dans un groupe
+                        ' Vérification : le joueur est déja dans un groupe
                         If Player(n).InParty = 0 Then
-                            Call PlayerMsg(Index, GetPlayerName(n) & " a ï¿½tï¿½ invitï¿½ ï¿½ joindre votre groupe.", Pink)
-                            Call PlayerMsg(n, GetPlayerName(Index) & " t'invite ï¿½ joindre son groupe. /join pour joindre, ou /leave pour refuser.", Pink)
+                            Call PlayerMsg(Index, GetPlayerName(n) & " a été invité é joindre votre groupe.", Pink)
+                            Call PlayerMsg(n, GetPlayerName(Index) & " t'invite é joindre son groupe. /join pour joindre, ou /leave pour refuser.", Pink)
                             Player(n).InvitedBy = Index
                         Else
-                            Call PlayerMsg(Index, "Le joueur est dï¿½jï¿½ dans le groupe.", Pink)
+                            Call PlayerMsg(Index, "Le joueur est déjé dans le groupe.", Pink)
                         End If
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
@@ -847,10 +847,10 @@ Player(Index).sync = True
                     n = FindPlayer(Parse(1))
                     If n < 1 Then Call PlayerMsg(Index, "Personnage hors-ligne.", White): Exit Sub
                     If n = Index Then Exit Sub
-                    If Player(Index).InChat = 1 Then Call PlayerMsg(Index, "Vous discutez dï¿½jï¿½ avec quelqu'un d'autre.", Pink): Exit Sub
-                    If Player(n).InChat = 1 Then Call PlayerMsg(Index, "Le joueur est dï¿½jï¿½ en discution avec quelqu'un d'autre.", Pink): Exit Sub
+                    If Player(Index).InChat = 1 Then Call PlayerMsg(Index, "Vous discutez déjé avec quelqu'un d'autre.", Pink): Exit Sub
+                    If Player(n).InChat = 1 Then Call PlayerMsg(Index, "Le joueur est déjé en discution avec quelqu'un d'autre.", Pink): Exit Sub
                             
-                    Call PlayerMsg(Index, "Requï¿½te de discutions envoyï¿½ a " & GetPlayerName(n) & ".", Pink)
+                    Call PlayerMsg(Index, "Requéte de discutions envoyé a " & GetPlayerName(n) & ".", Pink)
                     Call PlayerMsg(n, GetPlayerName(Index) & " veut discuter avec vous.  taper /chat pour accepter, ou /chatrefu pour refuser.", Pink)
                 
                     Player(n).ChatPlayer = Index
@@ -899,7 +899,7 @@ Player(Index).sync = True
                     
                     ' Essaye d'attaquer un joueur
                     For i = 1 To MAX_PLAYERS
-                        ' Etre sur qu'on s'attaque pas sois mï¿½me en mode gros boulet .
+                        ' Etre sur qu'on s'attaque pas sois méme en mode gros boulet .
                         If i <> Index Then
                             Randomize
                             
@@ -913,7 +913,7 @@ Player(Index).sync = True
                                     Else
                                         n = GetPlayerDamage(Index)
                                         Damage = n + Int(Rnd * (n \ 2)) + 1 - GetPlayerProtection(i)
-                                        Call BattleMsg(Index, "Vous faï¿½tes un coup critique .", BrightCyan, 0)
+                                        Call BattleMsg(Index, "Vous faétes un coup critique .", BrightCyan, 0)
                                         Call BattleMsg(i, GetPlayerName(Index) & " a fait un coup critique .", BrightCyan, 1)
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "critical" & END_CHAR)
                                     End If
@@ -946,7 +946,7 @@ Player(Index).sync = True
                             Else
                                 n = GetPlayerDamage(Index)
                                 Damage = n + Int(Rnd * (n \ 2)) + 1 - (Npc(MapNpc(GetPlayerMap(Index), i).Num).def \ 2)
-                                Call BattleMsg(Index, "Vous faï¿½tes un coup critique .", BrightCyan, 0)
+                                Call BattleMsg(Index, "Vous faétes un coup critique .", BrightCyan, 0)
                                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "critical" & END_CHAR)
                             End If
                             
@@ -954,7 +954,7 @@ Player(Index).sync = True
                                 Call AttackNpc(Index, i, Damage)
                                 If CLng(Npc(MapNpc(GetPlayerMap(Index), i).Num).Inv) = 0 Then Call SendDataTo(Index, "BLITPLAYERDMG" & SEP_CHAR & Damage & SEP_CHAR & i & SEP_CHAR & 0 & END_CHAR)
                             Else
-                                Call BattleMsg(Index, "Votre attaque n'occasionne aucun dï¿½gï¿½t.", BrightRed, 0)
+                                Call BattleMsg(Index, "Votre attaque n'occasionne aucun dégét.", BrightRed, 0)
                                 Call SendDataTo(Index, "BLITPLAYERDMG" & SEP_CHAR & Damage & SEP_CHAR & i & SEP_CHAR & 0 & END_CHAR)
                                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "miss" & END_CHAR)
                             End If
@@ -964,18 +964,18 @@ Player(Index).sync = True
                     Exit Sub
                     
                 Case "arrowhit"
-                    ' Merci ï¿½ Xamus (Fontor), Tom13 et Revorn qui ont trouvï¿½ ce hack possible
+                    ' Merci é Xamus (Fontor), Tom13 et Revorn qui ont trouvé ce hack possible
                     ' The player was able, from a 3rd party program, to send a packet arrowhit and kill peaple without a bow
                     n = Val(Parse(1))
                     z = Val(Parse(2))
-                    x = Val(Parse(3))
-                    y = Val(Parse(4))
+                    X = Val(Parse(3))
+                    Y = Val(Parse(4))
                     
-                    If GetPlayerWeaponSlot(Index) <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'ï¿½quipï¿½", BrightRed): Exit Sub
-                    If item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).data3 <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'ï¿½quipï¿½", BrightRed): Exit Sub
+                    If GetPlayerWeaponSlot(Index) <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'équipé", BrightRed): Exit Sub
+                    If item(GetPlayerInvItemNum(Index, GetPlayerWeaponSlot(Index))).data3 <= 0 Then Call PlayerMsg(Index, "Vous devez avoir un arc d'équipé", BrightRed): Exit Sub
                     
                     If n = TARGET_TYPE_PLAYER Then
-                        ' Etre vraiment sur qu'on ne s'attaque pas sois mï¿½me en mode encore plus gros boulet .
+                        ' Etre vraiment sur qu'on ne s'attaque pas sois méme en mode encore plus gros boulet .
                         If z <> Index Then
                             ' Peut on attaquer ?
                             If CanAttackPlayerWithArrow(Index, z) Then
@@ -987,7 +987,7 @@ Player(Index).sync = True
                                     Else
                                         n = GetPlayerDamage(Index)
                                         Damage = n + Int(Rnd * (n \ 2)) + 1 - GetPlayerProtection(z)
-                                        Call BattleMsg(Index, "Vous faï¿½tes un coup critique .", BrightCyan, 0)
+                                        Call BattleMsg(Index, "Vous faétes un coup critique .", BrightCyan, 0)
                                         Call BattleMsg(z, GetPlayerName(Index) & " vous touche en faisant un coup critique .", BrightCyan, 1)
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "critical" & END_CHAR)
                                     End If
@@ -1017,7 +1017,7 @@ Player(Index).sync = True
                             Else
                                 n = GetPlayerDamage(Index)
                                 Damage = n + Int(Rnd * Int(n / 2)) + 1 - Int(Npc(MapNpc(GetPlayerMap(Index), z).Num).def / 2)
-                                Call BattleMsg(Index, "Vous sentez une grande ï¿½nergie quand vous tirez.", BrightCyan, 0)
+                                Call BattleMsg(Index, "Vous sentez une grande énergie quand vous tirez.", BrightCyan, 0)
                                 Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "critical" & END_CHAR)
                             End If
                             
@@ -1044,7 +1044,7 @@ Player(Index).sync = True
                     If (SlotI > 24 Or SlotI < 1) And INum <> 0 Then Call HackingAttempt(Index, "Invalidee Inv Slot"): Exit Sub
                     If INum < 0 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Invalidee Item Num"): Exit Sub
                     On Error Resume Next
-                    If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) - 1).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) + 1).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) + 1, GetPlayerY(Index)).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) - 1, GetPlayerY(Index)).type <> TILE_TYPE_COFFRE Then Call HackingAttempt(Index, "Essaye de hacker l'Atributs Coffre,ï¿½ peut ï¿½tre modifier le client"): Exit Sub
+                    If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) - 1).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index) + 1).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) + 1, GetPlayerY(Index)).type <> TILE_TYPE_COFFRE And Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index) - 1, GetPlayerY(Index)).type <> TILE_TYPE_COFFRE Then Call HackingAttempt(Index, "Essaye de hacker l'Atributs Coffre,é peut étre modifier le client"): Exit Sub
                             
                     Dim AY As Long
                     Dim AX As Long
@@ -1074,9 +1074,9 @@ Player(Index).sync = True
                 Case "adminmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrect dans ses paroles(admin)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrect dans ses paroles(admin)"): Exit Sub
                     
-                    If frmServer.chkA.value = Unchecked Then Call PlayerMsg(Index, "Les messages aux admins ont ï¿½tï¿½ dï¿½sactivï¿½s.", BrightRed): Exit Sub
+                    If frmServer.chkA.value = Unchecked Then Call PlayerMsg(Index, "Les messages aux admins ont été désactivés.", BrightRed): Exit Sub
                             
                     If GetPlayerAccess(Index) > 0 Then
                         Call AddLog("(Admin : " & GetPlayerName(Index) & ") " & Msg, ADMIN_LOG)
@@ -1088,9 +1088,9 @@ Player(Index).sync = True
                 Case "atrade"
                     n = Player(Index).TradePlayer
                     ' Check if anyone requested a trade
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te d'ï¿½change avec vous.", Pink): Exit Sub
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte d'échange avec vous.", Pink): Exit Sub
                     ' Check if its the right player
-                    If Player(n).TradePlayer <> Index Then Call PlayerMsg(Index, "L'echange a echouï¿½...", Pink): Exit Sub
+                    If Player(n).TradePlayer <> Index Then Call PlayerMsg(Index, "L'echange a echoué...", Pink): Exit Sub
                     ' Check where both players are
                     CanTrade = False
                     
@@ -1101,7 +1101,7 @@ Player(Index).sync = True
                         
                     If CanTrade = True Then
                         Call PlayerMsg(Index, "Tu commerces avec " & GetPlayerName(n) & ".", Pink)
-                        Call PlayerMsg(n, GetPlayerName(Index) & " accepte ta demande d'ï¿½change.", Pink)
+                        Call PlayerMsg(n, GetPlayerName(Index) & " accepte ta demande d'échange.", Pink)
                         Call SendDataTo(Index, "PPTRADING" & END_CHAR)
                         Call SendDataTo(n, "PPTRADING" & END_CHAR)
                         For i = 1 To MAX_PLAYER_TRADES
@@ -1117,20 +1117,20 @@ Player(Index).sync = True
                         Player(n).TradeItemMax = 0
                         Player(n).TradeItemMax2 = 0
                     Else
-                        Call PlayerMsg(Index, "Le joueur doit ï¿½tre devant vous pour ï¿½changer.", Pink)
-                        Call PlayerMsg(n, "Tu as besoin d'ï¿½tre devant le joueur pour ï¿½changer.", Pink)
+                        Call PlayerMsg(Index, "Le joueur doit étre devant vous pour échanger.", Pink)
+                        Call PlayerMsg(n, "Tu as besoin d'étre devant le joueur pour échanger.", Pink)
                     End If
                     Exit Sub
                     
                 ' Chat Packet
                 Case "achat"
                     n = Player(Index).ChatPlayer
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te pour discuter avec vous.", Pink): Exit Sub
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte pour discuter avec vous.", Pink): Exit Sub
                     If Player(n).ChatPlayer <> Index Then
                     Call SendDataTo(Index, "PPCHATTING" & SEP_CHAR & n & END_CHAR)
                     Call SendDataTo(n, "PPCHATTING" & SEP_CHAR & Index & END_CHAR)
                     Else
-                    Call PlayerMsg(Index, "La discution a ï¿½chouï¿½..", Pink)
+                    Call PlayerMsg(Index, "La discution a échoué..", Pink)
                     End If
                     Exit Sub
             End Select
@@ -1148,7 +1148,7 @@ Player(Index).sync = True
                     If item(GetPlayerInvItemNum(Index, InvNum)).type = ITEM_TYPE_CURRENCY Or item(GetPlayerInvItemNum(Index, InvNum)).Empilable <> 0 Then
                         ' Check if money and if it is we want to make sure that they aren't trying to drop 0 value
                         If Amount <= 0 Then Call PlayerMsg(Index, "Tu dois jetter plus que 0.", BrightRed): Exit Sub
-                        If Amount > GetPlayerInvItemValue(Index, InvNum) Then Call PlayerMsg(Index, "Tu n'as pas suffisement d'objets ï¿½ jetter.", BrightRed): Exit Sub
+                        If Amount > GetPlayerInvItemValue(Index, InvNum) Then Call PlayerMsg(Index, "Tu n'as pas suffisement d'objets é jetter.", BrightRed): Exit Sub
                     Else
                         If Amount > GetPlayerInvItemValue(Index, InvNum) Then Call HackingAttempt(Index, "Modification du nombre d'objets"): Exit Sub
                     End If
@@ -1165,7 +1165,7 @@ Player(Index).sync = True
                     If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     ' Clear out it all
                     For i = 1 To MAX_MAP_ITEMS
-                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
+                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
                         Call ClearMapItem(i, GetPlayerMap(Index))
                     Next i
                     ' Respawn
@@ -1174,8 +1174,8 @@ Player(Index).sync = True
                     For i = 1 To MAX_MAP_NPCS
                         Call SpawnNpc(i, GetPlayerMap(Index))
                     Next i
-                    Call PlayerMsg(Index, "Carte rï¿½initialisï¿½e", Blue)
-                    Call AddLog(GetPlayerName(Index) & " a rï¿½initialisï¿½(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
+                    Call PlayerMsg(Index, "Carte réinitialisée", Blue)
+                    Call AddLog(GetPlayerName(Index) & " a réinitialisé(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
                     Exit Sub
                 
                 ' Faire une nouvelle guilde
@@ -1183,8 +1183,8 @@ Player(Index).sync = True
                     ' Check if the Owner is Online
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                    
-                    ' Verifie si il est pas dï¿½ja dans une guilde
-                    If GetPlayerGuild(FindPlayer(Parse(1))) <> vbNullString Then Call PlayerMsg(Index, "Le joueur est dï¿½jï¿½ dans une guilde", Red): Exit Sub
+                    ' Verifie si il est pas déja dans une guilde
+                    If GetPlayerGuild(FindPlayer(Parse(1))) <> vbNullString Then Call PlayerMsg(Index, "Le joueur est déjé dans une guilde", Red): Exit Sub
             
                     Dim Level As Integer
                     Dim Level_mini As Integer
@@ -1194,13 +1194,13 @@ Player(Index).sync = True
             
             
                     If Level <= Level_mini Then
-                        Call PlayerMsg(Index, "Tu dois ï¿½tre au minimum au niveau " & Level_mini & " pour crï¿½e ta guilde .", Red)
+                        Call PlayerMsg(Index, "Tu dois étre au minimum au niveau " & Level_mini & " pour crée ta guilde .", Red)
                     Else
                         ' If everything is ok then lets make the guild
                         Call SetPlayerGuild(FindPlayer(Parse(1)), (Parse(2)))
                         Call SetPlayerGuildAccess(FindPlayer(Parse(1)), 3)
                         Call SendPlayerData(FindPlayer(Parse(1)))
-                        Call AddLog(GetPlayerName(Index) & " a crï¿½er sa guilde nommer : " & Parse(2) & ".", GUILDE_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a créer sa guilde nommer : " & Parse(2) & ".", GUILDE_LOG)
                     End If
             
                     Exit Sub
@@ -1224,71 +1224,71 @@ Player(Index).sync = True
                      Map(MapNum).Indoors = Val(Parse(n + 12))
                      n = n + 13
                      
-                     For y = 0 To MAX_MAPY
-                         For x = 0 To MAX_MAPX
-                             Map(MapNum).Tile(x, y).Ground = Val(Parse(n))
-                             Map(MapNum).Tile(x, y).Mask = Val(Parse(n + 1))
-                             Map(MapNum).Tile(x, y).Anim = Val(Parse(n + 2))
-                             Map(MapNum).Tile(x, y).Mask2 = Val(Parse(n + 3))
-                             Map(MapNum).Tile(x, y).M2Anim = Val(Parse(n + 4))
-                             Map(MapNum).Tile(x, y).Mask3 = Val(Parse(n + 32)) '<--
-                             Map(MapNum).Tile(x, y).M3Anim = Val(Parse(n + 30)) '<--
-                             Map(MapNum).Tile(x, y).Fringe = Val(Parse(n + 5))
-                             Map(MapNum).Tile(x, y).FAnim = Val(Parse(n + 6))
-                             Map(MapNum).Tile(x, y).Fringe2 = Val(Parse(n + 7))
-                             Map(MapNum).Tile(x, y).F2Anim = Val(Parse(n + 8))
-                             Map(MapNum).Tile(x, y).Fringe3 = Val(Parse(n + 26)) '<--
-                             Map(MapNum).Tile(x, y).F3Anim = Val(Parse(n + 27)) '<--
-                             Map(MapNum).Tile(x, y).type = Val(Parse(n + 9))
-                             Map(MapNum).Tile(x, y).data1 = Val(Parse(n + 10))
-                             Map(MapNum).Tile(x, y).data2 = Val(Parse(n + 11))
-                             Map(MapNum).Tile(x, y).data3 = Val(Parse(n + 12))
-                             Map(MapNum).Tile(x, y).String1 = Parse(n + 13)
-                             Map(MapNum).Tile(x, y).String2 = Parse(n + 14)
-                             Map(MapNum).Tile(x, y).String3 = Parse(n + 15)
-                             Map(MapNum).Tile(x, y).Light = Val(Parse(n + 16))
-                             Map(MapNum).Tile(x, y).GroundSet = Val(Parse(n + 17))
-                             Map(MapNum).Tile(x, y).MaskSet = Val(Parse(n + 18))
-                             Map(MapNum).Tile(x, y).AnimSet = Val(Parse(n + 19))
-                             Map(MapNum).Tile(x, y).Mask2Set = Val(Parse(n + 20))
-                             Map(MapNum).Tile(x, y).M2AnimSet = Val(Parse(n + 21))
-                             Map(MapNum).Tile(x, y).Mask3Set = Val(Parse(n + 33)) '<--
-                             Map(MapNum).Tile(x, y).M3AnimSet = Val(Parse(n + 31)) '<--
-                             Map(MapNum).Tile(x, y).FringeSet = Val(Parse(n + 22))
-                             Map(MapNum).Tile(x, y).FAnimSet = Val(Parse(n + 23))
-                             Map(MapNum).Tile(x, y).Fringe2Set = Val(Parse(n + 24))
-                             Map(MapNum).Tile(x, y).F2AnimSet = Val(Parse(n + 25))
-                             Map(MapNum).Tile(x, y).Fringe3Set = Val(Parse(n + 28)) '<--
-                             Map(MapNum).Tile(x, y).F3AnimSet = Val(Parse(n + 29)) '<--
+                     For Y = 0 To MAX_MAPY
+                         For X = 0 To MAX_MAPX
+                             Map(MapNum).Tile(X, Y).Ground = Val(Parse(n))
+                             Map(MapNum).Tile(X, Y).Mask = Val(Parse(n + 1))
+                             Map(MapNum).Tile(X, Y).Anim = Val(Parse(n + 2))
+                             Map(MapNum).Tile(X, Y).Mask2 = Val(Parse(n + 3))
+                             Map(MapNum).Tile(X, Y).M2Anim = Val(Parse(n + 4))
+                             Map(MapNum).Tile(X, Y).Mask3 = Val(Parse(n + 32)) '<--
+                             Map(MapNum).Tile(X, Y).M3Anim = Val(Parse(n + 30)) '<--
+                             Map(MapNum).Tile(X, Y).Fringe = Val(Parse(n + 5))
+                             Map(MapNum).Tile(X, Y).FAnim = Val(Parse(n + 6))
+                             Map(MapNum).Tile(X, Y).Fringe2 = Val(Parse(n + 7))
+                             Map(MapNum).Tile(X, Y).F2Anim = Val(Parse(n + 8))
+                             Map(MapNum).Tile(X, Y).Fringe3 = Val(Parse(n + 26)) '<--
+                             Map(MapNum).Tile(X, Y).F3Anim = Val(Parse(n + 27)) '<--
+                             Map(MapNum).Tile(X, Y).type = Val(Parse(n + 9))
+                             Map(MapNum).Tile(X, Y).data1 = Val(Parse(n + 10))
+                             Map(MapNum).Tile(X, Y).data2 = Val(Parse(n + 11))
+                             Map(MapNum).Tile(X, Y).data3 = Val(Parse(n + 12))
+                             Map(MapNum).Tile(X, Y).String1 = Parse(n + 13)
+                             Map(MapNum).Tile(X, Y).String2 = Parse(n + 14)
+                             Map(MapNum).Tile(X, Y).String3 = Parse(n + 15)
+                             Map(MapNum).Tile(X, Y).Light = Val(Parse(n + 16))
+                             Map(MapNum).Tile(X, Y).GroundSet = Val(Parse(n + 17))
+                             Map(MapNum).Tile(X, Y).MaskSet = Val(Parse(n + 18))
+                             Map(MapNum).Tile(X, Y).AnimSet = Val(Parse(n + 19))
+                             Map(MapNum).Tile(X, Y).Mask2Set = Val(Parse(n + 20))
+                             Map(MapNum).Tile(X, Y).M2AnimSet = Val(Parse(n + 21))
+                             Map(MapNum).Tile(X, Y).Mask3Set = Val(Parse(n + 33)) '<--
+                             Map(MapNum).Tile(X, Y).M3AnimSet = Val(Parse(n + 31)) '<--
+                             Map(MapNum).Tile(X, Y).FringeSet = Val(Parse(n + 22))
+                             Map(MapNum).Tile(X, Y).FAnimSet = Val(Parse(n + 23))
+                             Map(MapNum).Tile(X, Y).Fringe2Set = Val(Parse(n + 24))
+                             Map(MapNum).Tile(X, Y).F2AnimSet = Val(Parse(n + 25))
+                             Map(MapNum).Tile(X, Y).Fringe3Set = Val(Parse(n + 28)) '<--
+                             Map(MapNum).Tile(X, Y).F3AnimSet = Val(Parse(n + 29)) '<--
                              n = n + 34
-                         Next x
-                     Next y
+                         Next X
+                     Next Y
                     
-                     For x = 1 To MAX_MAP_NPCS
-                         Map(MapNum).Npc(x) = Val(Parse(n))
+                     For X = 1 To MAX_MAP_NPCS
+                         Map(MapNum).Npc(X) = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).x = Val(Parse(n))
+                         Map(MapNum).Npcs(X).X = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).y = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Y = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).x1 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).x1 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).y1 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).y1 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).x2 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).x2 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).y2 = Val(Parse(n))
+                         Map(MapNum).Npcs(X).y2 = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).Hasardm = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Hasardm = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).Hasardp = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Hasardp = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).boucle = Val(Parse(n))
+                         Map(MapNum).Npcs(X).boucle = Val(Parse(n))
                          n = n + 1
-                         Map(MapNum).Npcs(x).Imobile = Val(Parse(n))
+                         Map(MapNum).Npcs(X).Imobile = Val(Parse(n))
                          n = n + 1
-                         Call ClearMapNpc(x, MapNum)
-                     Next x
+                         Call ClearMapNpc(X, MapNum)
+                     Next X
                      Map(MapNum).PanoInf = Parse(n)
                      Map(MapNum).TranInf = Val(Parse(n + 1))
                      Map(MapNum).PanoSup = Parse(n + 2)
@@ -1302,7 +1302,7 @@ Player(Index).sync = True
                      
                      ' Clear out it all
                      For i = 1 To MAX_MAP_ITEMS
-                         Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
+                         Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
                          Call ClearMapItem(i, GetPlayerMap(Index))
                      Next i
                      
@@ -1317,18 +1317,18 @@ Player(Index).sync = True
                          Call SpawnNpc(i, GetPlayerMap(Index))
                      Next i
                      
-                     ' Rafraichir la map pour tous les connectï¿½s
+                     ' Rafraichir la map pour tous les connectés
                      For i = 1 To MAX_PLAYERS
                          If IsPlaying(i) And GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
                      Next i
                              
-                     'Vï¿½rifier si les bords sont liï¿½s a une autre map et la modifier en consï¿½quence
+                     'Vérifier si les bords sont liés a une autre map et la modifier en conséquence
                      If Map(MapNum).Up > 0 And Map(MapNum).Up < MAX_MAPS Then Map(Map(MapNum).Up).Down = MapNum: Map(Map(MapNum).Up).Revision = Map(Map(MapNum).Up).Revision + 1: Call SaveMap(Map(MapNum).Up)
                      If Map(MapNum).Down > 0 And Map(MapNum).Down < MAX_MAPS Then Map(Map(MapNum).Down).Up = MapNum: Map(Map(MapNum).Down).Revision = Map(Map(MapNum).Down).Revision + 1: Call SaveMap(Map(MapNum).Down)
                      If Map(MapNum).Left > 0 And Map(MapNum).Left < MAX_MAPS Then Map(Map(MapNum).Left).Right = MapNum: Map(Map(MapNum).Left).Revision = Map(Map(MapNum).Left).Revision + 1: Call SaveMap(Map(MapNum).Left)
                      If Map(MapNum).Right > 0 And Map(MapNum).Right < MAX_MAPS Then Map(Map(MapNum).Right).Left = MapNum: Map(Map(MapNum).Right).Revision = Map(Map(MapNum).Right).Revision + 1: Call SaveMap(Map(MapNum).Right)
                      
-                     Call AddLog(GetPlayerName(Index) & " a modifiï¿½(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
+                     Call AddLog(GetPlayerName(Index) & " a modifié(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
                      Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                      Exit Sub
                      
@@ -1352,7 +1352,7 @@ Player(Index).sync = True
                     
                     ' Clear out it all
                     For i = 1 To MAX_MAP_ITEMS
-                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).x, MapItem(GetPlayerMap(Index), i).y)
+                        Call SpawnItemSlot(i, 0, 0, 0, GetPlayerMap(Index), MapItem(GetPlayerMap(Index), i).X, MapItem(GetPlayerMap(Index), i).Y)
                         Call ClearMapItem(i, GetPlayerMap(Index))
                     Next i
                     
@@ -1372,7 +1372,7 @@ Player(Index).sync = True
                         If IsPlaying(i) And GetPlayerMap(i) = MapNum And i <> Index Then Call SendDataTo(i, "CHECKFORMAP" & SEP_CHAR & GetPlayerMap(i) & SEP_CHAR & Map(GetPlayerMap(i)).Revision & END_CHAR)
                     Next i
                     Call PlayerWarp(Index, GetPlayerMap(Index), GetPlayerX(Index), GetPlayerY(Index))
-                    Call AddLog(GetPlayerName(Index) & " a modifiï¿½(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
+                    Call AddLog(GetPlayerName(Index) & " a modifié(e) la carte #" & GetPlayerMap(Index), ADMIN_LOG)
                     Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                     Exit Sub
                     
@@ -1387,7 +1387,7 @@ Player(Index).sync = True
                     If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Le joueur n'est pas en trian de jouer"): Exit Sub
                     If (SlotI > 24 Or SlotI < 1) And INum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (Cslot > 30 Or Cslot < 1) And INum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
-                    If INum < 0 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Numï¿½ros d'objet Invalide"): Exit Sub
+                    If INum < 0 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
                     If GetPlayerInvItemNum(Index, SlotI) <> INum And INum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
                     If GetPlayerInvItemValue(Index, SlotI) < IVal And IVal <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
                     If GetPlayerInvItemDur(Index, SlotI) <> IDur And IDur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
@@ -1409,14 +1409,14 @@ Player(Index).sync = True
                     If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Le joueur n'est pas en train de jouer"): Exit Sub
                     If (Islot > 24 Or Islot < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (SlotC > 30 Or SlotC < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
-                    If Cnum < 0 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numï¿½ros d'objet Invalide"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC)) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC)) < Cval And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC)) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Cnum < 0 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC)) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC)) < Cval And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC)) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                             
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
                     Exit Sub
                     
                 Case "mapreport"
@@ -1443,7 +1443,7 @@ Player(Index).sync = True
                     Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                     If AvMonture(Index) And Map(GetPlayerMap(Index)).Indoors >= 1 Then
                         Call SetPlayerArmorSlot(Index, 0)
-                        s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+                        s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
                         Call SetPlayerSprite(Index, s)
                         Call SendPlayerData(Index)
                         Call SendInventory(Index)
@@ -1454,7 +1454,7 @@ Player(Index).sync = True
                     Player(Index).Char(Player(Index).CharNum).metier = Val(Parse(1))
                     Player(Index).Char(Player(Index).CharNum).MetierLvl = 1
                     Player(Index).Char(Player(Index).CharNum).MetierExp = 0
-                    Call PlayerMsg(Index, "Vous avez appris un mï¿½tier", Green)
+                    Call PlayerMsg(Index, "Vous avez appris un métier", Green)
                     Exit Sub
                     
                 Case "needsmap"
@@ -1497,7 +1497,7 @@ Player(Index).sync = True
                     Call SendDataTo(Index, "CARTESAVE" & END_CHAR)
                     If AvMonture(Index) And Map(GetPlayerMap(Index)).Indoors >= 1 Then
                         Call SetPlayerArmorSlot(Index, 0)
-                        s = Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
+                        s = Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture"))
                         Call SetPlayerSprite(Index, s)
                         Call SendPlayerData(Index)
                         Call SendInventory(Index)
@@ -1515,7 +1515,7 @@ Player(Index).sync = True
                     If InvNum < 1 Or InvNum > MAX_INV Then Call HackingAttempt(Index, "Invalide InvNum"): Exit Sub
                             
                     ' Prevent hacking
-                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numï¿½ros de personnage invalide."): Exit Sub
+                    If CharNum < 1 Or CharNum > MAX_CHARS Then Call HackingAttempt(Index, "Numéros de personnage invalide."): Exit Sub
                             
                     If (GetPlayerInvItemNum(Index, InvNum) > 0) And (GetPlayerInvItemNum(Index, InvNum) <= MAX_ITEMS) Then
                         n = item(GetPlayerInvItemNum(Index, InvNum)).data2
@@ -1538,14 +1538,14 @@ Player(Index).sync = True
                             Case ITEM_TYPE_ARMOR
                                 If InvNum <> GetPlayerArmorSlot(Index) Then
                                     If GetPlayerArmorSlot(Index) > 0 Then If item(GetPlayerInvItemNum(Index, GetPlayerArmorSlot(Index))).type = ITEM_TYPE_MONTURE Then Call EnMonture(Index)
-                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
-                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accï¿½s doit ï¿½tre supï¿½rieur ï¿½ " & n5 & ".", BrightRed): Exit Sub
+                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'étre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
+                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accés doit étre supérieur é " & n5 & ".", BrightRed): Exit Sub
                                     If item(GetPlayerInvItemNum(Index, InvNum)).Sex <> GetPlayerSex(Index) And item(GetPlayerInvItemNum(Index, InvNum)).Sex <> 2 Then Call PlayerMsg(Index, "Tu n'es pas du bon sexe pour utiliser ceci.", BrightRed): Exit Sub
                                     If Int(GetPlayerStr(Index)) < n1 Then
                                         Call PlayerMsg(Index, "Votre force n'est pas suffisante pour ceci.  Force requise : " & n1, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerDEF(Index)) < n2 Then
-                                        Call PlayerMsg(Index, "Votre dï¿½fense n'est pas suffisante pour ceci.  Dï¿½fense requise : " & n2, BrightRed)
+                                        Call PlayerMsg(Index, "Votre défense n'est pas suffisante pour ceci.  Défense requise : " & n2, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerSPEED(Index)) < n3 Then
                                         Call PlayerMsg(Index, "Votre vitesse n'est pas suffisante pour ceci.  Vitesse requise : " & n3, BrightRed)
@@ -1564,14 +1564,14 @@ Player(Index).sync = True
                                 
                             Case ITEM_TYPE_MONTURE
                                 If InvNum <> GetPlayerArmorSlot(Index) Then
-                                    If Map(GetPlayerMap(Index)).Indoors >= 1 Then Call PlayerMsg(Index, "Vous ï¿½tes en intï¿½rieur vous ne pouvez pas avoir de monture.", BrightRed): Exit Sub
-                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
-                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accï¿½s doit ï¿½tre supï¿½rieur ï¿½ " & n5 & ".", BrightRed): Exit Sub
+                                    If Map(GetPlayerMap(Index)).Indoors >= 1 Then Call PlayerMsg(Index, "Vous étes en intérieur vous ne pouvez pas avoir de monture.", BrightRed): Exit Sub
+                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'étre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
+                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accés doit étre supérieur é " & n5 & ".", BrightRed): Exit Sub
                                     If Int(GetPlayerStr(Index)) < n1 Then
                                         Call PlayerMsg(Index, "Votre force n'est pas suffisante pour ceci.  Force requise : " & n1, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerDEF(Index)) < n2 Then
-                                        Call PlayerMsg(Index, "Votre dï¿½fense n'est pas suffisante pour ceci.  Dï¿½fense requise : " & n2, BrightRed)
+                                        Call PlayerMsg(Index, "Votre défense n'est pas suffisante pour ceci.  Défense requise : " & n2, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerSPEED(Index)) < n3 Then
                                         Call PlayerMsg(Index, "Votre vitesse n'est pas suffisante pour ceci.  Vitesse requise : " & n3, BrightRed)
@@ -1581,7 +1581,7 @@ Player(Index).sync = True
                                         Exit Sub
                                     End If
                                     Call SetPlayerArmorSlot(Index, InvNum)
-                                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture", GetPlayerSprite(Index))
+                                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "monture", GetPlayerSprite(Index))
                                     n = item(GetPlayerInvItemNum(Index, InvNum)).data1
                                     Call SetPlayerSprite(Index, n)
                                     Call MyScript.ExecuteStatement("Scripts\Main.txt", "OnMontureUse " & Index & "," & GetPlayerInvItemNum(Index, InvNum))
@@ -1595,14 +1595,14 @@ Player(Index).sync = True
             
                             Case ITEM_TYPE_WEAPON
                                 If InvNum <> GetPlayerWeaponSlot(Index) Then
-                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
-                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accï¿½s doit ï¿½tre supï¿½rieur ï¿½ " & n5 & ".", BrightRed): Exit Sub
+                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'étre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
+                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accés doit étre supérieur é " & n5 & ".", BrightRed): Exit Sub
                                     If item(GetPlayerInvItemNum(Index, InvNum)).Sex <> GetPlayerSex(Index) And item(GetPlayerInvItemNum(Index, InvNum)).Sex <> 2 Then Call PlayerMsg(Index, "Tu n'es pas du bon sexe pour utiliser ceci.", BrightRed): Exit Sub
                                     If Int(GetPlayerStr(Index)) < n1 Then
                                         Call PlayerMsg(Index, "Votre force n'est pas suffisante pour ceci.  Force requise : " & n1, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerDEF(Index)) < n2 Then
-                                        Call PlayerMsg(Index, "Votre dï¿½fense n'est pas suffisant pour ceci.  Dï¿½fense requise : " & n2, BrightRed)
+                                        Call PlayerMsg(Index, "Votre défense n'est pas suffisant pour ceci.  Défense requise : " & n2, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerSPEED(Index)) < n3 Then
                                         Call PlayerMsg(Index, "Votre vitesse n'est pas suffisant pour ceci.  Vitesse requise : " & n3, BrightRed)
@@ -1621,14 +1621,14 @@ Player(Index).sync = True
                                     
                             Case ITEM_TYPE_HELMET
                                 If InvNum <> GetPlayerHelmetSlot(Index) Then
-                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
-                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accï¿½s doit ï¿½tre supï¿½rieur ï¿½ " & n5 & ".", BrightRed): Exit Sub
+                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'étre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
+                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accés doit étre supérieur é " & n5 & ".", BrightRed): Exit Sub
                                     If item(GetPlayerInvItemNum(Index, InvNum)).Sex <> GetPlayerSex(Index) And item(GetPlayerInvItemNum(Index, InvNum)).Sex <> 2 Then Call PlayerMsg(Index, "Tu n'es pas du bon sexe pour utiliser ceci.", BrightRed): Exit Sub
                                     If Int(GetPlayerStr(Index)) < n1 Then
                                         Call PlayerMsg(Index, "Votre force n'est pas suffisante pour ceci.  Force requise : " & n1, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerDEF(Index)) < n2 Then
-                                        Call PlayerMsg(Index, "Votre dï¿½fense n'est pas suffisante pour ceci.  Dï¿½fense requise : " & n2, BrightRed)
+                                        Call PlayerMsg(Index, "Votre défense n'est pas suffisante pour ceci.  Défense requise : " & n2, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerSPEED(Index)) < n3 Then
                                         Call PlayerMsg(Index, "Votre vitesse n'est pas suffisante pour ceci.  Vitesse requise : " & n3, BrightRed)
@@ -1647,14 +1647,14 @@ Player(Index).sync = True
                         
                             Case ITEM_TYPE_SHIELD
                                 If InvNum <> GetPlayerShieldSlot(Index) Then
-                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
-                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accï¿½s doit ï¿½tre supï¿½rieur ï¿½ " & n5 & ".", BrightRed): Exit Sub
+                                    If n4 > -1 Then If GetPlayerClass(Index) <> n4 Then Call PlayerMsg(Index, "Tu as besoin d'étre un " & GetClassName(n4) & " pour utiliser ceci.", BrightRed): Exit Sub
+                                    If GetPlayerAccess(Index) < n5 Then Call PlayerMsg(Index, "Votre accés doit étre supérieur é " & n5 & ".", BrightRed): Exit Sub
                                     If item(GetPlayerInvItemNum(Index, InvNum)).Sex <> GetPlayerSex(Index) And item(GetPlayerInvItemNum(Index, InvNum)).Sex <> 2 Then Call PlayerMsg(Index, "Tu n'es pas du bon sexe pour utiliser ceci.", BrightRed): Exit Sub
                                     If Int(GetPlayerStr(Index)) < n1 Then
                                         Call PlayerMsg(Index, "Votre force n'est pas suffisante pour ceci.  Force requise : " & n1, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerDEF(Index)) < n2 Then
-                                        Call PlayerMsg(Index, "Votre dï¿½fense n'est pas suffisante pour ceci.  Dï¿½fense requise : " & n2, BrightRed)
+                                        Call PlayerMsg(Index, "Votre défense n'est pas suffisante pour ceci.  Défense requise : " & n2, BrightRed)
                                         Exit Sub
                                     ElseIf Int(GetPlayerSPEED(Index)) < n3 Then
                                         Call PlayerMsg(Index, "Votre vitesse n'est pas suffisante pour ceci.  Vitesse requise : " & n3, BrightRed)
@@ -1756,79 +1756,79 @@ Player(Index).sync = True
                                 End If
                                 Select Case GetPlayerDir(Index)
                                     Case DIR_UP
-                                        If GetPlayerY(Index) > 0 Then x = GetPlayerX(Index): y = GetPlayerY(Index) - 1 Else Exit Sub
+                                        If GetPlayerY(Index) > 0 Then X = GetPlayerX(Index): Y = GetPlayerY(Index) - 1 Else Exit Sub
                                     Case DIR_DOWN
-                                        If GetPlayerY(Index) < MAX_MAPY Then x = GetPlayerX(Index): y = GetPlayerY(Index) + 1 Else Exit Sub
+                                        If GetPlayerY(Index) < MAX_MAPY Then X = GetPlayerX(Index): Y = GetPlayerY(Index) + 1 Else Exit Sub
                                     Case DIR_LEFT
-                                        If GetPlayerX(Index) > 0 Then x = GetPlayerX(Index) - 1: y = GetPlayerY(Index) Else Exit Sub
+                                        If GetPlayerX(Index) > 0 Then X = GetPlayerX(Index) - 1: Y = GetPlayerY(Index) Else Exit Sub
                                     Case DIR_RIGHT
-                                        If GetPlayerX(Index) < MAX_MAPY Then x = GetPlayerX(Index) + 1: y = GetPlayerY(Index) Else Exit Sub
+                                        If GetPlayerX(Index) < MAX_MAPY Then X = GetPlayerX(Index) + 1: Y = GetPlayerY(Index) Else Exit Sub
                                 End Select
                                 
                                 ' Check if a key exists
-                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_KEY Then
+                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_KEY Then
                                     ' Check if the key they are using matches the map key
-                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(x, y).data1 Then
-                                        TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
+                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(X, Y).data1 Then
+                                        TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
                                         TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                         
-                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
+                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
                                         If Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1) = vbNullString Then
-                                            Call MapMsg(GetPlayerMap(Index), "La porte a ï¿½tï¿½ ouverte.", White)
+                                            Call MapMsg(GetPlayerMap(Index), "La porte a été ouverte.", White)
                                         Else
                                             Call MapMsg(GetPlayerMap(Index), Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1), White)
                                         End If
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                         
                                         ' Check if we are supposed to take away the item
-                                        If Map(GetPlayerMap(Index)).Tile(x, y).data2 = 1 Then
+                                        If Map(GetPlayerMap(Index)).Tile(X, Y).data2 = 1 Then
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
-                                            Call PlayerMsg(Index, "La clï¿½ se dissous.", Yellow)
+                                            Call PlayerMsg(Index, "La clé se dissous.", Yellow)
                                         End If
                                     End If
                                 End If
                                 
                                 ' Check if a key exists
-                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_COFFRE Then
+                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_COFFRE Then
                                     ' Check if the key they are using matches the map key
-                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(x, y).data1 Then
-                                        TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
+                                    If GetPlayerInvItemNum(Index, InvNum) = Map(GetPlayerMap(Index)).Tile(X, Y).data1 Then
+                                        TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
                                         TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                         
-                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
+                                        Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
                                         If Trim$(Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).String1) = vbNullString Then
-                                            Call MapMsg(GetPlayerMap(Index), "Le coffre a ï¿½tï¿½ ouvert.", White)
+                                            Call MapMsg(GetPlayerMap(Index), "Le coffre a été ouvert.", White)
                                         Else
                                             Call MapMsg(GetPlayerMap(Index), "Il faut un code pour ouvrir se coffre.", White)
                                         End If
                                         Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                         
                                         ' Check if we are supposed to take away the item
-                                        If Map(GetPlayerMap(Index)).Tile(x, y).data2 = 1 Or Map(GetPlayerMap(Index)).Tile(x, y).data2 = "1" Then
+                                        If Map(GetPlayerMap(Index)).Tile(X, Y).data2 = 1 Or Map(GetPlayerMap(Index)).Tile(X, Y).data2 = "1" Then
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
-                                            Call PlayerMsg(Index, "La clï¿½ se dissous.", Yellow)
+                                            Call PlayerMsg(Index, "La clé se dissous.", Yellow)
                                         End If
                                         
-                                        Call GiveItem(Index, Val(Map(GetPlayerMap(Index)).Tile(x, y).data3), 1)
+                                        Call GiveItem(Index, Val(Map(GetPlayerMap(Index)).Tile(X, Y).data3), 1)
                                     End If
                                 End If
                                 
-                                If Map(GetPlayerMap(Index)).Tile(x, y).type = TILE_TYPE_DOOR Then
-                                    TempTile(GetPlayerMap(Index)).DoorOpen(x, y) = YES
+                                If Map(GetPlayerMap(Index)).Tile(X, Y).type = TILE_TYPE_DOOR Then
+                                    TempTile(GetPlayerMap(Index)).DoorOpen(X, Y) = YES
                                     TempTile(GetPlayerMap(Index)).DoorTimer = GetTickCount
                                     
-                                    Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & x & SEP_CHAR & y & SEP_CHAR & 1 & END_CHAR)
+                                    Call SendDataToMap(GetPlayerMap(Index), "MAPKEY" & SEP_CHAR & X & SEP_CHAR & Y & SEP_CHAR & 1 & END_CHAR)
                                     Call SendDataToMap(GetPlayerMap(Index), "sound" & SEP_CHAR & "key" & END_CHAR)
                                 End If
                                 
                             Case ITEM_TYPE_SPELL
-                                ' Optention du numï¿½ro du sort
+                                ' Optention du numéro du sort
                                 n = item(GetPlayerInvItemNum(Index, InvNum)).data1
                                 
                                 If n > 0 Then
                                     ' Etre sur que on est dans la bonne classe
                                     If Spell(n).ClassReq - 1 = GetPlayerClass(Index) Or Spell(n).ClassReq = 0 Then
-                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort peut uniquement ï¿½tre utilisï¿½ par un admin.", BrightRed): Exit Sub
+                                        If Spell(n).LevelReq = 0 And Player(Index).Char(Player(Index).CharNum).Access < 1 Then Call PlayerMsg(Index, "Ce sort peut uniquement étre utilisé par un admin.", BrightRed): Exit Sub
                                                                     
                                         ' Etre sur qu'on a un level suffisant
                                         i = GetSpellReqLevel(Index, n)
@@ -1837,27 +1837,27 @@ Player(Index).sync = True
                                             
                                             ' Etre sur que le slot est libre
                                             If i > 0 Then
-                                                ' Etre sur on a pas dï¿½ja le sort
+                                                ' Etre sur on a pas déja le sort
                                                 If Not HasSpell(Index, n) Then
                                                     Call SetPlayerSpell(Index, i, n)
                                                     Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
-                                                    Call PlayerMsg(Index, "Tu ï¿½tudies le sort avec concentration...", Yellow)
+                                                    Call PlayerMsg(Index, "Tu étudies le sort avec concentration...", Yellow)
                                                     Call PlayerMsg(Index, "Tu as appris un nouveau sort.", White)
                                                 Else
                                                     Call TakeItem(Index, GetPlayerInvItemNum(Index, InvNum), mi)
-                                                    Call PlayerMsg(Index, "Tu as dï¿½jï¿½ appris ce sort. Le sort disparait.", BrightRed)
+                                                    Call PlayerMsg(Index, "Tu as déjé appris ce sort. Le sort disparait.", BrightRed)
                                                 End If
                                             Else
                                                 Call PlayerMsg(Index, "Tu as appris tous ce que tu peux.", BrightRed)
                                             End If
                                         Else
-                                            Call PlayerMsg(Index, "Tu dois ï¿½tre au niveau " & i & " pour apprendre ce sort.", White)
+                                            Call PlayerMsg(Index, "Tu dois étre au niveau " & i & " pour apprendre ce sort.", White)
                                         End If
                                     Else
-                                        Call PlayerMsg(Index, "Ce sort peut ï¿½tre appris uniquement par un " & GetClassName(Spell(n).ClassReq - 1) & ".", White)
+                                        Call PlayerMsg(Index, "Ce sort peut étre appris uniquement par un " & GetClassName(Spell(n).ClassReq - 1) & ".", White)
                                     End If
                                 Else
-                                    Call PlayerMsg(Index, "Ce parchemin n'est pas liï¿½ ï¿½ un sort, contactez l'admin.", White)
+                                    Call PlayerMsg(Index, "Ce parchemin n'est pas lié é un sort, contactez l'admin.", White)
                                 End If
                         End Select
                         
@@ -1882,21 +1882,21 @@ Player(Index).sync = True
                             Select Case PointType
                                 Case 0
                                     Call SetPlayerStr(Index, Player(Index).Char(Player(Index).CharNum).STR + 1)
-                                    Call BattleMsg(Index, "Vous avez gagnï¿½ plus de force.", 15, 0)
+                                    Call BattleMsg(Index, "Vous avez gagné plus de force.", 15, 0)
                                 Case 1
                                     Call SetPlayerDEF(Index, Player(Index).Char(Player(Index).CharNum).def + 1)
-                                    Call BattleMsg(Index, "Vous avez gagnï¿½ plus de dï¿½fense.", 15, 0)
+                                    Call BattleMsg(Index, "Vous avez gagné plus de défense.", 15, 0)
                                 Case 2
                                     Call SetPlayerMAGI(Index, Player(Index).Char(Player(Index).CharNum).magi + 1)
-                                    Call BattleMsg(Index, "Vous avez gagnï¿½ plus de magie.", 15, 0)
+                                    Call BattleMsg(Index, "Vous avez gagné plus de magie.", 15, 0)
                                 Case 3
                                     Call SetPlayerSPEED(Index, Player(Index).Char(Player(Index).CharNum).Speed + 1)
-                                    Call BattleMsg(Index, "Vous avez gagnï¿½ plus de vitesse.", 15, 0)
+                                    Call BattleMsg(Index, "Vous avez gagné plus de vitesse.", 15, 0)
                             End Select
                             Call SetPlayerPOINTS(Index, GetPlayerPOINTS(Index) - 1)
                         End If
                     Else
-                        Call BattleMsg(Index, "Tu n'as pas de points ï¿½ distribuer.", BrightRed, 0)
+                        Call BattleMsg(Index, "Tu n'as pas de points é distribuer.", BrightRed, 0)
                     End If
                     
                     Call SendHP(Index)
@@ -1914,16 +1914,16 @@ Player(Index).sync = True
                 ' Access
                 Case "guildchangeaccess"
                     ' Check the requirements.
-                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accï¿½s suffisant.", Red): Exit Sub
+                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accés suffisant.", Red): Exit Sub
                     
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                 
                     If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre Guilde", Red): Exit Sub
                     
-                    If GetPlayerGuild(Index) = vbNullString Then Call PlayerMsg(Index, "Vous n'ï¿½tes pas dans une guilde", Red): Exit Sub
+                    If GetPlayerGuild(Index) = vbNullString Then Call PlayerMsg(Index, "Vous n'étes pas dans une guilde", Red): Exit Sub
                     
                     'Set the player's new access level
-                    Call AddLog("Changement de l'accï¿½s de " & GetPlayerName(FindPlayer(Parse(1))) & " de " & GetPlayerGuildAccess(FindPlayer(Parse(1))) & " ï¿½ " & Parse(2) & ".", GUILDE_LOG)
+                    Call AddLog("Changement de l'accés de " & GetPlayerName(FindPlayer(Parse(1))) & " de " & GetPlayerGuildAccess(FindPlayer(Parse(1))) & " é " & Parse(2) & ".", GUILDE_LOG)
                     Call SetPlayerGuildAccess(FindPlayer(Parse(1)), Parse(2))
                     Call SendPlayerData(FindPlayer(Parse(1)))
                     Exit Sub
@@ -1931,19 +1931,19 @@ Player(Index).sync = True
                 ' Disown
                 Case "guilddisown"
                     ' Check if all the requirements
-                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accï¿½s suffisant.", Red): Exit Sub
+                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accés suffisant.", Red): Exit Sub
                     
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                             
                     If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Le joueur n'est pas dans votre guilde", Red): Exit Sub
                     
-                    If GetPlayerGuildAccess(FindPlayer(Parse(1))) > GetPlayerGuildAccess(Index) Then Call PlayerMsg(Index, "Le joueur a un privilï¿½ge plus ï¿½levï¿½ dans la guilde.", Red): Exit Sub
+                    If GetPlayerGuildAccess(FindPlayer(Parse(1))) > GetPlayerGuildAccess(Index) Then Call PlayerMsg(Index, "Le joueur a un privilége plus élevé dans la guilde.", Red): Exit Sub
                             
                     'Player checks out, take him out of the guild
                     Call SetPlayerGuild(FindPlayer(Parse(1)), "")
                     Call SetPlayerGuildAccess(FindPlayer(Parse(1)), 0)
                     Call SendPlayerData(FindPlayer(Parse(1)))
-                    Call AddLog(GetPlayerName(FindPlayer(Parse(1))) & " a ï¿½tï¿½ virï¿½ de la guilde : " & GetPlayerGuild(Index) & ".", GUILDE_LOG)
+                    Call AddLog(GetPlayerName(FindPlayer(Parse(1))) & " a été viré de la guilde : " & GetPlayerGuild(Index) & ".", GUILDE_LOG)
                     Exit Sub
             
                 ' Leave Guild
@@ -1954,19 +1954,19 @@ Player(Index).sync = True
                     Call SetPlayerGuild(Index, "")
                     Call SetPlayerGuildAccess(Index, 0)
                     Call SendPlayerData(Index)
-                    Call AddLog(GetPlayerName(Index) & " a quittï¿½ sa guilde.", GUILDE_LOG)
+                    Call AddLog(GetPlayerName(Index) & " a quitté sa guilde.", GUILDE_LOG)
                     Exit Sub
                 
                 ' Make A Member
                 Case "guildmember"
-                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accï¿½s suffisant.", Red): Exit Sub
+                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accés suffisant.", Red): Exit Sub
                     
                     ' Check if its possible to admit the member
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Personnage hors-ligne", White): Exit Sub
                             
                     If GetPlayerGuild(FindPlayer(Parse(1))) <> GetPlayerGuild(Index) Then Call PlayerMsg(Index, "Ce joueur n'est pas dans votre guilde", Red): Exit Sub
                     
-                    If GetPlayerGuildAccess(FindPlayer(Parse(1))) > 1 Then Call PlayerMsg(Index, "Ce joueur est dï¿½jï¿½ membre de votre guilde", Red): Exit Sub
+                    If GetPlayerGuildAccess(FindPlayer(Parse(1))) > 1 Then Call PlayerMsg(Index, "Ce joueur est déjé membre de votre guilde", Red): Exit Sub
                     
                     'All has gone well, set the guild access to 1
                     Call SetPlayerGuild(FindPlayer(Parse(1)), GetPlayerGuild(Index))
@@ -1985,10 +1985,10 @@ Player(Index).sync = True
                     Exit Sub
                                         
                 Case "guildtraineevbyesno"
-                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accï¿½s suffisant.", Red): Exit Sub
+                    If GetPlayerGuildAccess(Index) < 1 Then Call PlayerMsg(Index, "Vous n'avez pas un accés suffisant.", Red): Exit Sub
                     ' Check if its possible to induct member
                     If FindPlayer(Parse(1)) = 0 Then Call PlayerMsg(Index, "Le joueur est Hors-ligne", White): Exit Sub
-                    If GetPlayerGuild(FindPlayer(Parse(1))) <> vbNullString Then Call PlayerMsg(Index, "Le joueur est dï¿½jï¿½ dans une guilde.", Red): Exit Sub
+                    If GetPlayerGuild(FindPlayer(Parse(1))) <> vbNullString Then Call PlayerMsg(Index, "Le joueur est déjé dans une guilde.", Red): Exit Sub
                     
                     Call SendDataTo(FindPlayer(Parse(1)), "guildtraineevbyesno" & SEP_CHAR & FindPlayer(Parse(1)) & SEP_CHAR & Index & END_CHAR)
                     Exit Sub
@@ -1998,9 +1998,9 @@ Player(Index).sync = True
                     Msg = Parse(1)
                     
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrecte dans ses paroles"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrecte dans ses paroles"): Exit Sub
                     
-                    If frmServer.chkM.value = Unchecked And GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les discutions ne sont pas autorisï¿½s sur les cartes.", BrightRed): Exit Sub
+                    If frmServer.chkM.value = Unchecked And GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les discutions ne sont pas autorisés sur les cartes.", BrightRed): Exit Sub
                     
                     Call AddLog("Carte #" & GetPlayerMap(Index) & " : " & GetPlayerName(Index) & " : " & Msg & "", PLAYER_LOG)
                     Call MapMsg(GetPlayerMap(Index), GetPlayerName(Index) & " : " & Msg & "", SayColor)
@@ -2025,9 +2025,9 @@ Player(Index).sync = True
             
                 Case "emotemsg"
                     Msg = Parse(1)
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrecte dans ses paroles(ï¿½moticons)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrecte dans ses paroles(émoticons)"): Exit Sub
                     
-                    If frmServer.chkE.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les ï¿½motes ont ï¿½tï¿½ dï¿½sactivï¿½s.", BrightRed): Exit Sub
+                    If frmServer.chkE.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les émotes ont été désactivés.", BrightRed): Exit Sub
                     
                     Call AddLog("Carte #" & GetPlayerMap(Index) & " : " & GetPlayerName(Index) & " " & Msg, PLAYER_LOG)
                     Call MapMsg(GetPlayerMap(Index), GetPlayerName(Index) & " " & Msg, EmoteColor)
@@ -2037,9 +2037,9 @@ Player(Index).sync = True
                 Case "broadcastmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrecte dans ses paroles(global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrecte dans ses paroles(global)"): Exit Sub
                     
-                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlement ont ï¿½tï¿½ dï¿½sactivï¿½s.", BrightRed): Exit Sub
+                    If frmServer.chkBC.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les hurlement ont été désactivés.", BrightRed): Exit Sub
                     
                     If Player(Index).Mute = True Then Exit Sub
                     
@@ -2053,9 +2053,9 @@ Player(Index).sync = True
                 Case "globalmsg"
                     Msg = Parse(1)
                     ' Prevent hacking
-                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractï¿½re incorrects dans ses paroles(global)"): Exit Sub
+                    If MMsg(Msg) Then Call HackingAttempt(Index, "Caractére incorrects dans ses paroles(global)"): Exit Sub
                     
-                    If frmServer.chkG.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages globaux ont ï¿½tï¿½ dï¿½sactivï¿½s.", BrightRed): Exit Sub
+                    If frmServer.chkG.value = Unchecked Then If GetPlayerAccess(Index) <= 0 Then Call PlayerMsg(Index, "Les messages globaux ont été désactivés.", BrightRed): Exit Sub
                         
                     If Player(Index).Mute = True Then Exit Sub
                     
@@ -2087,10 +2087,10 @@ Player(Index).sync = True
                     If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Le joueur n'est pas en train de jouer"): Exit Sub
                     If (SlotI > 24 Or SlotI < 1) And INum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (Cslot > 30 Or Cslot < 1) And INum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
-                    If INum < 1 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Numï¿½ros d'objet Invalide"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & Cslot)) <> INum And INum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & Cslot)) < (IVal - GetPlayerInvItemValue(Index, SlotI)) And IVal <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
-                    If Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & Cslot)) <> IDur And IDur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If INum < 1 Or INum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & Cslot)) <> INum And INum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & Cslot)) < (IVal - GetPlayerInvItemValue(Index, SlotI)) And IVal <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
+                    If Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & Cslot)) <> IDur And IDur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont inventaire"): Exit Sub
                             
                     Call SetPlayerInvItemNum(Index, SlotI, INum)
                     Call SetPlayerInvItemValue(Index, SlotI, IVal)
@@ -2109,9 +2109,9 @@ Player(Index).sync = True
                     If IsPlaying(Index) = False Then Call HackingAttempt(Index, "Le joueur n'ait pas entrin de jouer"): Exit Sub
                     If (Islot > 24 Or Islot < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Inv Slot Invalide"): Exit Sub
                     If (SlotC > 30 Or SlotC < 1) And Cnum <> 0 Then Call HackingAttempt(Index, "Slot de Coffre Invalide"): Exit Sub
-                    If Cnum < 1 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numï¿½ros d'objet Invalide"): Exit Sub
+                    If Cnum < 1 Or Cnum > MAX_ITEMS Then Call HackingAttempt(Index, "Numéros d'objet Invalide"): Exit Sub
                     If GetPlayerInvItemNum(Index, Islot) <> Cnum And Cnum <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
-                    If GetPlayerInvItemValue(Index, Islot) < (Cval - Val(GetVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC))) And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
+                    If GetPlayerInvItemValue(Index, Islot) < (Cval - Val(GetVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC))) And Cval <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                     If GetPlayerInvItemDur(Index, Islot) <> Cdur And Cdur <> 0 Then Call HackingAttempt(Index, "Essaye de hacker sont coffre"): Exit Sub
                     
                     ' Make sure if the item we transfer to the bank is unequiped
@@ -2122,9 +2122,9 @@ Player(Index).sync = True
                     If GetPlayerShieldSlot(Index) = Islot Then SetPlayerShieldSlot Index, 0
                     If GetPlayerPetSlot(Index) = Islot Then SetPlayerPetSlot Index, 0
                     
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
-                    Call PutVar(App.Path & "\accounts\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemnum" & SlotC, " " & Val(Cnum))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemval" & SlotC, " " & Val(Cval))
+                    Call PutVar(App.Path & "\Comptes\" & Trim$(Player(Index).Login) & ".ini", "CHAR" & Player(Index).CharNum, "cofitemdur" & SlotC, " " & Val(Cdur))
                     Exit Sub
             
             
@@ -2146,7 +2146,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerSprite(i, n)
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ le sprite de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé le sprite de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2167,7 +2167,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerName(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ le nom de " & GetPlayerName(i) & "(nouveau nom)", ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé le nom de " & GetPlayerName(i) & "(nouveau nom)", ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2181,7 +2181,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerStr(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ la force de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé la force de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2195,7 +2195,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerDEF(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ la dï¿½fense de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé la défense de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2209,7 +2209,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerSPEED(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ la vitesse de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé la vitesse de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2223,7 +2223,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerMAGI(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ la magie de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé la magie de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2237,7 +2237,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerPK(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ les PK de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé les PK de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2252,7 +2252,7 @@ Player(Index).sync = True
                         Call SetPlayerExp(i, Parse(2))
                         Call CheckPlayerLevelUp(i)
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ l'expï¿½rience de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé l'expérience de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2266,7 +2266,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerLevel(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ le niveau de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé le niveau de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2280,7 +2280,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerPOINTS(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ les points de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé les points de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2294,7 +2294,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerHP(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ les PV de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé les PV de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2308,7 +2308,7 @@ Player(Index).sync = True
                     If i > 0 Then
                         Call SetPlayerMP(i, Parse(2))
                         Call SendPlayerData(i)
-                        Call AddLog(GetPlayerName(Index) & " a changï¿½ les PM de " & GetPlayerName(i), ADMIN_LOG)
+                        Call AddLog(GetPlayerName(Index) & " a changé les PM de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2334,9 +2334,9 @@ Player(Index).sync = True
                     i = FindPlayer(Name)
                     If i > 0 Then
                         Call PlayerWarp(Index, GetPlayerMap(i), GetPlayerX(i), GetPlayerY(i))
-                        Call PlayerMsg(i, GetPlayerName(Index) & " a ï¿½tï¿½ tï¿½lï¿½portï¿½ ï¿½ cotï¿½ de toi.", White)
-                        Call PlayerMsg(Index, "Vous avez ï¿½tï¿½ tï¿½lï¿½portï¿½ ï¿½ cotï¿½ de " & GetPlayerName(i) & ".", White)
-                        Call AddLog(GetPlayerName(Index) & " s'est tï¿½lï¿½portï¿½ ï¿½ cotï¿½ de " & GetPlayerName(i), ADMIN_LOG)
+                        Call PlayerMsg(i, GetPlayerName(Index) & " a été téléporté é coté de toi.", White)
+                        Call PlayerMsg(Index, "Vous avez été téléporté é coté de " & GetPlayerName(i) & ".", White)
+                        Call AddLog(GetPlayerName(Index) & " s'est téléporté é coté de " & GetPlayerName(i), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2348,9 +2348,9 @@ Player(Index).sync = True
                     i = FindPlayer(Name)
                     If i > 0 Then
                         Call PlayerWarp(i, GetPlayerMap(Index), GetPlayerX(Index), GetPlayerY(Index))
-                        Call PlayerMsg(i, "Vous avez ï¿½tï¿½ tï¿½lï¿½portï¿½ par " & GetPlayerName(Index) & ".", White)
-                        Call PlayerMsg(Index, GetPlayerName(i) & " a ï¿½tï¿½ tï¿½lï¿½portï¿½.", White)
-                        Call AddLog(GetPlayerName(i) & " a ï¿½tï¿½ tï¿½lï¿½portï¿½ par " & GetPlayerName(Index), ADMIN_LOG)
+                        Call PlayerMsg(i, "Vous avez été téléporté par " & GetPlayerName(Index) & ".", White)
+                        Call PlayerMsg(Index, GetPlayerName(i) & " a été téléporté.", White)
+                        Call AddLog(GetPlayerName(i) & " a été téléporté par " & GetPlayerName(Index), ADMIN_LOG)
                     Else
                         Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                     End If
@@ -2389,7 +2389,7 @@ Player(Index).sync = True
                     Player(Index).Char(Player(Index).CharNum).metier = Val(Parse(1))
                     Player(Index).Char(Player(Index).CharNum).MetierLvl = 1
                     Player(Index).Char(Player(Index).CharNum).MetierExp = 0
-                    Call PlayerMsg(Index, "Vous avez oubliï¿½ votre mï¿½tier puis appris un nouveau mï¿½tier.", Green)
+                    Call PlayerMsg(Index, "Vous avez oublié votre métier puis appris un nouveau métier.", Green)
                     Exit Sub
                     
                 Case "envmap"
@@ -2406,18 +2406,18 @@ Player(Index).sync = True
                     If n <> Index Then
                         If n > 0 Then
                             If GetPlayerAccess(n) <= GetPlayerAccess(Index) Then
-                                Call GlobalMsg(GetPlayerName(n) & " a ï¿½tï¿½ deconnectï¿½ de " & GAME_NAME & " par " & GetPlayerName(Index) & ".", White)
-                                Call AddLog(GetPlayerName(Index) & " a dï¿½connectï¿½(kicker) " & GetPlayerName(n) & ".", ADMIN_LOG)
-                                Call AlertMsg(n, "Vous avez ï¿½tï¿½ banni par " & GetPlayerName(Index) & ".")
-                                If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a dï¿½connectï¿½(kicker) " & GetPlayerName(n) & ".", IBCAdmin)
+                                Call GlobalMsg(GetPlayerName(n) & " a été deconnecté de " & GAME_NAME & " par " & GetPlayerName(Index) & ".", White)
+                                Call AddLog(GetPlayerName(Index) & " a déconnecté(kicker) " & GetPlayerName(n) & ".", ADMIN_LOG)
+                                Call AlertMsg(n, "Vous avez été banni par " & GetPlayerName(Index) & ".")
+                                If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a déconnecté(kicker) " & GetPlayerName(n) & ".", IBCAdmin)
                             Else
-                                Call PlayerMsg(Index, "Cette personne possï¿½de un accï¿½s supï¿½rieur au votre.", White)
+                                Call PlayerMsg(Index, "Cette personne posséde un accés supérieur au votre.", White)
                             End If
                         Else
                             Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                         End If
                     Else
-                        Call PlayerMsg(Index, "Tu ne peux te kicker toi mï¿½me, imbecile.", White)
+                        Call PlayerMsg(Index, "Tu ne peux te kicker toi méme, imbecile.", White)
                     End If
                     Exit Sub
             
@@ -2440,8 +2440,8 @@ Player(Index).sync = True
                     ' Prevent hacking
                     If GetPlayerAccess(Index) < ADMIN_CREATOR Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     Call Kill(App.Path & "\banlist.txt")
-                    Call PlayerMsg(Index, "Liste des bannis effacï¿½e.", White)
-                    If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a dï¿½truit la liste des bannis.", IBCAdmin)
+                    Call PlayerMsg(Index, "Liste des bannis effacée.", White)
+                    If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a détruit la liste des bannis.", IBCAdmin)
                     Exit Sub
             
                 Case "banplayer"
@@ -2451,12 +2451,12 @@ Player(Index).sync = True
                     n = FindPlayer(Parse(1))
                     If n <> Index Then
                         If n > 0 Then
-                            If GetPlayerAccess(n) <= GetPlayerAccess(Index) Then Call BanIndex(n, Index) Else Call PlayerMsg(Index, "Cette utilisateur a un accï¿½s supï¿½rieur au votre.", White)
+                            If GetPlayerAccess(n) <= GetPlayerAccess(Index) Then Call BanIndex(n, Index) Else Call PlayerMsg(Index, "Cette utilisateur a un accés supérieur au votre.", White)
                         Else
                             Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                         End If
                     Else
-                        Call PlayerMsg(Index, "Tu ne peux te bannir toi mï¿½me.", White)
+                        Call PlayerMsg(Index, "Tu ne peux te bannir toi méme.", White)
                     End If
                     Exit Sub
             
@@ -2583,11 +2583,11 @@ Player(Index).sync = True
                     metier(n).nom = Parse(2)
                     metier(n).type = Val(Parse(3))
                     metier(n).desc = Parse(4)
-                    x = 5
+                    X = 5
                     For i = 0 To MAX_DATA_METIER
                         For z = 0 To 1
-                            metier(n).data(i, z) = Val(Parse(x))
-                            x = x + 1
+                            metier(n).data(i, z) = Val(Parse(X))
+                            X = X + 1
                         Next z
                     Next i
                     
@@ -2617,16 +2617,16 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     If n < 0 Or n > MAX_RECETTE Then Call HackingAttempt(Index, "Index du recette Invalide"): Exit Sub
                     recette(n).nom = Parse(2)
-                    x = 3
+                    X = 3
                     For i = 0 To 9
                         For z = 0 To 1
-                            recette(n).InCraft(i, z) = Val(Parse(x))
-                            x = x + 1
+                            recette(n).InCraft(i, z) = Val(Parse(X))
+                            X = X + 1
                         Next z
                     Next i
                     For z = 0 To 1
-                        recette(n).craft(z) = Val(Parse(x))
-                        x = x + 1
+                        recette(n).craft(z) = Val(Parse(X))
+                        X = X + 1
                     Next z
                     
                     Call SendUpdaterecetteToAll(n)
@@ -2714,14 +2714,14 @@ Player(Index).sync = True
                 Case "demarequete"
                     
                     n = Val(Parse(1))
-                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quï¿½te invalide."): Exit Sub
+                    If n < 0 Or n > MAX_QUETES Then Call HackingAttempt(Index, "Index de quéte invalide."): Exit Sub
                     Player(Index).Char(Player(Index).CharNum).QueteEnCour = Val(Parse(1))
                     If n = 0 Then Exit Sub
                     
                     If quete(Player(Index).Char(Player(Index).CharNum).QueteEnCour).type = QUETE_TYPE_APORT Then
                         i = FindOpenInvSlot(Index, quete(Player(Index).Char(Player(Index).CharNum).QueteEnCour).data1)
                         If i = 0 Then
-                            Call PlayerMsg(Index, "Ton inventaire est plein, tu ne peux pas faire cette quï¿½te.", Red)
+                            Call PlayerMsg(Index, "Ton inventaire est plein, tu ne peux pas faire cette quéte.", Red)
                             Player(Index).Char(Player(Index).CharNum).QueteEnCour = 0
                             Call SendDataTo(Index, "QUETECOUR" & SEP_CHAR & 0 & END_CHAR)
                             Exit Sub
@@ -2884,21 +2884,21 @@ Player(Index).sync = True
                             If GetPlayerAccess(Index) > GetPlayerAccess(n) Then
                                 ' Check if player is on
                                 If n > 0 Then
-                                    If GetPlayerAccess(n) <= 0 Then Call GlobalMsg(GetPlayerName(n) & " est devenu modï¿½rateur.", BrightBlue)
+                                    If GetPlayerAccess(n) <= 0 Then Call GlobalMsg(GetPlayerName(n) & " est devenu modérateur.", BrightBlue)
                                     Call SetPlayerAccess(n, i)
                                     Call SendPlayerData(n)
-                                    Call AddLog(GetPlayerName(Index) & " a modifiï¿½(e) l'accï¿½s de " & GetPlayerName(n) & ".", ADMIN_LOG)
+                                    Call AddLog(GetPlayerName(Index) & " a modifié(e) l'accés de " & GetPlayerName(n) & ".", ADMIN_LOG)
                                 Else
                                     Call PlayerMsg(Index, "Personnage hors-ligne.", White)
                                 End If
                             Else
-                                Call PlayerMsg(Index, "Votre accï¿½s est plus bas que " & GetPlayerName(n) & ".", Red)
+                                Call PlayerMsg(Index, "Votre accés est plus bas que " & GetPlayerName(n) & ".", Red)
                             End If
                         Else
-                            Call PlayerMsg(Index, "Tu ne peux changer ton accï¿½s.", Red)
+                            Call PlayerMsg(Index, "Tu ne peux changer ton accés.", Red)
                         End If
                     Else
-                        Call PlayerMsg(Index, "Niveau d'accï¿½s invalide.", Red)
+                        Call PlayerMsg(Index, "Niveau d'accés invalide.", Red)
                     End If
                     Exit Sub
                 
@@ -2913,9 +2913,9 @@ Player(Index).sync = True
                 Case "setmotd"
                     If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     Call PutVar(App.Path & "\motd.ini", "MOTD", "Msg", Parse(1))
-                    Call GlobalMsg("Mot de bienvenue remplacï¿½ par : " & Parse(1), BrightCyan)
-                    Call AddLog(GetPlayerName(Index) & " a changï¿½ le mot de bienvenue par : " & Parse(1), ADMIN_LOG)
-                    If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a changï¿½ le mot de bienvenue.", IBCAdmin)
+                    Call GlobalMsg("Mot de bienvenue remplacé par : " & Parse(1), BrightCyan)
+                    Call AddLog(GetPlayerName(Index) & " a changé le mot de bienvenue par : " & Parse(1), ADMIN_LOG)
+                    If IBAdmin Then Call IBMsg(GetPlayerName(Index) & " a changé le mot de bienvenue.", IBCAdmin)
                     Exit Sub
                 
                 Case "leaveshop"
@@ -2927,26 +2927,26 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'ï¿½change"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'ï¿½change"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
-                    x = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GetItem)
-                    If x = 0 Then Call PlayerMsg(Index, "L'ï¿½change a ï¿½chouï¿½, Inventaire pleins.", BrightRed): Exit Sub
+                    X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GetItem)
+                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GiveItem) >= Shop(i).TradeItem(n).value(z).GiveValue Then
                         Call TakeItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Shop(i).TradeItem(n).value(z).GiveValue)
                         Call GiveItem(Index, Shop(i).TradeItem(n).value(z).GetItem, Shop(i).TradeItem(n).value(z).GetValue)
-                        Call PlayerMsg(Index, "Echange rï¿½ussit.", Yellow)
+                        Call PlayerMsg(Index, "Echange réussit.", Yellow)
                         If Player(Index).Char(Player(Index).CharNum).QueteEnCour > 0 Then
                             If quete(Player(Index).Char(Player(Index).CharNum).QueteEnCour).type = QUETE_TYPE_RECUP Then
                                 Call PlayerQueteTypeRecup(Index, Player(Index).Char(Player(Index).CharNum).QueteEnCour, Shop(i).TradeItem(n).value(z).GetItem, Shop(i).TradeItem(n).value(z).GetValue)
                             End If
                         End If
                     Else
-                        Call PlayerMsg(Index, "Vous n'avez pas l'objet demandï¿½.", BrightRed)
+                        Call PlayerMsg(Index, "Vous n'avez pas l'objet demandé.", BrightRed)
                     End If
                     Exit Sub
                 Case "vendrerequest"
@@ -2954,26 +2954,26 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     z = Val(Parse(2))
                     ' Prevent hacking
-                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'ï¿½change"): Exit Sub
-                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'ï¿½change"): Exit Sub
+                    If (n < 1) Or (n > 6) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
+                    If (z <= 0) Or (z > (MAX_TRADES * 6)) Then Call HackingAttempt(Index, "Modification d'une requet d'échange"): Exit Sub
                     ' Index for shop
                     i = Player(Index).Char(Player(Index).CharNum).vendeur
                     ' Check if inv full
                     If i <= 0 Then Exit Sub
-                    x = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GiveItem) 'Shop(i).TradeItem(N).value(z).GetItem)
-                    If x = 0 Then Call PlayerMsg(Index, "L'ï¿½change a ï¿½chouï¿½, Inventaire pleins.", BrightRed): Exit Sub
+                    X = FindOpenInvSlot(Index, Shop(i).TradeItem(n).value(z).GiveItem) 'Shop(i).TradeItem(N).value(z).GetItem)
+                    If X = 0 Then Call PlayerMsg(Index, "L'échange a échoué, Inventaire pleins.", BrightRed): Exit Sub
                     ' Check if they have the item
                     If HasItem(Index, Shop(i).TradeItem(n).value(z).GetItem) >= Shop(i).TradeItem(n).value(z).GetValue Then
                         Call GiveItem(Index, Shop(i).TradeItem(n).value(z).GiveItem, Math.Round(Shop(i).TradeItem(n).value(z).GiveValue / 2))
                         Call TakeItem(Index, Shop(i).TradeItem(n).value(z).GetItem, Shop(i).TradeItem(n).value(z).GetValue)
-                        Call PlayerMsg(Index, "Echange rï¿½ussit.", Yellow)
+                        Call PlayerMsg(Index, "Echange réussit.", Yellow)
                         If Player(Index).Char(Player(Index).CharNum).QueteEnCour > 0 Then
                             If quete(Player(Index).Char(Player(Index).CharNum).QueteEnCour).type = QUETE_TYPE_RECUP Then
                                 Call PlayerQueteTypeRecup(Index, Player(Index).Char(Player(Index).CharNum).QueteEnCour, Shop(i).TradeItem(n).value(z).GetItem, Shop(i).TradeItem(n).value(z).GetValue)
                             End If
                         End If
                     Else
-                        Call PlayerMsg(Index, "Vous n'avez pas l'objet demandï¿½.", BrightRed)
+                        Call PlayerMsg(Index, "Vous n'avez pas l'objet demandé.", BrightRed)
                     End If
                     Exit Sub
                 Case "fixitem"
@@ -2982,7 +2982,7 @@ Player(Index).sync = True
                     n = Val(Parse(1))
                     ' Make sure its a equipable item
                     If item(GetPlayerInvItemNum(Index, n)).type < ITEM_TYPE_WEAPON Or item(GetPlayerInvItemNum(Index, n)).type > ITEM_TYPE_SHIELD Then
-                        Call PlainMsg(Index, "Tu peux seulement rï¿½parer les armes, armure, casque et bouclier.", 6)
+                        Call PlainMsg(Index, "Tu peux seulement réparer les armes, armure, casque et bouclier.", 6)
                         Exit Sub
                     End If
                     ' Now check the rate of pay
@@ -2993,7 +2993,7 @@ Player(Index).sync = True
                     If GoldNeeded <= 0 Then GoldNeeded = 1
                     
                     ' Check if they even need it repaired
-                    If DurNeeded <= 0 Then Call PlainMsg(Index, "Cette objets est en parfait ï¿½tat.", 6): Exit Sub
+                    If DurNeeded <= 0 Then Call PlainMsg(Index, "Cette objets est en parfait état.", 6): Exit Sub
                             
                     ' Check if they have enough for at least one point
                     If HasItem(Index, Val(Parse(2))) >= d Then
@@ -3001,7 +3001,7 @@ Player(Index).sync = True
                         If HasItem(Index, Val(Parse(2))) >= GoldNeeded Then
                             Call TakeItem(Index, Val(Parse(2)), GoldNeeded)
                             Call SetPlayerInvItemDur(Index, n, item(ItemNum).data1)
-                            Call PlainMsg(Index, "Cette objet a totalement ï¿½tï¿½ rï¿½parï¿½ pour " & GoldNeeded & Trim$(item(Val(Parse(2))).Name), 6)
+                            Call PlainMsg(Index, "Cette objet a totalement été réparé pour " & GoldNeeded & Trim$(item(Val(Parse(2))).Name), 6)
                         Else
                             ' They dont so restore as much as we can
                             DurNeeded = (HasItem(Index, Val(Parse(2))) \ d)
@@ -3009,31 +3009,31 @@ Player(Index).sync = True
                             If GoldNeeded <= 0 Then GoldNeeded = 1
                             Call TakeItem(Index, Val(Parse(2)), GoldNeeded)
                             Call SetPlayerInvItemDur(Index, n, GetPlayerInvItemDur(Index, n) + DurNeeded)
-                            Call PlainMsg(Index, "Cette objet a ï¿½tï¿½ rï¿½parï¿½ pour " & GoldNeeded & Trim$(item(Val(Parse(2))).Name), 6)
+                            Call PlainMsg(Index, "Cette objet a été réparé pour " & GoldNeeded & Trim$(item(Val(Parse(2))).Name), 6)
                         End If
                     Else
-                        Call PlainMsg(Index, "Pas assez de " & Trim$(item(Val(Parse(2))).Name) & " pour rï¿½parer cet objet.", 6)
+                        Call PlainMsg(Index, "Pas assez de " & Trim$(item(Val(Parse(2))).Name) & " pour réparer cet objet.", 6)
                     End If
                     Call SendInventory(Index)
                     Exit Sub
             
                 Case "search"
-                    x = Val(Parse(1))
-                    y = Val(Parse(2))
+                    X = Val(Parse(1))
+                    Y = Val(Parse(2))
                     ' Prevent subscript out of range
-                    If x < 0 Or x > MAX_MAPX Or y < 0 Or y > MAX_MAPY Then Exit Sub
+                    If X < 0 Or X > MAX_MAPX Or Y < 0 Or Y > MAX_MAPY Then Exit Sub
                     ' Check for a player
                     For i = 1 To MAX_PLAYERS
-                        If IsPlaying(i) And GetPlayerMap(Index) = GetPlayerMap(i) And GetPlayerX(i) = x And GetPlayerY(i) = y Then
+                        If IsPlaying(i) And GetPlayerMap(Index) = GetPlayerMap(i) And GetPlayerX(i) = X And GetPlayerY(i) = Y Then
                             ' Consider the player
                             If GetPlayerLevel(i) >= GetPlayerLevel(Index) + 5 Then
                                 Call PlayerMsg(Index, "Vos chance semble minime...", BrightRed)
                             Else
                                 If GetPlayerLevel(i) > GetPlayerLevel(Index) Then
-                                    Call PlayerMsg(Index, "Ce joueur semble avoir une force que vous ne possï¿½dez pas.", Yellow)
+                                    Call PlayerMsg(Index, "Ce joueur semble avoir une force que vous ne possédez pas.", Yellow)
                                 Else
                                     If GetPlayerLevel(i) = GetPlayerLevel(Index) Then
-                                        Call PlayerMsg(Index, "Cela risque d'ï¿½tre un combat mï¿½morable.", White)
+                                        Call PlayerMsg(Index, "Cela risque d'étre un combat mémorable.", White)
                                     Else
                                         If GetPlayerLevel(Index) >= GetPlayerLevel(i) + 5 Then
                                             Call PlayerMsg(Index, "Tu peux facilement tuer ce joueur.", BrightBlue)
@@ -3054,7 +3054,7 @@ Player(Index).sync = True
                     ' Check for an npc
                     For i = 1 To MAX_MAP_NPCS
                         If MapNpc(GetPlayerMap(Index), i).Num > 0 Then
-                            If MapNpc(GetPlayerMap(Index), i).x = x And MapNpc(GetPlayerMap(Index), i).y = y Then
+                            If MapNpc(GetPlayerMap(Index), i).X = X And MapNpc(GetPlayerMap(Index), i).Y = Y Then
                                 ' Change target
                                 Player(Index).Target = i
                                 Player(Index).TargetType = TARGET_TYPE_NPC
@@ -3067,7 +3067,7 @@ Player(Index).sync = True
                     ' Check for an item
                     For i = 1 To MAX_MAP_ITEMS
                         If MapItem(GetPlayerMap(Index), i).Num > 0 Then
-                            If MapItem(GetPlayerMap(Index), i).x = x And MapItem(GetPlayerMap(Index), i).y = y Then
+                            If MapItem(GetPlayerMap(Index), i).X = X And MapItem(GetPlayerMap(Index), i).Y = Y Then
                                 Call PlayerMsg(Index, "Vous voyez un " & Trim$(item(MapItem(GetPlayerMap(Index), i).Num).Name) & ".", Yellow)
                                 Exit Sub
                             End If
@@ -3077,9 +3077,9 @@ Player(Index).sync = True
                 
                 Case "dchat"
                     n = Player(Index).ChatPlayer
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te pour discuter avec vous.", Pink): Exit Sub
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte pour discuter avec vous.", Pink): Exit Sub
                     
-                    Call PlayerMsg(Index, "Vous declinez la requï¿½te de chat.", Pink)
+                    Call PlayerMsg(Index, "Vous declinez la requéte de chat.", Pink)
                     Call PlayerMsg(n, GetPlayerName(Index) & " refuse votre demande.", Pink)
                     
                     Player(Index).ChatPlayer = 0
@@ -3090,7 +3090,7 @@ Player(Index).sync = True
             
                 Case "qchat"
                     n = Player(Index).ChatPlayer
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te pour discuter avec vous.", Pink): Exit Sub
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte pour discuter avec vous.", Pink): Exit Sub
                     
                     Call SendDataTo(Index, "qchat" & END_CHAR)
                     Call SendDataTo(n, "qchat" & END_CHAR)
@@ -3103,7 +3103,7 @@ Player(Index).sync = True
                 
                 Case "sendchat"
                     n = Player(Index).ChatPlayer
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te pour discuter avec vous.", Pink): Exit Sub
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte pour discuter avec vous.", Pink): Exit Sub
             
                     Call SendDataTo(n, "sendchat" & SEP_CHAR & Parse(1) & SEP_CHAR & Index & END_CHAR)
                     Exit Sub
@@ -3111,9 +3111,9 @@ Player(Index).sync = True
                 Case "qtrade"
                     n = Player(Index).TradePlayer
                     ' Check if anyone trade with player
-                    If n < 1 Then Call PlayerMsg(Index, "Aucune requï¿½te pour ï¿½changer avec vous.", Pink): Exit Sub
-                    Call PlayerMsg(Index, "Arrï¿½t de l'ï¿½change.", Pink)
-                    Call PlayerMsg(n, GetPlayerName(Index) & " a arrï¿½tï¿½ d'ï¿½changer avec vous.", Pink)
+                    If n < 1 Then Call PlayerMsg(Index, "Aucune requéte pour échanger avec vous.", Pink): Exit Sub
+                    Call PlayerMsg(Index, "Arrét de l'échange.", Pink)
+                    Call PlayerMsg(n, GetPlayerName(Index) & " a arrété d'échanger avec vous.", Pink)
                     Player(Index).TradeOk = 0
                     Player(n).TradeOk = 0
                     Player(Index).TradePlayer = 0
@@ -3127,9 +3127,9 @@ Player(Index).sync = True
                 Case "dtrade"
                     n = Player(Index).TradePlayer
                     ' Check if anyone trade with player
-                    If n < 1 Then Call PlayerMsg(Index, "Personne ne veut ï¿½changer avec vous.", Pink): Exit Sub
-                    Call PlayerMsg(Index, "Refus de la requï¿½te.", Pink)
-                    Call PlayerMsg(n, GetPlayerName(Index) & " refuse ta requï¿½te.", Pink)
+                    If n < 1 Then Call PlayerMsg(Index, "Personne ne veut échanger avec vous.", Pink): Exit Sub
+                    Call PlayerMsg(Index, "Refus de la requéte.", Pink)
+                    Call PlayerMsg(n, GetPlayerName(Index) & " refuse ta requéte.", Pink)
                     Player(Index).TradePlayer = 0
                     Player(Index).InTrade = 0
                     Player(n).TradePlayer = 0
@@ -3177,30 +3177,30 @@ Player(Index).sync = True
                         
                         If Player(Index).TradeItemMax2 = Player(Index).TradeItemMax And Player(n).TradeItemMax2 = Player(n).TradeItemMax Then
                             For i = 1 To MAX_PLAYER_TRADES
-                                For x = 1 To MAX_INV
-                                    If GetPlayerInvItemNum(n, x) < 1 Then
+                                For X = 1 To MAX_INV
+                                    If GetPlayerInvItemNum(n, X) < 1 Then
                                         If Player(Index).Trading(i).InvNum > 0 Then
                                             Call GiveItem(n, GetPlayerInvItemNum(Index, Player(Index).Trading(i).InvNum), Player(Index).Trading(i).InvVal)
                                             Call TakeItem(Index, GetPlayerInvItemNum(Index, Player(Index).Trading(i).InvNum), Player(Index).Trading(i).InvVal)
                                             Exit For
                                         End If
                                     End If
-                                Next x
+                                Next X
                             Next i
             
                             For i = 1 To MAX_PLAYER_TRADES
-                                For x = 1 To MAX_INV
-                                    If GetPlayerInvItemNum(Index, x) < 1 Then
+                                For X = 1 To MAX_INV
+                                    If GetPlayerInvItemNum(Index, X) < 1 Then
                                         If Player(n).Trading(i).InvNum > 0 Then
                                             Call GiveItem(Index, GetPlayerInvItemNum(n, Player(n).Trading(i).InvNum), Player(n).Trading(i).InvVal)
                                             Call TakeItem(n, GetPlayerInvItemNum(n, Player(n).Trading(i).InvNum), Player(n).Trading(i).InvVal)
                                             Exit For
                                         End If
                                     End If
-                                Next x
+                                Next X
                             Next i
-                            Call PlayerMsg(n, "Echange rï¿½ussit.", BrightGreen)
-                            Call PlayerMsg(Index, "Echange rï¿½ussit.", BrightGreen)
+                            Call PlayerMsg(n, "Echange réussit.", BrightGreen)
+                            Call PlayerMsg(Index, "Echange réussit.", BrightGreen)
                             Call SendInventory(n)
                             Call SendInventory(Index)
                         Else
@@ -3241,7 +3241,7 @@ Player(Index).sync = True
                             Call PlayerMsg(Party.PlayerIndex(Player(n).InParty, i), GetPlayerName(Index) & " a rejoint votre groupe.", Pink)
                         Next i
                     Else
-                        Call PlayerMsg(Index, "Tu n'as pas ï¿½tï¿½ invitï¿½ dans un groupe.", Pink)
+                        Call PlayerMsg(Index, "Tu n'as pas été invité dans un groupe.", Pink)
                     End If
                     Exit Sub
             
@@ -3252,7 +3252,7 @@ Player(Index).sync = True
                         'If Party.PlayerIndex(Player(Index).InParty, Party.Leader(Player(Index).InParty)) = Index Then Exit Sub
                         Call PlayerMsg(Index, "Tu as quitter le groupe.", Pink)
                         For i = 1 To Party.MemberCount(Player(Index).InParty)
-                            If i <> Player(Index).PartyPlayer Then Call PlayerMsg(Party.PlayerIndex(Player(Index).InParty, i), GetPlayerName(Index) & " a quittï¿½ le groupe.", Pink)
+                            If i <> Player(Index).PartyPlayer Then Call PlayerMsg(Party.PlayerIndex(Player(Index).InParty, i), GetPlayerName(Index) & " a quitté le groupe.", Pink)
                         Next i
                         Party.RemoveMember Player(Index).InParty, Player(Index).PartyPlayer
                     ElseIf n > 0 Then
@@ -3261,7 +3261,7 @@ Player(Index).sync = True
                         Player(Index).InParty = 0
                         Player(Index).InvitedBy = 0
                     Else
-                        Call PlayerMsg(Index, "Vous n'ï¿½tes pas dans un groupe.", Pink)
+                        Call PlayerMsg(Index, "Vous n'étes pas dans un groupe.", Pink)
                     End If
                     Exit Sub
                 
@@ -3281,7 +3281,7 @@ Player(Index).sync = True
                 
                 Case "buysprite"
                     ' Check if player stepped on sprite changing tile
-                    If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type <> TILE_TYPE_SPRITE_CHANGE Then Call PlayerMsg(Index, "Tu as besoin d'ï¿½tre sur la case de sprite pour faire ceci.", BrightRed): Exit Sub
+                    If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type <> TILE_TYPE_SPRITE_CHANGE Then Call PlayerMsg(Index, "Tu as besoin d'étre sur la case de sprite pour faire ceci.", BrightRed): Exit Sub
                     If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data2 = 0 Then
                         Call SetPlayerSprite(Index, Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).data1)
                         Call SendDataToMap(GetPlayerMap(Index), "checksprite" & SEP_CHAR & Index & SEP_CHAR & GetPlayerSprite(Index) & END_CHAR)
@@ -3313,7 +3313,7 @@ Player(Index).sync = True
                         End If
                     Next i
                     
-                    Call PlayerMsg(Index, "Tu ne possï¿½des pas le nï¿½cessaire.", BrightRed)
+                    Call PlayerMsg(Index, "Tu ne possédes pas le nécessaire.", BrightRed)
                     Exit Sub
                             
                 Case "requesteditarrow"
@@ -3324,22 +3324,22 @@ Player(Index).sync = True
                 Case "editarrow"
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     n = Val(Parse(1))
-                    If n < 0 Or n > MAX_ARROWS Then Call HackingAttempt(Index, "Index de flï¿½che Invalide"): Exit Sub
-                    Call AddLog(GetPlayerName(Index) & " edite la flï¿½che #" & n & ".", ADMIN_LOG)
+                    If n < 0 Or n > MAX_ARROWS Then Call HackingAttempt(Index, "Index de fléche Invalide"): Exit Sub
+                    Call AddLog(GetPlayerName(Index) & " edite la fléche #" & n & ".", ADMIN_LOG)
                     Call SendEditArrowTo(Index, n)
                     Exit Sub
             
                 Case "savearrow"
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     n = Val(Parse(1))
-                    If n < 0 Or n > MAX_ITEMS Then Call HackingAttempt(Index, "Index de flï¿½che Invalide"): Exit Sub
+                    If n < 0 Or n > MAX_ITEMS Then Call HackingAttempt(Index, "Index de fléche Invalide"): Exit Sub
                     Arrows(n).Name = Parse(2)
                     Arrows(n).Pic = Val(Parse(3))
                     Arrows(n).Range = Val(Parse(4))
             
                     Call SendUpdateArrowToAll(n)
                     Call SaveArrow(n)
-                    Call AddLog(GetPlayerName(Index) & " sauvegarde la flï¿½che #" & n & ".", ADMIN_LOG)
+                    Call AddLog(GetPlayerName(Index) & " sauvegarde la fléche #" & n & ".", ADMIN_LOG)
                     Exit Sub
                     
                 Case "requesteditemoticon"
@@ -3351,8 +3351,8 @@ Player(Index).sync = True
                 Case "editemoticon"
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     n = Val(Parse(1))
-                    If n < 0 Or n > MAX_EMOTICONS Then Call HackingAttempt(Index, "Index d'ï¿½moticï¿½ne Invalide"): Exit Sub
-                    Call AddLog(GetPlayerName(Index) & " edite l'ï¿½moticï¿½ne #" & n & ".", ADMIN_LOG)
+                    If n < 0 Or n > MAX_EMOTICONS Then Call HackingAttempt(Index, "Index d'émoticéne Invalide"): Exit Sub
+                    Call AddLog(GetPlayerName(Index) & " edite l'émoticéne #" & n & ".", ADMIN_LOG)
                     Call SendEditEmoticonTo(Index, n)
                     Exit Sub
                 Case "exscript"
@@ -3363,30 +3363,30 @@ Player(Index).sync = True
                 Case "saveemoticon"
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     n = Val(Parse(1))
-                    If n < 0 Or n > MAX_ITEMS Then Call HackingAttempt(Index, "Index d'ï¿½moticï¿½ne Invalide"): Exit Sub
+                    If n < 0 Or n > MAX_ITEMS Then Call HackingAttempt(Index, "Index d'émoticéne Invalide"): Exit Sub
                     Emoticons(n).Command = Parse(2)
                     Emoticons(n).Pic = Val(Parse(3))
                     Call SendUpdateEmoticonToAll(n)
                     Call SaveEmoticon(n)
-                    Call AddLog(GetPlayerName(Index) & " sauvegarde l'ï¿½moticï¿½ne #" & n & ".", ADMIN_LOG)
+                    Call AddLog(GetPlayerName(Index) & " sauvegarde l'émoticéne #" & n & ".", ADMIN_LOG)
                     Exit Sub
                     
                 Case "gmtime"
-                    ' Merci ï¿½ Xamus (Fontor), Tom13 et Revorn qui m'ont informï¿½ de ce possible hack
+                    ' Merci é Xamus (Fontor), Tom13 et Revorn qui m'ont informé de ce possible hack
                     If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     GameTime = Val(Parse(1))
                     Call SendTimeToAll
                     Exit Sub
                     
                 Case "weather"
-                    ' MErci ï¿½ Xamus (Fontor), Tom13 et Revorn qui m'ont informï¿½ de ce possible hack
+                    ' MErci é Xamus (Fontor), Tom13 et Revorn qui m'ont informé de ce possible hack
                     If GetPlayerAccess(Index) < ADMIN_DEVELOPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     GameWeather = Val(Parse(1))
                     Call SendWeatherToAll
                     Exit Sub
                     
                 Case "warpto"
-                    ' Merci ï¿½ Xamus (Fontor), Tom13 and Revorn qui m'ont informï¿½ de ce possible hack
+                    ' Merci é Xamus (Fontor), Tom13 and Revorn qui m'ont informé de ce possible hack
                     If GetPlayerAccess(Index) < ADMIN_MAPPER Then Call HackingAttempt(Index, "Clonage d'Admin"): Exit Sub
                     Call PlayerWarp(Index, Val(Parse(1)), GetPlayerX(Index), GetPlayerY(Index))
                     If Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_COFFRE Or Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_BLOCKED Or Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_SIGN Or Map(GetPlayerMap(Index)).Tile(GetPlayerX(Index), GetPlayerY(Index)).type = TILE_TYPE_BLOCK_TOIT Then Call Debloque(Index)
@@ -3400,12 +3400,12 @@ Player(Index).sync = True
             
     End Select
 
-Call HackingAttempt(Index, "Erreur : Problï¿½me dans l'envoi d'un packet (" & Parse(0) & ")")
+Call HackingAttempt(Index, "Erreur : Probléme dans l'envoi d'un packet (" & Parse(0) & ")")
 Exit Sub
 er:
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur dans la rï¿½ception du serveur. Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur dans la réception du serveur. Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 On Error Resume Next
-If IBErr Then Call IBMsg("Un erreur c'est produite dans la rï¿½ception du serveur", BrightRed)
+If IBErr Then Call IBMsg("Un erreur c'est produite dans la réception du serveur", BrightRed)
 If Not IsPlaying(Index) Then Call PlainMsg(Index, "Erreur d'envoie, relancez s'il vous plait.", 3)
 End Sub
 
@@ -3434,7 +3434,7 @@ On Error Resume Next
         Player(Index).Login = vbNullString
         Player(Index).InGame = False
         Call UpdateCaption
-        Call TextAdd(frmServer.txtText(0), "Connexion de " & GetPlayerIP(Index) & " est terminï¿½e.", True)
+        Call TextAdd(frmServer.txtText(0), "Connexion de " & GetPlayerIP(Index) & " est terminée.", True)
         End If
     End If
         
@@ -3454,7 +3454,7 @@ Dim n As Long, i As Long
     Next i
             
     If n = 0 Then
-        s = "Il n'y a pas d'autres joueurs connectï¿½..."
+        s = "Il n'y a pas d'autres joueurs connecté..."
     Else
         s = Mid$(s, 1, Len(s) - 2)
         s = "Il y a " & n & " joueur(s) en ligne : " & s & "."
@@ -3548,9 +3548,9 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur pendant l'envoi du changement de carte d'un joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",Carte : " & GetPlayerMap(Index) & ". Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur pendant l'envoi du changement de carte d'un joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",Carte : " & GetPlayerMap(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant l'envoi du changement de carte d'un joueur(" & GetPlayerName(Index) & ")", BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problï¿½me rï¿½curent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous probléme récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
 Sub SendLeaveMap(ByVal Index As Long, ByVal MapNum As Long)
@@ -3580,9 +3580,9 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur pendant le dï¿½pard du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",De la carte : " & MapNum & ". Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur pendant le dï¿½pard de " & GetPlayerName(Index) & " d'une la carte", BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problï¿½me rï¿½curent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur pendant le dépard du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ",De la carte : " & MapNum & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur pendant le dépard de " & GetPlayerName(Index) & " d'une la carte", BrightRed)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous probléme récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
 Sub SendPlayerData(ByVal Index As Long)
@@ -3612,9 +3612,9 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur pendant l'envoi des donnï¿½es du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur pendant l'envoi des donnï¿½es du joueur : " & GetPlayerName(Index), BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problï¿½me rï¿½curent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur pendant l'envoi des données du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur pendant l'envoi des données du joueur : " & GetPlayerName(Index), BrightRed)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous probléme récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
 Sub SendPlayerQuete(ByVal Index As Long)
@@ -3643,8 +3643,8 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur pendant l'envoi des donnï¿½es(quï¿½te) du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
-If IBErr Then Call IBMsg("Erreur pendant l'envoi des donnï¿½es(quï¿½te) du joueur : " & GetPlayerName(Index), BrightRed)
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur pendant l'envoi des données(quéte) du joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+If IBErr Then Call IBMsg("Erreur pendant l'envoi des données(quéte) du joueur : " & GetPlayerName(Index), BrightRed)
 End Sub
 
 Sub SendPlayerMetier(ByVal Index As Long)
@@ -3662,8 +3662,8 @@ End Sub
 
 Sub SendMap(ByVal Index As Long, ByVal MapNum As Long)
 Dim Packet As String
-Dim x As Long
-Dim y As Long
+Dim X As Long
+Dim Y As Long
 Dim i As Long
 Dim s As String
 On Error GoTo er:
@@ -3678,32 +3678,32 @@ Else
     
     Packet = "MAPTILES" & SEP_CHAR
     
-    For y = 0 To MAX_MAPY
-        For x = 0 To MAX_MAPX
-        With Map(MapNum).Tile(x, y)
+    For Y = 0 To MAX_MAPY
+        For X = 0 To MAX_MAPX
+        With Map(MapNum).Tile(X, Y)
             Packet = Packet & .Ground & SEP_CHAR & .Mask & SEP_CHAR & .Anim & SEP_CHAR & .Mask2 & SEP_CHAR & .M2Anim & SEP_CHAR & .Fringe & SEP_CHAR & .FAnim & SEP_CHAR & .Fringe2 & SEP_CHAR & .F2Anim & SEP_CHAR & .type & SEP_CHAR & .data1 & SEP_CHAR & .data2 & SEP_CHAR & .data3 & SEP_CHAR & .String1 & SEP_CHAR & .String2 & SEP_CHAR & .String3 & SEP_CHAR & .Light & SEP_CHAR
             Packet = Packet & .GroundSet & SEP_CHAR & .MaskSet & SEP_CHAR & .AnimSet & SEP_CHAR & .Mask2Set & SEP_CHAR & .M2AnimSet & SEP_CHAR & .FringeSet & SEP_CHAR & .FAnimSet & SEP_CHAR & .Fringe2Set & SEP_CHAR & .F2AnimSet & SEP_CHAR & .Fringe3 & SEP_CHAR & .F3Anim & SEP_CHAR & .Fringe3Set & SEP_CHAR & .F3AnimSet & SEP_CHAR & .M3Anim & SEP_CHAR & .M3AnimSet & SEP_CHAR & .Mask3 & SEP_CHAR & .Mask3Set & SEP_CHAR  '<--
         End With
-        Next x
-    Next y
+        Next X
+    Next Y
     
     Packet = Packet & END_CHAR
     Call SendDataTo(Index, Packet)
     
     Packet = "MAPNPCS" & SEP_CHAR
-    For x = 1 To MAX_MAP_NPCS
-        Packet = Packet & Map(GetPlayerMap(Index)).Npc(x) & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x1 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y1 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).x2 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).y2 & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Hasardm & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Hasardp & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).boucle & SEP_CHAR
-        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(x).Imobile & SEP_CHAR
-    Next x
+    For X = 1 To MAX_MAP_NPCS
+        Packet = Packet & Map(GetPlayerMap(Index)).Npc(X) & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).X & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Y & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).x1 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).y1 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).x2 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).y2 & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Hasardm & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Hasardp & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).boucle & SEP_CHAR
+        Packet = Packet & Map(GetPlayerMap(Index)).Npcs(X).Imobile & SEP_CHAR
+    Next X
         
     Packet = Packet & END_CHAR
         
@@ -3714,9 +3714,9 @@ Exit Sub
 er:
 On Error Resume Next
 If Index < 0 Or Index > MAX_PLAYERS Then Exit Sub
-Call AddLog("le : " & Date & "     ï¿½ : " & time & "...Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Dï¿½tails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
+Call AddLog("le : " & Date & "     é : " & time & "...Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index) & ",Compte : " & GetPlayerLogin(Index) & ". Détails : Num :" & Err.Number & " Description : " & Err.Description & " Source : " & Err.Source & "...", "logs\Err.txt")
 If IBErr Then Call IBMsg("Erreur pendant l'envoi de la carte " & MapNum & " au joueur : " & GetPlayerName(Index), BrightRed)
-Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous problï¿½me rï¿½curent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
+Call PlainMsg(Index, "Erreur du serveur, relancez s'il vous plait.(Pour tous probléme récurent visitez " & Trim$(GetVar(App.Path & "\Config\.ini", "CONFIG", "WebSite")) & ").", 3)
 End Sub
 
 Sub SendMapItemsTo(ByVal Index As Long, ByVal MapNum As Long)
@@ -3725,7 +3725,7 @@ Dim i As Long
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        If MapNum > 0 Then Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).x & SEP_CHAR & MapItem(MapNum, i).y & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
@@ -3738,7 +3738,7 @@ Dim i As Long
 
     Packet = "MAPITEMDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_ITEMS
-        Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).x & SEP_CHAR & MapItem(MapNum, i).y & SEP_CHAR
+        Packet = Packet & MapItem(MapNum, i).Num & SEP_CHAR & MapItem(MapNum, i).value & SEP_CHAR & MapItem(MapNum, i).Dur & SEP_CHAR & MapItem(MapNum, i).X & SEP_CHAR & MapItem(MapNum, i).Y & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
@@ -3751,7 +3751,7 @@ Dim i As Long
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        If MapNum > 0 Then Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).x & SEP_CHAR & MapNpc(MapNum, i).y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
+        If MapNum > 0 Then Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
@@ -3764,7 +3764,7 @@ Dim i As Long
 
     Packet = "MAPNPCDATA" & SEP_CHAR
     For i = 1 To MAX_MAP_NPCS
-        Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).x & SEP_CHAR & MapNpc(MapNum, i).y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
+        Packet = Packet & MapNpc(MapNum, i).Num & SEP_CHAR & MapNpc(MapNum, i).X & SEP_CHAR & MapNpc(MapNum, i).Y & SEP_CHAR & MapNpc(MapNum, i).Dir & SEP_CHAR
     Next i
     Packet = Packet & END_CHAR
     
@@ -3866,15 +3866,15 @@ Dim Packet As String
 End Sub
 
 Sub SendHP(ByVal Index As Long)
-Dim Packet As String, x As Byte
+Dim Packet As String, X As Byte
 
     Packet = "PLAYERHP" & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & GetPlayerHP(Index) & END_CHAR
     Call SendDataTo(Index, Packet)
     
     If Player(Index).InParty > 0 Then
-        For x = 1 To Party.MemberCount(Player(Index).InParty)
-            If Player(Index).PartyPlayer <> x Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, x), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
-        Next x
+        For X = 1 To Party.MemberCount(Player(Index).InParty)
+            If Player(Index).PartyPlayer <> X Then Call SendDataTo(Party.PlayerIndex(Player(Index).InParty, X), "partyhp" & SEP_CHAR & Index & SEP_CHAR & Player(Index).InParty & SEP_CHAR & GetPlayerMaxHP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).HP & SEP_CHAR & GetPlayerMaxMP(Index) & SEP_CHAR & Player(Index).Char(Player(Index).CharNum).MP & END_CHAR)
+        Next X
     End If
     
     Packet = "PLAYERPOINTS" & SEP_CHAR & GetPlayerPOINTS(Index) & END_CHAR
@@ -4288,7 +4288,7 @@ End Sub
 
 Sub SendTrade(ByVal Index As Long, ByVal ShopNum As Long)
 Dim Packet As String
-Dim i As Long, x As Long, y As Long, z As Long, XX As Long
+Dim i As Long, X As Long, Y As Long, z As Long, XX As Long
     
     Player(Index).Char(Player(Index).CharNum).vendeur = ShopNum
     
@@ -4333,8 +4333,8 @@ Dim i As Long
 Dim Weather As String
 
     PutVar App.Path & "\Data.ini", "CONFIG", "MeteoParMap", 0
-    frmServer.Label12.Caption = "La mï¿½tï¿½o par map est actuellement dï¿½sactivï¿½e"
-    frmServer.CommandMeteoMap.Caption = "activer La mï¿½tï¿½o par map"
+    frmServer.Label12.Caption = "La météo par map est actuellement désactivée"
+    frmServer.CommandMeteoMap.Caption = "activer La météo par map"
     
     Select Case GameWeather
         Case 0

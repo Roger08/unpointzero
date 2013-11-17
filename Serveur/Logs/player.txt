@@ -347,3 +347,13 @@
 19:02:13: Admin/Admin est en train de jouer à FRoG Creator.
 19:06:24: Admin s'est connecté depuis 192.168.0.1.
 19:06:25: Admin/Admin est en train de jouer à FRoG Creator.
+12:48:19: Elios s'est connectï¿½ depuis 127.0.0.1.
+12:48:21: Elios/Elios est en train de jouer ï¿½ FRoG Creator.
+12:49:35: Admin s'est connectï¿½ depuis 127.0.0.1.
+12:49:38: Admin/Admin est en train de jouer ï¿½ FRoG Creator.
+12:52:28: Elios s'est connectï¿½ depuis 127.0.0.1.
+12:52:30: Elios/Elios est en train de jouer ï¿½ FRoG Creator.
+12:52:50: Carte #1 : Elios : test
+13:44:33: Compte test a ï¿½tï¿½ crï¿½ï¿½.
+13:46:07: test s'est connectï¿½ depuis 127.0.0.1.
+13:46:09: test/Test est en train de jouer ï¿½ FRoG Creator.

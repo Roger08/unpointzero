@@ -1,0 +1,20 @@
+
+Connexion reï¿½ue depuis l'IP 127.0.0.1.
+Connexion de 127.0.0.1 est terminï¿½e.
+Connexion reï¿½ue depuis l'IP 127.0.0.1.
+Elios s'est connectï¿½ depuis 127.0.0.1.
+Elios/Elios est en train de jouer ï¿½ FRoG Creator.
+Elios s'est déconnecté de FRoG Creator.
+Connexion de 127.0.0.1 est terminï¿½e.
+Connexion reï¿½ue depuis l'IP 127.0.0.1.
+Admin s'est connectï¿½ depuis 127.0.0.1.
+Admin/Admin est en train de jouer ï¿½ FRoG Creator.
+Connexion de 127.0.0.1 est terminï¿½e.
+
+Connexion de 127.0.0.1 est terminï¿½e.
+Connexion reï¿½ue depuis l'IP 127.0.0.1.
+Connexion reï¿½ue depuis l'IP 127.0.0.1.
+Elios s'est connectï¿½ depuis 127.0.0.1.
+Elios/Elios est en train de jouer ï¿½ FRoG Creator.
+Elios s'est déconnecté de FRoG Creator.
+Connexion de 127.0.0.1 est terminï¿½e.

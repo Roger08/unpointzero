@@ -200,3 +200,7 @@
 19:04:11: Admin edite le PNJ #5.
 19:04:23: Admin sauvegarde le PNJ #5.
 19:04:51: Admin a modifié(e) la carte #1
+12:51:46: Admin a modifiï¿½(e) la carte #1
+12:51:59: Admin a modifiï¿½(e) la carte #1
+13:46:31: Test a modifiï¿½(e) la carte #1
+13:47:36: Test edite l'objet #1.
